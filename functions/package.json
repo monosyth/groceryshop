@@ -1,7 +1,7 @@
 {
-  "name": "groceryshop-functions",
+  "name": "grozeryshop-functions",
   "version": "1.0.0",
-  "description": "Cloud Functions for GroceryShop receipt analysis",
+  "description": "Cloud Functions for GrozeryShop receipt analysis",
   "main": "index.js",
   "engines": {
     "node": "20"

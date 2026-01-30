@@ -91,7 +91,7 @@ export default function Navigation() {
       >
         <ShoppingCart />
         <Typography variant="h6" fontWeight="bold">
-          GroceryShop
+          GrozeryShop
         </Typography>
       </Box>
       <List>
@@ -148,7 +148,7 @@ export default function Navigation() {
                 textDecoration: 'none',
               }}
             >
-              GroceryShop
+              GrozeryShop
             </Typography>
           </Box>
 

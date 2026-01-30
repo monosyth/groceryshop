@@ -1,6 +1,6 @@
-# GroceryShop
+# GrozeryShop
 
-A modern web application built with React, Firebase, and Material UI.
+A modern web application built with React, Firebase, and Material UI for tracking grocery receipts and spending.
 
 ## Tech Stack
 
@@ -52,7 +52,7 @@ See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for complete instructions on setting up G
 ## Project Structure
 
 ```
-groceryshop/
+grozeryshop/
 ├── public/              # Static assets
 ├── src/
 │   ├── assets/         # Images, fonts, etc.
