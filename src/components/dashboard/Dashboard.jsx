@@ -15,9 +15,17 @@ export default function Dashboard() {
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
 
+  // Debug logging
+  console.log('Dashboard - user:', user);
+  console.log('Dashboard - loading:', loading);
+
   // Fetch receipts with real-time updates
   useEffect(() => {
-    if (!user) return;
+    console.log('useEffect running, user:', user);
+    if (!user) {
+      console.log('No user, returning early');
+      return;
+    }
 
     // Query receipts for current user
     const q = query(
