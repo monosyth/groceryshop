@@ -90,7 +90,7 @@ export default function LandingPage() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: '#FDFBF7',
+        background: '#FFFFFF',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -98,15 +98,10 @@ export default function LandingPage() {
       {/* Custom CSS for fonts and animations */}
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-          .hero-title {
-            font-family: 'Playfair Display', serif !important;
-            letter-spacing: -0.02em;
-          }
-
-          .body-text {
-            font-family: 'DM Sans', sans-serif !important;
+          * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
           }
 
           @keyframes float {
@@ -151,37 +146,13 @@ export default function LandingPage() {
         `}
       </style>
 
-      {/* Decorative background blobs */}
-      <Box
-        className="blob"
-        sx={{
-          width: 500,
-          height: 500,
-          background: 'radial-gradient(circle, #4CAF50 0%, transparent 70%)',
-          top: '-250px',
-          right: '-150px',
-        }}
-      />
-      <Box
-        className="blob"
-        sx={{
-          width: 400,
-          height: 400,
-          background: 'radial-gradient(circle, #FF9800 0%, transparent 70%)',
-          bottom: '100px',
-          left: '-100px',
-          animationDelay: '2s',
-        }}
-      />
-
       {/* Navigation Bar */}
       <AppBar
         position="sticky"
         elevation={0}
         sx={{
-          bgcolor: 'rgba(253, 251, 247, 0.9)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(76, 175, 80, 0.1)',
+          bgcolor: '#FFFFFF',
+          borderBottom: '1px solid #E5E7EB',
         }}
       >
         <Toolbar sx={{ py: 1 }}>
@@ -190,26 +161,21 @@ export default function LandingPage() {
               sx={{
                 width: 40,
                 height: 40,
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%)',
+                borderRadius: '10px',
+                background: '#16A34A',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)',
               }}
             >
-              <ShoppingCart sx={{ color: 'white', fontSize: 24 }} />
+              <ShoppingCart sx={{ color: 'white', fontSize: 22 }} />
             </Box>
             <Typography
               variant="h6"
-              className="hero-title"
               sx={{
-                fontWeight: 900,
-                background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontSize: '24px',
+                fontWeight: 700,
+                color: '#111827',
+                fontSize: '20px',
               }}
             >
               GrozeryShop
@@ -221,20 +187,21 @@ export default function LandingPage() {
               disabled={loading}
               startIcon={<GoogleIcon />}
               variant="contained"
-              className="body-text"
               sx={{
-                bgcolor: '#4CAF50',
+                bgcolor: '#16A34A',
                 color: 'white',
                 fontWeight: 600,
                 px: 3,
-                borderRadius: '12px',
-                boxShadow: '0 4px 14px rgba(76, 175, 80, 0.4)',
+                py: 1,
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontSize: '15px',
+                boxShadow: 'none',
                 '&:hover': {
-                  bgcolor: '#45a049',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 20px rgba(76, 175, 80, 0.5)',
+                  bgcolor: '#15803D',
+                  boxShadow: 'none',
                 },
-                transition: 'all 0.3s ease',
+                transition: 'all 0.2s ease',
               }}
             >
               {loading ? 'Signing In...' : 'Sign In with Google'}
@@ -250,26 +217,23 @@ export default function LandingPage() {
             <Box className="animate-slide-up">
               <Typography
                 variant="h1"
-                className="hero-title"
                 sx={{
-                  fontSize: { xs: '42px', md: '56px' },
-                  fontWeight: 900,
+                  fontSize: { xs: '40px', md: '52px' },
+                  fontWeight: 700,
                   lineHeight: 1.2,
                   mb: 2,
-                  color: '#1B5E20',
+                  color: '#111827',
+                  letterSpacing: '-0.02em',
                 }}
               >
-                Grocery Tracking,{' '}
+                Track your groceries.{' '}
                 <Box
                   component="span"
                   sx={{
-                    background: 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
+                    color: '#16A34A',
                   }}
                 >
-                  Simplified
+                  Save money.
                 </Box>
               </Typography>
             </Box>
@@ -277,17 +241,16 @@ export default function LandingPage() {
             <Box className="animate-slide-up animate-delay-1">
               <Typography
                 variant="h5"
-                className="body-text"
                 sx={{
                   fontSize: { xs: '18px', md: '20px' },
-                  color: '#5D4037',
-                  mb: 2,
-                  lineHeight: 1.5,
+                  color: '#6B7280',
+                  mb: 3,
+                  lineHeight: 1.6,
                   fontWeight: 400,
                   maxWidth: '500px',
                 }}
               >
-                Snap receipts, track spending, save money. That simple.
+                Snap a photo of your receipt. We'll automatically track every item and show you where your money goes.
               </Typography>
             </Box>
 
@@ -295,26 +258,24 @@ export default function LandingPage() {
               <Button
                 variant="contained"
                 size="large"
-                className="body-text"
                 onClick={handleGoogleSignIn}
                 disabled={loading}
                 startIcon={<GoogleIcon />}
-                endIcon={<AutoAwesome />}
                 sx={{
-                  bgcolor: '#4CAF50',
+                  bgcolor: '#16A34A',
                   color: 'white',
                   px: 4,
-                  py: 2,
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 24px rgba(76, 175, 80, 0.4)',
+                  py: 1.5,
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  borderRadius: '10px',
+                  textTransform: 'none',
+                  boxShadow: 'none',
                   '&:hover': {
-                    bgcolor: '#45a049',
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 12px 32px rgba(76, 175, 80, 0.5)',
+                    bgcolor: '#15803D',
+                    boxShadow: 'none',
                   },
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.2s ease',
                 }}
               >
                 {loading ? 'Signing In...' : 'Sign In with Google'}
@@ -353,28 +314,14 @@ export default function LandingPage() {
               <Paper
                 elevation={0}
                 sx={{
-                  background: 'linear-gradient(135deg, #FFFFFF 0%, #F1F8E9 100%)',
-                  borderRadius: '32px',
+                  background: '#F9FAFB',
+                  borderRadius: '16px',
                   p: 3,
-                  border: '2px solid rgba(76, 175, 80, 0.2)',
-                  boxShadow: '0 20px 60px rgba(76, 175, 80, 0.2)',
+                  border: '1px solid #E5E7EB',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
               >
-                {/* Decorative element */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: -50,
-                    right: -50,
-                    width: 200,
-                    height: 200,
-                    background: 'radial-gradient(circle, rgba(255, 152, 0, 0.2) 0%, transparent 70%)',
-                    borderRadius: '50%',
-                  }}
-                />
-
                 <Box sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
                   <Box
                     sx={{
@@ -388,15 +335,13 @@ export default function LandingPage() {
                   </Box>
                   <Typography
                     variant="h5"
-                    className="body-text"
-                    sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}
+                    sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '18px' }}
                   >
                     Upload Receipt
                   </Typography>
                   <Typography
                     variant="body1"
-                    className="body-text"
-                    sx={{ color: '#5D4037', mb: 2 }}
+                    sx={{ color: '#6B7280', mb: 2, fontSize: '14px' }}
                   >
                     Automatically extracts items, prices, categories
                   </Typography>
@@ -438,27 +383,26 @@ export default function LandingPage() {
           <Box sx={{ textAlign: 'center', mb: 5 }}>
             <Typography
               variant="h2"
-              className="hero-title"
               sx={{
-                fontSize: { xs: '32px', md: '42px' },
-                fontWeight: 900,
-                color: '#1B5E20',
+                fontSize: { xs: '32px', md: '36px' },
+                fontWeight: 700,
+                color: '#111827',
                 mb: 1,
+                letterSpacing: '-0.01em',
               }}
             >
-              Everything You Need
+              Simple, powerful features
             </Typography>
             <Typography
               variant="subtitle1"
-              className="body-text"
               sx={{
-                color: '#5D4037',
+                color: '#6B7280',
                 maxWidth: 500,
                 mx: 'auto',
                 fontSize: '16px',
               }}
             >
-              Powerful features, zero hassle
+              Everything you need to manage your grocery spending
             </Typography>
           </Box>
 
@@ -470,9 +414,9 @@ export default function LandingPage() {
                   elevation={0}
                   sx={{
                     height: '100%',
-                    background: 'linear-gradient(135deg, #FFFFFF 0%, #F1F8E9 100%)',
-                    borderRadius: '24px',
-                    border: '2px solid rgba(76, 175, 80, 0.1)',
+                    background: '#FFFFFF',
+                    borderRadius: '16px',
+                    border: '1px solid #E5E7EB',
                     overflow: 'visible',
                     position: 'relative',
                   }}
@@ -490,15 +434,13 @@ export default function LandingPage() {
                     </Box>
                     <Typography
                       variant="h6"
-                      className="body-text"
-                      sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5, fontSize: '18px' }}
+                      sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '17px' }}
                     >
                       {feature.title}
                     </Typography>
                     <Typography
                       variant="body2"
-                      className="body-text"
-                      sx={{ color: '#5D4037', lineHeight: 1.5, fontSize: '14px' }}
+                      sx={{ color: '#6B7280', lineHeight: 1.5, fontSize: '14px' }}
                     >
                       {feature.description}
                     </Typography>
@@ -523,87 +465,59 @@ export default function LandingPage() {
             elevation={0}
             sx={{
               p: { xs: 4, md: 6 },
-              background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
-              borderRadius: '32px',
+              background: '#16A34A',
+              borderRadius: '16px',
               textAlign: 'center',
               position: 'relative',
               overflow: 'hidden',
-              boxShadow: '0 20px 60px rgba(76, 175, 80, 0.4)',
             }}
           >
-            {/* Decorative circles */}
-            <Box
-              sx={{
-                position: 'absolute',
-                top: -100,
-                left: -100,
-                width: 300,
-                height: 300,
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '50%',
-              }}
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: -80,
-                right: -80,
-                width: 250,
-                height: 250,
-                background: 'rgba(255, 152, 0, 0.2)',
-                borderRadius: '50%',
-              }}
-            />
-
             <Box sx={{ position: 'relative', zIndex: 1 }}>
               <Typography
                 variant="h2"
-                className="hero-title"
                 sx={{
-                  fontSize: { xs: '32px', md: '42px' },
-                  fontWeight: 900,
+                  fontSize: { xs: '28px', md: '32px' },
+                  fontWeight: 700,
                   color: 'white',
                   mb: 1.5,
+                  letterSpacing: '-0.01em',
                 }}
               >
-                Start Tracking Today
+                Ready to get started?
               </Typography>
               <Typography
                 variant="subtitle1"
-                className="body-text"
                 sx={{
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: 'rgba(255, 255, 255, 0.95)',
                   mb: 3,
                   maxWidth: 450,
                   mx: 'auto',
                   fontSize: '16px',
                 }}
               >
-                Free forever. No credit card. Sign in with Google to start.
+                Free forever. No credit card required.
               </Typography>
               <Button
                 variant="contained"
                 size="large"
-                className="body-text"
                 onClick={handleGoogleSignIn}
                 disabled={loading}
                 startIcon={<GoogleIcon />}
-                endIcon={<AutoAwesome />}
                 sx={{
                   bgcolor: 'white',
-                  color: '#2E7D32',
-                  px: 5,
-                  py: 2,
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+                  color: '#16A34A',
+                  px: 4,
+                  py: 1.5,
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  borderRadius: '10px',
+                  textTransform: 'none',
+                  boxShadow: 'none',
                   '&:hover': {
-                    bgcolor: '#FFF9C4',
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.3)',
+                    bgcolor: '#F9FAFB',
+                    boxShadow: 'none',
                   },
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.2s ease',
                 }}
               >
                 {loading ? 'Signing In...' : 'Sign In with Google'}
@@ -644,25 +558,32 @@ export default function LandingPage() {
               </Box>
               <Typography
                 variant="body2"
-                className="body-text"
-                sx={{ opacity: 0.8, maxWidth: 400 }}
+                sx={{ opacity: 0.9, maxWidth: 400, fontSize: '14px' }}
               >
-                Intelligent grocery tracking that transforms receipt chaos into spending clarity.
+                Snap receipts, track spending, save money.
               </Typography>
             </Grid>
             <Grid item xs={12} md={6} sx={{ textAlign: { xs: 'left', md: 'right' } }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'flex-start', md: 'flex-end' } }}>
                 <Button
                   variant="contained"
-                  className="body-text"
                   startIcon={<GoogleIcon />}
                   onClick={handleGoogleSignIn}
                   disabled={loading}
                   sx={{
                     bgcolor: 'white',
-                    color: '#2E7D32',
+                    color: '#16A34A',
                     fontWeight: 600,
-                    '&:hover': { bgcolor: '#FFF9C4' },
+                    textTransform: 'none',
+                    borderRadius: '8px',
+                    px: 3,
+                    py: 1,
+                    fontSize: '15px',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      bgcolor: '#F9FAFB',
+                      boxShadow: 'none',
+                    },
                   }}
                 >
                   {loading ? 'Signing In...' : 'Sign In with Google'}
