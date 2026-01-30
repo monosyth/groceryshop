@@ -6,7 +6,7 @@ import { getUserReceipts } from '../../services/receiptService';
 import ReceiptCard, { ReceiptCardSkeleton } from '../receipt/ReceiptCard';
 import ReceiptDetail from '../receipt/ReceiptDetail';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase/config';
+import { db } from '../../firebase';
 
 export default function Dashboard() {
   const { user } = useAuth();
