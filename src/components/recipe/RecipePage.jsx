@@ -781,30 +781,28 @@ export default function RecipePage() {
                           </Box>
                         )}
 
-                        {recipe.recipeUrl && (
-                          <Button
-                            variant="outlined"
-                            fullWidth
-                            startIcon={<LinkIcon />}
-                            href={recipe.recipeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            sx={{
-                              fontFamily: 'Outfit, sans-serif',
-                              fontWeight: 600,
-                              fontSize: '13px',
-                              textTransform: 'none',
-                              color: '#15803D',
-                              borderColor: '#15803D',
-                              '&:hover': {
-                                bgcolor: '#F0FDF4',
-                                borderColor: '#166534',
-                              },
-                            }}
-                          >
-                            View Full Recipe
-                          </Button>
-                        )}
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<LinkIcon />}
+                          href={`https://www.google.com/search?q=${encodeURIComponent(recipe.name + ' recipe')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: 600,
+                            fontSize: '13px',
+                            textTransform: 'none',
+                            color: '#15803D',
+                            borderColor: '#15803D',
+                            '&:hover': {
+                              bgcolor: '#F0FDF4',
+                              borderColor: '#166534',
+                            },
+                          }}
+                        >
+                          Search Recipe on Google
+                        </Button>
                       </CardContent>
                     </Card>
                   ))}
