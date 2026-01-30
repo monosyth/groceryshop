@@ -293,112 +293,111 @@ export default function SearchPage() {
           </Paper>
         )}
 
-      {/* Results Grid */}
+      {/* Results List */}
       {filteredItems.length > 0 && (
-        <Grid container spacing={3}>
+        <Stack spacing={2}>
           {filteredItems.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.itemId}>
-              <Card
-                elevation={2}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  {/* Item Name */}
-                  <Typography variant="h6" gutterBottom fontWeight="600" noWrap>
-                    {item.name}
-                  </Typography>
-                  {item.receiptText && item.receiptText !== item.name && (
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
-                      Receipt: {item.receiptText}
-                    </Typography>
-                  )}
-
-                  {/* Category Chip */}
-                  <Box sx={{ mb: 2 }}>
-                    <Chip
-                      label={item.category || 'other'}
-                      color={categoryColors[item.category] || 'default'}
-                      size="small"
-                      sx={{ textTransform: 'capitalize' }}
-                    />
+            <Card
+              key={item.itemId}
+              elevation={1}
+              sx={{
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  boxShadow: 3,
+                  bgcolor: 'action.hover',
+                },
+              }}
+            >
+              <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    gap: { xs: 2, md: 3 },
+                    alignItems: { xs: 'stretch', md: 'center' },
+                  }}
+                >
+                  {/* Left: Item Info */}
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                      <Typography variant="h6" fontWeight="600" sx={{ flexGrow: 1 }}>
+                        {item.name}
+                      </Typography>
+                      <Chip
+                        label={item.category}
+                        color={categoryColors[item.category] || 'default'}
+                        size="small"
+                        sx={{ textTransform: 'capitalize' }}
+                      />
+                    </Box>
+                    {item.receiptText && item.receiptText !== item.name && (
+                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
+                        Receipt: {item.receiptText}
+                      </Typography>
+                    )}
                   </Box>
 
-                  {/* Store Info - Prominent */}
+                  {/* Middle: Store Info */}
                   <Box
                     sx={{
-                      mb: 2,
-                      p: 1.5,
-                      bgcolor: 'primary.lighter',
-                      borderRadius: 1,
-                      border: '1px solid',
-                      borderColor: 'primary.light',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.5,
+                      minWidth: { md: 220 },
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <StoreIcon sx={{ fontSize: 18, color: 'primary.main' }} />
-                      <Typography variant="body2" fontWeight="700" color="primary.main" noWrap>
+                      <Typography variant="body2" fontWeight="600" color="primary.main">
                         {item.receiptStore}
                       </Typography>
                     </Box>
                     {item.receiptLocation && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                        <LocationOn sx={{ fontSize: 16, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary" noWrap>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3.5 }}>
+                        <LocationOn sx={{ fontSize: 14, color: 'text.secondary' }} />
+                        <Typography variant="caption" color="text.secondary">
                           {item.receiptLocation}
                         </Typography>
                       </Box>
                     )}
                     {item.receiptDate && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CalendarIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3.5 }}>
+                        <CalendarIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
                         <Typography variant="caption" color="text.secondary">
-                          Purchased {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
+                          {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
                         </Typography>
                       </Box>
                     )}
                   </Box>
 
-                  {/* Item Details */}
-                  <Stack spacing={1} sx={{ mb: 2 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Quantity:
+                  {/* Right: Pricing */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'row', md: 'column' },
+                      justifyContent: { xs: 'space-between', md: 'center' },
+                      alignItems: { md: 'flex-end' },
+                      gap: { xs: 2, md: 0.5 },
+                      minWidth: { md: 140 },
+                      pt: { xs: 1, md: 0 },
+                      borderTop: { xs: 1, md: 0 },
+                      borderColor: { xs: 'divider', md: 'transparent' },
+                    }}
+                  >
+                    <Box sx={{ textAlign: { md: 'right' } }}>
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        Qty: {item.quantity || 1} × ${(item.unitPrice || 0).toFixed(2)}
                       </Typography>
-                      <Typography variant="body2" fontWeight="600">
-                        {item.quantity || 1}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Unit Price:
-                      </Typography>
-                      <Typography variant="body2" fontWeight="600">
-                        ${(item.unitPrice || 0).toFixed(2)}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Total Paid:
-                      </Typography>
-                      <Typography variant="body1" fontWeight="700" color="primary">
+                      <Typography variant="h6" fontWeight="700" color="primary.main">
                         ${(item.totalPrice || 0).toFixed(2)}
                       </Typography>
                     </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
           ))}
-        </Grid>
+        </Stack>
       )}
     </Container>
   );
