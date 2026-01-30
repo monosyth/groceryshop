@@ -253,8 +253,8 @@ export default function LandingPage() {
       </AppBar>
 
       {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 }, position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={6} alignItems="center">
+      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 5 }, position: 'relative', zIndex: 1 }}>
+        <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
             <Box className="animate-slide-up">
               <Typography
@@ -264,7 +264,7 @@ export default function LandingPage() {
                   fontSize: { xs: '48px', md: '72px' },
                   fontWeight: 900,
                   lineHeight: 1.1,
-                  mb: 3,
+                  mb: 2,
                   color: '#1B5E20',
                 }}
               >
@@ -290,7 +290,7 @@ export default function LandingPage() {
                 sx={{
                   fontSize: { xs: '20px', md: '24px' },
                   color: '#5D4037',
-                  mb: 3,
+                  mb: 2,
                   lineHeight: 1.6,
                   fontWeight: 400,
                 }}
@@ -331,7 +331,7 @@ export default function LandingPage() {
             </Box>
 
             {/* Trust Badge */}
-            <Box className="animate-slide-up animate-delay-3" sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box className="animate-slide-up animate-delay-3" sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
               <Typography
                 variant="body1"
                 className="body-text"
@@ -364,7 +364,7 @@ export default function LandingPage() {
                 sx={{
                   background: 'linear-gradient(135deg, #FFFFFF 0%, #F1F8E9 100%)',
                   borderRadius: '32px',
-                  p: 4,
+                  p: 3,
                   border: '2px solid rgba(76, 175, 80, 0.2)',
                   boxShadow: '0 20px 60px rgba(76, 175, 80, 0.2)',
                   position: 'relative',
@@ -387,8 +387,8 @@ export default function LandingPage() {
                 <Box sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
                   <Box
                     sx={{
-                      fontSize: '120px',
-                      mb: 2,
+                      fontSize: '100px',
+                      mb: 1.5,
                       display: 'inline-block',
                       animation: 'float 3s ease-in-out infinite',
                     }}
@@ -398,14 +398,14 @@ export default function LandingPage() {
                   <Typography
                     variant="h5"
                     className="body-text"
-                    sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}
+                    sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}
                   >
                     Upload Receipt
                   </Typography>
                   <Typography
                     variant="body1"
                     className="body-text"
-                    sx={{ color: '#5D4037', mb: 3 }}
+                    sx={{ color: '#5D4037', mb: 2 }}
                   >
                     Automatically extracts items, prices, categories
                   </Typography>
@@ -442,9 +442,9 @@ export default function LandingPage() {
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ py: 10, position: 'relative', zIndex: 1 }}>
+      <Box sx={{ py: 6, position: 'relative', zIndex: 1 }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
             <Typography
               variant="h2"
               className="hero-title"
@@ -452,7 +452,7 @@ export default function LandingPage() {
                 fontSize: { xs: '36px', md: '56px' },
                 fontWeight: 900,
                 color: '#1B5E20',
-                mb: 2,
+                mb: 1.5,
               }}
             >
               Everything You Need
@@ -486,11 +486,11 @@ export default function LandingPage() {
                     position: 'relative',
                   }}
                 >
-                  <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                  <CardContent sx={{ p: 3, textAlign: 'center' }}>
                     <Box
                       sx={{
-                        fontSize: '64px',
-                        mb: 2,
+                        fontSize: '56px',
+                        mb: 1.5,
                         display: 'inline-block',
                         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
                       }}
@@ -500,7 +500,7 @@ export default function LandingPage() {
                     <Typography
                       variant="h6"
                       className="body-text"
-                      sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}
+                      sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.75 }}
                     >
                       {feature.title}
                     </Typography>
@@ -520,9 +520,9 @@ export default function LandingPage() {
       </Box>
 
       {/* Benefits Section */}
-      <Box sx={{ py: 10, bgcolor: 'rgba(255, 152, 0, 0.05)', position: 'relative', zIndex: 1 }}>
+      <Box sx={{ py: 6, bgcolor: 'rgba(255, 152, 0, 0.05)', position: 'relative', zIndex: 1 }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
             <Typography
               variant="h2"
               className="hero-title"
@@ -530,7 +530,7 @@ export default function LandingPage() {
                 fontSize: { xs: '36px', md: '56px' },
                 fontWeight: 900,
                 color: '#1B5E20',
-                mb: 2,
+                mb: 1.5,
               }}
             >
               More Than Just Storage
@@ -556,14 +556,14 @@ export default function LandingPage() {
                   className={`feature-card animate-slide-up animate-delay-${(index % 4) + 1}`}
                   elevation={0}
                   sx={{
-                    p: 4,
+                    p: 3,
                     background: 'white',
                     borderRadius: '24px',
                     border: '2px solid rgba(255, 152, 0, 0.2)',
                     height: '100%',
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
                     <Box
                       sx={{
                         minWidth: 48,
@@ -584,7 +584,7 @@ export default function LandingPage() {
                       <Typography
                         variant="h6"
                         className="body-text"
-                        sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}
+                        sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}
                       >
                         {benefit.title}
                       </Typography>
@@ -607,7 +607,7 @@ export default function LandingPage() {
       {/* CTA Section */}
       <Box
         sx={{
-          py: 12,
+          py: 6,
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -616,7 +616,7 @@ export default function LandingPage() {
           <Paper
             elevation={0}
             sx={{
-              p: { xs: 4, md: 8 },
+              p: { xs: 4, md: 6 },
               background: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
               borderRadius: '32px',
               textAlign: 'center',
@@ -657,7 +657,7 @@ export default function LandingPage() {
                   fontSize: { xs: '36px', md: '48px' },
                   fontWeight: 900,
                   color: 'white',
-                  mb: 2,
+                  mb: 1.5,
                 }}
               >
                 Ready to Transform Your Grocery Game?
@@ -667,7 +667,7 @@ export default function LandingPage() {
                 className="body-text"
                 sx={{
                   color: 'rgba(255, 255, 255, 0.9)',
-                  mb: 4,
+                  mb: 3,
                   maxWidth: 500,
                   mx: 'auto',
                 }}
@@ -711,7 +711,7 @@ export default function LandingPage() {
         sx={{
           bgcolor: '#1B5E20',
           color: 'white',
-          py: 6,
+          py: 4,
         }}
       >
         <Container maxWidth="lg">
@@ -763,7 +763,7 @@ export default function LandingPage() {
               </Box>
             </Grid>
           </Grid>
-          <Box sx={{ mt: 6, pt: 4, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <Typography
               variant="body2"
               className="body-text"
