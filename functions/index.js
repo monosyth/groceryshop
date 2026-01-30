@@ -112,7 +112,7 @@ function createReceiptAnalysisPrompt() {
       "quantity": "Quantity as number (default 1)",
       "unitPrice": "Unit price as number",
       "totalPrice": "Total price for this item as number",
-      "keywords": "Array of search keywords/synonyms for this item - include brand names, common names, variants (e.g. for 'SKITTLES TROPICA' add: ['candy', 'sweets', 'skittles', 'tropical', 'fruit candy']; for 'COF MATE LIQ VAN' add: ['creamer', 'coffee creamer', 'vanilla', 'coffee mate', 'liquid creamer'])"
+      "keywords": "Array of search keywords/synonyms for this item - MUST include: 1) Generic food type (fruit, candy, meat, dairy, vegetable, snack, beverage, etc.), 2) Specific item name (banana, apple, skittles, chicken, etc.), 3) Brand names, 4) Common variations. Examples: 'BANANAS' → ['fruit', 'banana', 'yellow fruit', 'produce']; 'SKITTLES TROPICA' → ['candy', 'sweets', 'skittles', 'tropical', 'fruit candy', 'snack']; 'COF MATE LIQ VAN' → ['creamer', 'coffee creamer', 'vanilla', 'coffee mate', 'liquid creamer', 'dairy', 'beverage']; 'CHICKEN BREAST' → ['meat', 'chicken', 'poultry', 'protein', 'breast']; 'LETTUCE' → ['vegetable', 'lettuce', 'produce', 'greens', 'salad']"
     }
   ],
   "summary": {
@@ -128,7 +128,8 @@ Important instructions:
 - Be precise with numbers - no dollar signs, just numbers (e.g., 12.99 not $12.99)
 - If you can't read a value, set it to null or 0 for numbers
 - Categorize each item appropriately
-- For keywords: add common search terms, synonyms, brand names, product types (5-10 keywords per item)
+- For keywords: CRITICAL - ALWAYS include the generic food type as the FIRST keyword (fruit, candy, meat, dairy, vegetable, snack, beverage, etc.), then add specific terms, synonyms, brand names (5-10 keywords per item total)
+- Keywords must enable smart search: searching "fruit" should find bananas/apples, "candy" should find skittles/chocolate, "meat" should find chicken/beef, etc.
 - The total in summary should match the receipt total
 - Respond ONLY with valid JSON, no additional text
 - If quantity is not visible, assume 1
