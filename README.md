@@ -11,6 +11,11 @@ A modern web application built with React, Firebase, and Material UI for trackin
   - Select specific receipts or upload pantry photos
   - Gemini AI suggests real recipes from popular cooking sites
   - Smart ingredient matching with pantry staples consideration
+- 📝 **Recipe Import**: Paste recipes from any website to extract ingredients
+- 🛒 **Shopping List**: Create shopping lists from recipe ingredients
+  - Check off items as you shop
+  - Get store suggestions based on your shopping history
+- 📖 **My Recipes**: Save and reference recipes while cooking
 
 ## Tech Stack
 
@@ -95,6 +100,37 @@ This app is configured to use:
 - **Firestore**: NoSQL database for app data
 - **Storage**: File and image storage
 - **Functions**: Serverless backend functions
+
+### Deploying Firestore Security Rules
+
+**IMPORTANT**: You must deploy the Firestore security rules for the shopping list and saved recipes features to work.
+
+1. Install Firebase CLI:
+```bash
+npm install -g firebase-tools
+```
+
+2. Login to Firebase:
+```bash
+firebase login
+```
+
+3. Initialize Firebase in the project (if not already done):
+```bash
+firebase init firestore
+# Select your Firebase project
+# Accept the default firestore.rules file
+```
+
+4. Deploy the security rules:
+```bash
+firebase deploy --only firestore:rules
+```
+
+The `firestore.rules` file contains security rules that ensure:
+- Users can only read/write their own data
+- All collections require authentication
+- Shopping list items, saved recipes, and receipts are user-specific
 
 ## Environment Variables
 
