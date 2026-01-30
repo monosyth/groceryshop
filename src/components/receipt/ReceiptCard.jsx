@@ -4,7 +4,7 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 
 // Softer, more sophisticated card colors that rotate
 const cardColors = [
-  { bg: '#EFF6FF', border: '#3B82F6', shadow: '#93C5FD' }, // Blue
+  { bg: '#F0FDFA', border: '#14B8A6', shadow: '#5EEAD4' }, // Teal
   { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
   { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
   { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow

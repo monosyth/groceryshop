@@ -47,14 +47,10 @@ export default function LandingPage() {
       {/* Custom CSS */}
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Caveat:wght@700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
           * {
             font-family: 'Outfit', system-ui, -apple-system, sans-serif !important;
-          }
-
-          .handwriting {
-            font-family: 'Caveat', cursive !important;
           }
 
           @keyframes float {
@@ -226,11 +222,13 @@ export default function LandingPage() {
         <Box sx={{ textAlign: 'center' }}>
           {/* Main headline */}
           <Typography
-            className="handwriting"
             sx={{
-              fontSize: { xs: '24px', md: '32px' },
+              fontSize: { xs: '14px', md: '16px' },
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
               color: '#B45309',
-              mb: 1,
+              mb: 2,
             }}
           >
             Grocery tracking, but make it fun
@@ -329,19 +327,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#DBEAFE',
+              bgcolor: '#F0FDFA',
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #1E40AF',
-              boxShadow: '6px 6px 0px #1E40AF',
+              border: '4px solid #14B8A6',
+              boxShadow: '6px 6px 0px #14B8A6',
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#1E3A8A', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#0D9488', mb: 1 }}>
               Snap It
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#1E3A8A', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: '#0D9488', lineHeight: 1.4 }}>
               One photo and you're done. No typing needed.
             </Typography>
           </Box>

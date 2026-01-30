@@ -37,7 +37,7 @@ import { formatCurrency } from '../../utils/formatters';
 
 // Softer, more sophisticated card colors
 const cardColors = [
-  { bg: '#EFF6FF', border: '#3B82F6', shadow: '#93C5FD' }, // Blue
+  { bg: '#F0FDFA', border: '#14B8A6', shadow: '#5EEAD4' }, // Teal
   { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
   { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
   { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
@@ -275,10 +275,10 @@ export default function AnalyticsPage() {
             <Grid item xs={12}>
               <Card
                 sx={{
-                  bgcolor: '#EFF6FF',
+                  bgcolor: '#F0FDFA',
                   borderRadius: '12px',
-                  border: '2px solid #3B82F6',
-                  boxShadow: '3px 3px 0px #93C5FD',
+                  border: '2px solid #14B8A6',
+                  boxShadow: '3px 3px 0px #5EEAD4',
                   p: 3,
                 }}
               >
@@ -289,7 +289,7 @@ export default function AnalyticsPage() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#1E40AF',
+                      color: '#0D9488',
                       fontSize: '18px',
                     }}
                   >
@@ -298,21 +298,21 @@ export default function AnalyticsPage() {
                 </Box>
                 <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={spendingByDate}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#BFDBFE" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#99F6E4" />
                     <XAxis
                       dataKey="date"
-                      stroke="#1E40AF"
+                      stroke="#0D9488"
                       style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
-                      stroke="#1E40AF"
+                      stroke="#0D9488"
                       style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
                         borderRadius: 8,
-                        border: '2px solid #3B82F6',
+                        border: '2px solid #14B8A6',
                         fontSize: '12px',
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 500,
@@ -329,9 +329,9 @@ export default function AnalyticsPage() {
                     <Line
                       type="monotone"
                       dataKey="amount"
-                      stroke="#3B82F6"
+                      stroke="#14B8A6"
                       strokeWidth={3}
-                      dot={{ fill: '#3B82F6', r: 4, strokeWidth: 2, stroke: '#fff' }}
+                      dot={{ fill: '#14B8A6', r: 4, strokeWidth: 2, stroke: '#fff' }}
                       activeDot={{ r: 6 }}
                       name="Daily Spending"
                     />

@@ -173,103 +173,214 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: 3,
+          borderRadius: '16px',
+          border: '2px solid #10B981',
+          boxShadow: '4px 4px 0px #6EE7B7',
         },
       }}
     >
       {/* Header */}
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 700,
+              color: '#15803D',
+              fontSize: '24px',
+            }}
+          >
             Receipt Details
           </Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <IconButton
               onClick={() => setConfirmDelete(true)}
               size="small"
-              color="error"
               sx={{
+                color: '#DC2626',
+                border: '2px solid #DC2626',
                 '&:hover': {
-                  backgroundColor: 'error.lighter',
+                  bgcolor: '#FEE2E2',
                 },
               }}
             >
-              <Delete />
+              <Delete fontSize="small" />
             </IconButton>
-            <IconButton onClick={onClose} size="small">
-              <Close />
+            <IconButton
+              onClick={onClose}
+              size="small"
+              sx={{
+                border: '2px solid #9CA3AF',
+                '&:hover': {
+                  bgcolor: '#F3F4F6',
+                },
+              }}
+            >
+              <Close fontSize="small" />
             </IconButton>
           </Box>
         </Box>
       </DialogTitle>
 
       <DialogContent>
-        {/* Receipt Image */}
-        <Box
-          component="img"
-          src={imageUrl}
-          alt="Receipt"
-          sx={{
-            width: '100%',
-            maxHeight: 300,
-            objectFit: 'contain',
-            borderRadius: 2,
-            mb: 3,
-            backgroundColor: 'grey.100',
-          }}
-        />
+        {/* Receipt Image and Store Information - Side by Side */}
+        <Box sx={{ display: 'flex', gap: 2, mb: 3, flexDirection: { xs: 'column', sm: 'row' } }}>
+          {/* Receipt Image */}
+          <Box
+            component="img"
+            src={imageUrl}
+            alt="Receipt"
+            sx={{
+              width: { xs: '100%', sm: '50%' },
+              maxHeight: 300,
+              objectFit: 'contain',
+              borderRadius: '10px',
+              backgroundColor: 'grey.100',
+              border: '2px solid #E5E7EB',
+            }}
+          />
 
-        {/* Store Information */}
-        <Paper elevation={0} sx={{ p: 2, mb: 3, bgcolor: 'primary.lighter' }}>
-          <Stack spacing={1.5}>
-            {storeInfo?.name && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Store color="primary" />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  {storeInfo.name}
-                </Typography>
-              </Box>
-            )}
+          {/* Store Information */}
+          <Paper
+            elevation={0}
+            sx={{
+              flex: 1,
+              p: 2.5,
+              bgcolor: '#ECFDF5',
+              borderRadius: '12px',
+              border: '2px solid #10B981',
+              boxShadow: '2px 2px 0px #6EE7B7',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Stack spacing={1.5}>
+              {storeInfo?.name && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={{ fontSize: '20px' }}>🏪</Box>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontFamily: 'Outfit, sans-serif',
+                      fontWeight: 600,
+                      color: '#059669',
+                      fontSize: '18px',
+                    }}
+                  >
+                    {storeInfo.name}
+                  </Typography>
+                </Box>
+              )}
 
-            {storeInfo?.location && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <LocationOn sx={{ fontSize: 20, color: 'text.secondary' }} />
-                <Typography variant="body2" color="text.secondary">
-                  {storeInfo.location}
-                </Typography>
-              </Box>
-            )}
+              {storeInfo?.location && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={{ fontSize: '16px' }}>📍</Box>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: 'Outfit, sans-serif',
+                      fontWeight: 500,
+                      color: '#059669',
+                      fontSize: '13px',
+                    }}
+                  >
+                    {storeInfo.location}
+                  </Typography>
+                </Box>
+              )}
 
-            {storeInfo?.date && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <CalendarToday sx={{ fontSize: 20, color: 'text.secondary' }} />
-                <Typography variant="body2" color="text.secondary">
-                  {formatDate(storeInfo.date)}
-                </Typography>
-              </Box>
-            )}
-          </Stack>
-        </Paper>
+              {storeInfo?.date && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={{ fontSize: '16px' }}>📅</Box>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: 'Outfit, sans-serif',
+                      fontWeight: 500,
+                      color: '#059669',
+                      fontSize: '13px',
+                    }}
+                  >
+                    {formatDate(storeInfo.date)}
+                  </Typography>
+                </Box>
+              )}
+            </Stack>
+          </Paper>
+        </Box>
 
         {/* Items Table */}
         {items.length > 0 ? (
           <>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 600,
+                color: '#15803D',
+                fontSize: '18px',
+              }}
+            >
               Items ({items.length})
             </Typography>
 
-            <TableContainer component={Paper} elevation={0} sx={{ mb: 3 }}>
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{
+                mb: 3,
+                borderRadius: '12px',
+                border: '2px solid #F59E0B',
+                boxShadow: '2px 2px 0px #FCD34D',
+              }}
+            >
               <Table>
                 <TableHead>
-                  <TableRow sx={{ bgcolor: 'grey.50' }}>
-                    <TableCell sx={{ fontWeight: 600 }}>Item</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>
+                  <TableRow sx={{ bgcolor: '#FEF3C7' }}>
+                    <TableCell
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#78350F',
+                        fontSize: '13px',
+                      }}
+                    >
+                      Item
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#78350F',
+                        fontSize: '13px',
+                      }}
+                    >
                       Qty
                     </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 600 }}>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#78350F',
+                        fontSize: '13px',
+                      }}
+                    >
                       Unit Price
                     </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 600 }}>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#78350F',
+                        fontSize: '13px',
+                      }}
+                    >
                       Total
                     </TableCell>
                   </TableRow>
@@ -280,7 +391,14 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                       <TableCell>
                         <Box>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                fontWeight: 500,
+                                fontSize: '13px',
+                              }}
+                            >
                               {item.name}
                             </Typography>
                             <IconButton
@@ -290,14 +408,23 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                                 ml: 0.5,
                                 padding: 0.5,
                                 color: 'text.secondary',
-                                '&:hover': { color: 'primary.main' },
+                                '&:hover': { color: '#10B981' },
                               }}
                             >
                               <Edit sx={{ fontSize: 16 }} />
                             </IconButton>
                           </Box>
                           {item.receiptText && item.receiptText !== item.name && (
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{
+                                display: 'block',
+                                mt: 0.25,
+                                fontFamily: 'Outfit, sans-serif',
+                                fontSize: '11px',
+                              }}
+                            >
                               Receipt: {item.receiptText}
                             </Typography>
                           )}
@@ -305,13 +432,42 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                             label={item.category}
                             size="small"
                             color={getCategoryColor(item.category)}
-                            sx={{ mt: 0.5, height: 20, fontSize: '0.7rem' }}
+                            sx={{
+                              mt: 0.5,
+                              height: 20,
+                              fontSize: '0.7rem',
+                              fontFamily: 'Outfit, sans-serif',
+                              fontWeight: 500,
+                            }}
                           />
                         </Box>
                       </TableCell>
-                      <TableCell align="center">{item.quantity}</TableCell>
-                      <TableCell align="right">{formatCurrency(item.unitPrice)}</TableCell>
-                      <TableCell align="right" sx={{ fontWeight: 600 }}>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '13px',
+                        }}
+                      >
+                        {item.quantity}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '13px',
+                        }}
+                      >
+                        {formatCurrency(item.unitPrice)}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '13px',
+                        }}
+                      >
                         {formatCurrency(item.totalPrice)}
                       </TableCell>
                     </TableRow>
@@ -328,29 +484,99 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
 
         {/* Summary */}
         {summary && (
-          <Paper elevation={0} sx={{ p: 2, bgcolor: 'secondary.lighter' }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Summary
+          <Paper
+            elevation={0}
+            sx={{
+              p: 2.5,
+              bgcolor: '#F0FDFA',
+              borderRadius: '12px',
+              border: '2px solid #14B8A6',
+              boxShadow: '2px 2px 0px #5EEAD4',
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 600,
+                color: '#0D9488',
+                fontSize: '18px',
+              }}
+            >
+              💰 Summary
             </Typography>
 
             <Stack spacing={1}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="body1">Subtotal:</Typography>
-                <Typography variant="body1">{formatCurrency(summary.subtotal)}</Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                  }}
+                >
+                  Subtotal:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                  }}
+                >
+                  {formatCurrency(summary.subtotal)}
+                </Typography>
               </Box>
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="body1">Tax:</Typography>
-                <Typography variant="body1">{formatCurrency(summary.tax)}</Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                  }}
+                >
+                  Tax:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                  }}
+                >
+                  {formatCurrency(summary.tax)}
+                </Typography>
               </Box>
 
-              <Divider sx={{ my: 1 }} />
+              <Divider sx={{ my: 1, borderColor: '#99F6E4' }} />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 700,
+                    color: '#0D9488',
+                    fontSize: '18px',
+                  }}
+                >
                   Total:
                 </Typography>
-                <Typography variant="h6" color="secondary.main" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 700,
+                    color: '#0D9488',
+                    fontSize: '18px',
+                  }}
+                >
                   {formatCurrency(summary.total)}
                 </Typography>
               </Box>

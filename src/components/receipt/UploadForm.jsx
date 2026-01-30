@@ -264,10 +264,10 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
             sx={{
               p: 3,
               position: 'relative',
-              bgcolor: '#EFF6FF',
+              bgcolor: '#F0FDFA',
               borderRadius: '12px',
-              border: '2px solid #3B82F6',
-              boxShadow: '3px 3px 0px #93C5FD',
+              border: '2px solid #14B8A6',
+              boxShadow: '3px 3px 0px #5EEAD4',
             }}
           >
             <IconButton
@@ -303,7 +303,7 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                   objectFit: 'contain',
                   borderRadius: '10px',
                   mb: 2.5,
-                  border: '2px solid #3B82F6',
+                  border: '2px solid #14B8A6',
                   bgcolor: 'white',
                 }}
               />
@@ -317,7 +317,7 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
-                    color: '#1E40AF',
+                    color: '#0D9488',
                     fontSize: '14px',
                   }}
                 >
@@ -329,7 +329,7 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 500,
-                  color: '#3B82F6',
+                  color: '#14B8A6',
                   ml: 3.5,
                   fontSize: '12px',
                 }}
@@ -348,7 +348,7 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#1E40AF',
+                        color: '#0D9488',
                         fontSize: '13px',
                       }}
                     >
@@ -360,7 +360,7 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#3B82F6',
+                      color: '#14B8A6',
                       fontSize: '13px',
                     }}
                   >
@@ -373,9 +373,9 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                   sx={{
                     height: 8,
                     borderRadius: '6px',
-                    bgcolor: '#BFDBFE',
+                    bgcolor: '#99F6E4',
                     '& .MuiLinearProgress-bar': {
-                      bgcolor: '#3B82F6',
+                      bgcolor: '#14B8A6',
                       borderRadius: '6px',
                     },
                   }}
@@ -396,17 +396,17 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                 py: 1.5,
                 borderRadius: '10px',
                 textTransform: 'none',
-                bgcolor: '#3B82F6',
+                bgcolor: '#14B8A6',
                 color: 'white',
-                border: '2px solid #1E40AF',
-                boxShadow: '2px 2px 0px #1E40AF',
+                border: '2px solid #0D9488',
+                boxShadow: '2px 2px 0px #0D9488',
                 '&:hover': {
-                  bgcolor: '#1E40AF',
+                  bgcolor: '#0D9488',
                   transform: 'translateY(-1px)',
-                  boxShadow: '3px 3px 0px #1E40AF',
+                  boxShadow: '3px 3px 0px #0D9488',
                 },
                 '&:disabled': {
-                  bgcolor: '#93C5FD',
+                  bgcolor: '#5EEAD4',
                   color: 'white',
                   opacity: 0.8,
                 },
