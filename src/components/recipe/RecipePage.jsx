@@ -309,326 +309,343 @@ export default function RecipePage() {
             </Typography>
           </Card>
         ) : (
-          <Grid container spacing={3}>
-            {/* Left Column - Ingredient Selection */}
-            <Grid item xs={12} md={5}>
-              {/* Receipt Selection */}
-              <Card
-                sx={{
-                  bgcolor: '#ECFDF5',
-                  borderRadius: '12px',
-                  border: '2px solid #10B981',
-                  boxShadow: '3px 3px 0px #6EE7B7',
-                  mb: 3,
-                }}
-              >
-                <CardContent sx={{ p: 3 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Box>
+            {/* Top Section - Groceries and Pantry */}
+            <Grid container spacing={2} sx={{ mb: 3 }}>
+              {/* Your Groceries */}
+              <Grid item xs={12} md={6}>
+                <Card
+                  sx={{
+                    bgcolor: '#ECFDF5',
+                    borderRadius: '12px',
+                    border: '2px solid #10B981',
+                    boxShadow: '3px 3px 0px #6EE7B7',
+                    height: '100%',
+                  }}
+                >
+                  <CardContent sx={{ p: 2.5 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          color: '#059669',
+                          fontSize: '16px',
+                        }}
+                      >
+                        🛒 Your Groceries
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={handleSelectAll}
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '11px',
+                          textTransform: 'none',
+                          color: '#059669',
+                          minWidth: 'auto',
+                          px: 1,
+                        }}
+                      >
+                        {selectedReceipts.length === receipts.length ? 'Deselect All' : 'Select All'}
+                      </Button>
+                    </Box>
+
+                    <FormGroup>
+                      {receipts.map((receipt) => (
+                        <FormControlLabel
+                          key={receipt.id}
+                          control={
+                            <Checkbox
+                              checked={selectedReceipts.includes(receipt.id)}
+                              onChange={() => handleReceiptToggle(receipt.id)}
+                              sx={{
+                                color: '#10B981',
+                                '&.Mui-checked': { color: '#10B981' },
+                                py: 0.5,
+                              }}
+                            />
+                          }
+                          label={
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontWeight: 500,
+                                  color: '#059669',
+                                  fontSize: '13px',
+                                }}
+                              >
+                                {receipt.storeInfo?.name || 'Unknown Store'}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#059669',
+                                  opacity: 0.7,
+                                  fontSize: '11px',
+                                }}
+                              >
+                                {receipt.items?.length || 0} items
+                              </Typography>
+                            </Box>
+                          }
+                          sx={{ mb: 0.5 }}
+                        />
+                      ))}
+                    </FormGroup>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* Add Pantry Items */}
+              <Grid item xs={12} md={6}>
+                <Card
+                  sx={{
+                    bgcolor: '#FFEDD5',
+                    borderRadius: '12px',
+                    border: '2px solid #F97316',
+                    boxShadow: '3px 3px 0px #FCD34D',
+                    height: '100%',
+                  }}
+                >
+                  <CardContent sx={{ p: 2.5 }}>
                     <Typography
                       variant="h6"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#059669',
-                        fontSize: '18px',
+                        color: '#EA580C',
+                        fontSize: '16px',
+                        mb: 1.5,
                       }}
                     >
-                      🛒 Your Groceries
+                      📸 Add Pantry Items
                     </Typography>
-                    <Button
-                      size="small"
-                      onClick={handleSelectAll}
+
+                    <Typography
+                      variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
+                        color: '#EA580C',
+                        mb: 1.5,
                         fontSize: '12px',
-                        textTransform: 'none',
-                        color: '#059669',
                       }}
                     >
-                      {selectedReceipts.length === receipts.length ? 'Deselect All' : 'Select All'}
-                    </Button>
-                  </Box>
+                      Take a photo of your pantry or ingredients to add them
+                    </Typography>
 
-                  <FormGroup>
-                    {receipts.map((receipt) => (
-                      <FormControlLabel
-                        key={receipt.id}
-                        control={
-                          <Checkbox
-                            checked={selectedReceipts.includes(receipt.id)}
-                            onChange={() => handleReceiptToggle(receipt.id)}
-                            sx={{
-                              color: '#10B981',
-                              '&.Mui-checked': { color: '#10B981' },
-                            }}
-                          />
-                        }
-                        label={
-                          <Box>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                fontWeight: 500,
-                                color: '#059669',
-                              }}
-                            >
-                              {receipt.storeInfo?.name || 'Unknown Store'}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                color: '#059669',
-                                opacity: 0.7,
-                              }}
-                            >
-                              {receipt.items?.length || 0} items
-                            </Typography>
-                          </Box>
-                        }
-                      />
-                    ))}
-                  </FormGroup>
-                </CardContent>
-              </Card>
+                    <Box sx={{ display: 'flex', gap: 1.5, mb: analyzingPhoto || pantryIngredients.length > 0 ? 1.5 : 0 }}>
+                      <Button
+                        variant="contained"
+                        startIcon={<CameraAlt />}
+                        onClick={() => cameraInputRef.current?.click()}
+                        disabled={analyzingPhoto}
+                        sx={{
+                          flex: 1,
+                          bgcolor: '#F97316',
+                          color: 'white',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '13px',
+                          textTransform: 'none',
+                          border: '2px solid #EA580C',
+                          boxShadow: '2px 2px 0px #EA580C',
+                          py: 1,
+                          '&:hover': {
+                            bgcolor: '#EA580C',
+                          },
+                        }}
+                      >
+                        Camera
+                      </Button>
+                      <Button
+                        variant="contained"
+                        startIcon={<Upload />}
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={analyzingPhoto}
+                        sx={{
+                          flex: 1,
+                          bgcolor: '#F97316',
+                          color: 'white',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '13px',
+                          textTransform: 'none',
+                          border: '2px solid #EA580C',
+                          boxShadow: '2px 2px 0px #EA580C',
+                          py: 1,
+                          '&:hover': {
+                            bgcolor: '#EA580C',
+                          },
+                        }}
+                      >
+                        Upload
+                      </Button>
+                    </Box>
 
-              {/* Pantry Photo Upload */}
+                    <input
+                      ref={cameraInputRef}
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      style={{ display: 'none' }}
+                      onChange={handlePhotoSelect}
+                    />
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={handlePhotoSelect}
+                    />
+
+                    {analyzingPhoto && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CircularProgress size={18} sx={{ color: '#F97316' }} />
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            color: '#EA580C',
+                            fontSize: '11px',
+                          }}
+                        >
+                          Analyzing photo...
+                        </Typography>
+                      </Box>
+                    )}
+
+                    {/* Pantry Ingredients Chips */}
+                    {pantryIngredients.length > 0 && (
+                      <Box>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            color: '#EA580C',
+                            fontWeight: 600,
+                            mb: 0.75,
+                            display: 'block',
+                            fontSize: '11px',
+                          }}
+                        >
+                          From photos:
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          {pantryIngredients.map((ingredient, index) => (
+                            <Chip
+                              key={index}
+                              label={ingredient}
+                              onDelete={() => handleRemovePantryIngredient(ingredient)}
+                              size="small"
+                              sx={{
+                                bgcolor: 'white',
+                                border: '1px solid #FDBA74',
+                                fontFamily: 'Outfit, sans-serif',
+                                fontSize: '11px',
+                              }}
+                            />
+                          ))}
+                        </Box>
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+
+            {/* Available Ingredients and Generate Button */}
+            {allIngredients.length > 0 && (
               <Card
                 sx={{
-                  bgcolor: '#FFEDD5',
+                  bgcolor: '#FCE7F3',
                   borderRadius: '12px',
-                  border: '2px solid #F97316',
-                  boxShadow: '3px 3px 0px #FCD34D',
+                  border: '2px solid #EC4899',
+                  boxShadow: '3px 3px 0px #F9A8D4',
                   mb: 3,
                 }}
               >
-                <CardContent sx={{ p: 3 }}>
+                <CardContent sx={{ p: 2.5 }}>
                   <Typography
                     variant="h6"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#EA580C',
-                      fontSize: '18px',
-                      mb: 2,
+                      color: '#BE185D',
+                      fontSize: '16px',
+                      mb: 1.5,
                     }}
                   >
-                    📸 Add Pantry Items
+                    🥘 Available Ingredients ({allIngredients.length})
                   </Typography>
 
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      color: '#EA580C',
-                      mb: 2,
-                      fontSize: '13px',
-                    }}
-                  >
-                    Take a photo of your pantry or ingredients to add them
-                  </Typography>
-
-                  <Box sx={{ display: 'flex', gap: 1.5, mb: 2 }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<CameraAlt />}
-                      onClick={() => cameraInputRef.current?.click()}
-                      disabled={analyzingPhoto}
-                      sx={{
-                        flex: 1,
-                        bgcolor: '#F97316',
-                        color: 'white',
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        fontSize: '13px',
-                        textTransform: 'none',
-                        border: '2px solid #EA580C',
-                        boxShadow: '2px 2px 0px #EA580C',
-                        '&:hover': {
-                          bgcolor: '#EA580C',
-                        },
-                      }}
-                    >
-                      Camera
-                    </Button>
-                    <Button
-                      variant="contained"
-                      startIcon={<Upload />}
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={analyzingPhoto}
-                      sx={{
-                        flex: 1,
-                        bgcolor: '#F97316',
-                        color: 'white',
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        fontSize: '13px',
-                        textTransform: 'none',
-                        border: '2px solid #EA580C',
-                        boxShadow: '2px 2px 0px #EA580C',
-                        '&:hover': {
-                          bgcolor: '#EA580C',
-                        },
-                      }}
-                    >
-                      Upload
-                    </Button>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
+                    {allIngredients.slice(0, 20).map((ingredient, index) => (
+                      <Chip
+                        key={index}
+                        label={ingredient}
+                        size="small"
+                        sx={{
+                          bgcolor: 'white',
+                          border: '1px solid #F9A8D4',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '11px',
+                        }}
+                      />
+                    ))}
+                    {allIngredients.length > 20 && (
+                      <Chip
+                        label={`+${allIngredients.length - 20} more`}
+                        size="small"
+                        sx={{
+                          bgcolor: 'white',
+                          border: '1px solid #F9A8D4',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '11px',
+                        }}
+                      />
+                    )}
                   </Box>
 
-                  <input
-                    ref={cameraInputRef}
-                    type="file"
-                    accept="image/*"
-                    capture="environment"
-                    style={{ display: 'none' }}
-                    onChange={handlePhotoSelect}
-                  />
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    onChange={handlePhotoSelect}
-                  />
-
-                  {analyzingPhoto && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                      <CircularProgress size={20} sx={{ color: '#F97316' }} />
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          color: '#EA580C',
-                        }}
-                      >
-                        Analyzing photo...
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {/* Pantry Ingredients Chips */}
-                  {pantryIngredients.length > 0 && (
-                    <Box sx={{ mt: 2 }}>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          color: '#EA580C',
-                          fontWeight: 600,
-                          mb: 1,
-                          display: 'block',
-                        }}
-                      >
-                        From photos:
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {pantryIngredients.map((ingredient, index) => (
-                          <Chip
-                            key={index}
-                            label={ingredient}
-                            onDelete={() => handleRemovePantryIngredient(ingredient)}
-                            size="small"
-                            sx={{
-                              bgcolor: 'white',
-                              border: '1px solid #FDBA74',
-                              fontFamily: 'Outfit, sans-serif',
-                              fontSize: '12px',
-                            }}
-                          />
-                        ))}
-                      </Box>
-                    </Box>
-                  )}
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    startIcon={generating ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <Restaurant />}
+                    onClick={handleGenerateRecipes}
+                    disabled={generating}
+                    sx={{
+                      bgcolor: '#EC4899',
+                      color: 'white',
+                      fontFamily: 'Outfit, sans-serif',
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      py: 1.5,
+                      textTransform: 'none',
+                      border: '2px solid #BE185D',
+                      boxShadow: '3px 3px 0px #BE185D',
+                      '&:hover': {
+                        bgcolor: '#DB2777',
+                      },
+                      '&:disabled': {
+                        bgcolor: '#F9A8D4',
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    {generating ? 'Generating Recipes...' : 'Generate Recipe Ideas'}
+                  </Button>
                 </CardContent>
               </Card>
+            )}
 
-              {/* Selected Ingredients Summary */}
-              {allIngredients.length > 0 && (
-                <Card
-                  sx={{
-                    bgcolor: '#FCE7F3',
-                    borderRadius: '12px',
-                    border: '2px solid #EC4899',
-                    boxShadow: '3px 3px 0px #F9A8D4',
-                  }}
-                >
-                  <CardContent sx={{ p: 3 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#BE185D',
-                        fontSize: '18px',
-                        mb: 2,
-                      }}
-                    >
-                      🥘 Available Ingredients ({allIngredients.length})
-                    </Typography>
+            {/* Recipe Results */}
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
 
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                      {allIngredients.slice(0, 15).map((ingredient, index) => (
-                        <Chip
-                          key={index}
-                          label={ingredient}
-                          size="small"
-                          sx={{
-                            bgcolor: 'white',
-                            border: '1px solid #F9A8D4',
-                            fontFamily: 'Outfit, sans-serif',
-                            fontSize: '11px',
-                          }}
-                        />
-                      ))}
-                      {allIngredients.length > 15 && (
-                        <Chip
-                          label={`+${allIngredients.length - 15} more`}
-                          size="small"
-                          sx={{
-                            bgcolor: 'white',
-                            border: '1px solid #F9A8D4',
-                            fontFamily: 'Outfit, sans-serif',
-                            fontSize: '11px',
-                          }}
-                        />
-                      )}
-                    </Box>
-
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      startIcon={generating ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <Restaurant />}
-                      onClick={handleGenerateRecipes}
-                      disabled={generating}
-                      sx={{
-                        bgcolor: '#EC4899',
-                        color: 'white',
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 700,
-                        fontSize: '14px',
-                        py: 1.5,
-                        textTransform: 'none',
-                        border: '2px solid #BE185D',
-                        boxShadow: '3px 3px 0px #BE185D',
-                        '&:hover': {
-                          bgcolor: '#DB2777',
-                        },
-                        '&:disabled': {
-                          bgcolor: '#F9A8D4',
-                          color: 'white',
-                        },
-                      }}
-                    >
-                      {generating ? 'Generating Recipes...' : 'Generate Recipe Ideas'}
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </Grid>
-
-            {/* Right Column - Recipe Results */}
-            <Grid item xs={12} md={7}>
               {recipes.length === 0 ? (
                 <Card
                   sx={{
@@ -889,7 +906,7 @@ export default function RecipePage() {
                 </Box>
               )}
             </Grid>
-          </Grid>
+          </Box>
         )}
 
         {/* Snackbar */}
