@@ -682,6 +682,7 @@ export default function RecipePage() {
                       }}
                     >
                       <CardContent sx={{ p: 3 }}>
+                        {/* Header */}
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
                           <Typography
                             variant="h6"
@@ -689,7 +690,9 @@ export default function RecipePage() {
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 700,
                               color: '#15803D',
-                              fontSize: '18px',
+                              fontSize: { xs: '16px', sm: '18px' },
+                              flex: 1,
+                              pr: 1,
                             }}
                           >
                             {recipe.name}
@@ -703,10 +706,12 @@ export default function RecipePage() {
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 600,
                               fontSize: '11px',
+                              flexShrink: 0,
                             }}
                           />
                         </Box>
 
+                        {/* Description */}
                         <Typography
                           variant="body2"
                           sx={{
@@ -714,73 +719,145 @@ export default function RecipePage() {
                             color: '#374151',
                             mb: 2,
                             lineHeight: 1.5,
+                            fontSize: { xs: '13px', sm: '14px' },
                           }}
                         >
                           {recipe.description}
                         </Typography>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <AccessTime sx={{ fontSize: 16, color: '#6B7280' }} />
-                            <Typography
-                              variant="caption"
+                        {/* Time Badge */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 2.5 }}>
+                          <AccessTime sx={{ fontSize: 16, color: '#6B7280' }} />
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              fontFamily: 'Outfit, sans-serif',
+                              color: '#6B7280',
+                              fontSize: '12px',
+                            }}
+                          >
+                            {recipe.cookingTime} min
+                          </Typography>
+                        </Box>
+
+                        {/* Ingredients - Mobile Stacked, Desktop Side-by-Side */}
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            gap: 2,
+                            mb: 2.5,
+                          }}
+                        >
+                          {/* What You Have */}
+                          {recipe.matchedIngredients && recipe.matchedIngredients.length > 0 && (
+                            <Box
                               sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                color: '#6B7280',
-                                fontSize: '12px',
+                                flex: 1,
+                                bgcolor: '#ECFDF5',
+                                borderRadius: '8px',
+                                border: '1px solid #6EE7B7',
+                                p: 1.5,
                               }}
                             >
-                              {recipe.cookingTime} min
-                            </Typography>
-                          </Box>
-                          {recipe.matchedIngredients && (
-                            <Chip
-                              icon={<CheckCircle sx={{ fontSize: 14 }} />}
-                              label={`${recipe.matchedIngredients.length} ingredients match`}
-                              size="small"
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.75 }}>
+                                <CheckCircle sx={{ fontSize: 14, color: '#059669' }} />
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    fontFamily: 'Outfit, sans-serif',
+                                    color: '#059669',
+                                    fontWeight: 700,
+                                    fontSize: '11px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                  }}
+                                >
+                                  You Have ({recipe.matchedIngredients.length})
+                                </Typography>
+                              </Box>
+                              <Box
+                                component="ul"
+                                sx={{
+                                  m: 0,
+                                  pl: 2.5,
+                                  listStyle: 'disc',
+                                }}
+                              >
+                                {recipe.matchedIngredients.map((ingredient, idx) => (
+                                  <Typography
+                                    component="li"
+                                    key={idx}
+                                    variant="caption"
+                                    sx={{
+                                      fontFamily: 'Outfit, sans-serif',
+                                      color: '#059669',
+                                      fontSize: '12px',
+                                      lineHeight: 1.6,
+                                    }}
+                                  >
+                                    {ingredient}
+                                  </Typography>
+                                ))}
+                              </Box>
+                            </Box>
+                          )}
+
+                          {/* What You Need */}
+                          {recipe.missingIngredients && recipe.missingIngredients.length > 0 && (
+                            <Box
                               sx={{
-                                bgcolor: '#ECFDF5',
-                                color: '#059669',
-                                border: '1px solid #6EE7B7',
-                                fontFamily: 'Outfit, sans-serif',
-                                fontSize: '11px',
+                                flex: 1,
+                                bgcolor: '#FEF3C7',
+                                borderRadius: '8px',
+                                border: '1px solid #FCD34D',
+                                p: 1.5,
                               }}
-                            />
+                            >
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#92400E',
+                                  fontWeight: 700,
+                                  fontSize: '11px',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px',
+                                  display: 'block',
+                                  mb: 0.75,
+                                }}
+                              >
+                                You'll Need ({recipe.missingIngredients.length})
+                              </Typography>
+                              <Box
+                                component="ul"
+                                sx={{
+                                  m: 0,
+                                  pl: 2.5,
+                                  listStyle: 'disc',
+                                }}
+                              >
+                                {recipe.missingIngredients.map((ingredient, idx) => (
+                                  <Typography
+                                    component="li"
+                                    key={idx}
+                                    variant="caption"
+                                    sx={{
+                                      fontFamily: 'Outfit, sans-serif',
+                                      color: '#92400E',
+                                      fontSize: '12px',
+                                      lineHeight: 1.6,
+                                    }}
+                                  >
+                                    {ingredient}
+                                  </Typography>
+                                ))}
+                              </Box>
+                            </Box>
                           )}
                         </Box>
 
-                        {recipe.missingIngredients && recipe.missingIngredients.length > 0 && (
-                          <Box sx={{ mb: 2 }}>
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                color: '#6B7280',
-                                fontWeight: 600,
-                                display: 'block',
-                                mb: 0.5,
-                              }}
-                            >
-                              You'll also need:
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                              {recipe.missingIngredients.map((ingredient, idx) => (
-                                <Chip
-                                  key={idx}
-                                  label={ingredient}
-                                  size="small"
-                                  sx={{
-                                    bgcolor: '#FEF3C7',
-                                    border: '1px solid #FCD34D',
-                                    fontFamily: 'Outfit, sans-serif',
-                                    fontSize: '11px',
-                                  }}
-                                />
-                              ))}
-                            </Box>
-                          </Box>
-                        )}
-
+                        {/* View Recipe Button */}
                         <Button
                           variant="outlined"
                           fullWidth
@@ -795,13 +872,16 @@ export default function RecipePage() {
                             textTransform: 'none',
                             color: '#15803D',
                             borderColor: '#15803D',
+                            border: '2px solid #15803D',
+                            py: 1,
                             '&:hover': {
                               bgcolor: '#F0FDF4',
                               borderColor: '#166534',
+                              border: '2px solid #166534',
                             },
                           }}
                         >
-                          Search Recipe on Google
+                          View Full Recipe
                         </Button>
                       </CardContent>
                     </Card>
