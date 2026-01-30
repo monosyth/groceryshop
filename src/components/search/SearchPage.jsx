@@ -16,7 +16,7 @@ import {
   Search as SearchIcon,
   Store as StoreIcon,
   CalendarToday as CalendarIcon,
-  ShoppingCart as CartIcon,
+  LocationOn,
 } from '@mui/icons-material';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -323,6 +323,41 @@ export default function SearchPage() {
                     />
                   </Box>
 
+                  {/* Store Info - Prominent */}
+                  <Box
+                    sx={{
+                      mb: 2,
+                      p: 1.5,
+                      bgcolor: 'primary.lighter',
+                      borderRadius: 1,
+                      border: '1px solid',
+                      borderColor: 'primary.light',
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                      <StoreIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                      <Typography variant="body2" fontWeight="700" color="primary.main" noWrap>
+                        {item.receiptStore}
+                      </Typography>
+                    </Box>
+                    {item.receiptLocation && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                        <LocationOn sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <Typography variant="caption" color="text.secondary" noWrap>
+                          {item.receiptLocation}
+                        </Typography>
+                      </Box>
+                    )}
+                    {item.receiptDate && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CalendarIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <Typography variant="caption" color="text.secondary">
+                          Purchased {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+
                   {/* Item Details */}
                   <Stack spacing={1} sx={{ mb: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -343,37 +378,12 @@ export default function SearchPage() {
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Typography variant="body2" color="text.secondary">
-                        Total:
+                        Total Paid:
                       </Typography>
                       <Typography variant="body1" fontWeight="700" color="primary">
                         ${(item.totalPrice || 0).toFixed(2)}
                       </Typography>
                     </Box>
-                  </Stack>
-
-                  <Divider sx={{ my: 2 }} />
-
-                  {/* Receipt Context */}
-                  <Stack spacing={1}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <StoreIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                      <Typography variant="caption" color="text.secondary" noWrap>
-                        {item.receiptStore}
-                      </Typography>
-                    </Box>
-                    {item.receiptDate && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CalendarIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary">
-                          {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
-                        </Typography>
-                      </Box>
-                    )}
-                    {item.receiptLocation && (
-                      <Typography variant="caption" color="text.secondary" noWrap>
-                        {item.receiptLocation}
-                      </Typography>
-                    )}
                   </Stack>
                 </CardContent>
               </Card>
