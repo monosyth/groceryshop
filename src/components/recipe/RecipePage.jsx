@@ -29,9 +29,10 @@ import {
   CheckCircle,
   AccessTime,
   Link as LinkIcon,
+  ShoppingCart,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients, analyzePantryPhoto } from '../../services/geminiService';
 
@@ -47,6 +48,7 @@ export default function RecipePage() {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedIngredients, setSelectedIngredients] = useState({}); // Track selected ingredients per recipe
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -224,6 +226,77 @@ export default function RecipePage() {
   // Handle remove pantry ingredient
   const handleRemovePantryIngredient = (ingredient) => {
     setPantryIngredients((prev) => prev.filter((ing) => ing !== ingredient));
+  };
+
+  // Handle ingredient selection
+  const handleIngredientToggle = (recipeIndex, ingredient) => {
+    setSelectedIngredients((prev) => {
+      const recipeKey = `recipe-${recipeIndex}`;
+      const current = prev[recipeKey] || [];
+
+      if (current.includes(ingredient)) {
+        return {
+          ...prev,
+          [recipeKey]: current.filter((ing) => ing !== ingredient),
+        };
+      } else {
+        return {
+          ...prev,
+          [recipeKey]: [...current, ingredient],
+        };
+      }
+    });
+  };
+
+  // Add selected ingredients to shopping list
+  const handleAddToShoppingList = async (recipeIndex, recipeName) => {
+    const recipeKey = `recipe-${recipeIndex}`;
+    const selected = selectedIngredients[recipeKey] || [];
+
+    if (selected.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select ingredients to add to your shopping list',
+        severity: 'warning',
+      });
+      return;
+    }
+
+    try {
+      const shoppingListRef = collection(db, 'shoppingList');
+
+      // Add each ingredient to the shopping list
+      const promises = selected.map((ingredient) =>
+        addDoc(shoppingListRef, {
+          userId: currentUser.uid,
+          name: ingredient,
+          checked: false,
+          fromRecipe: recipeName,
+          createdAt: serverTimestamp(),
+        })
+      );
+
+      await Promise.all(promises);
+
+      // Clear selection for this recipe
+      setSelectedIngredients((prev) => ({
+        ...prev,
+        [recipeKey]: [],
+      }));
+
+      setSnackbar({
+        open: true,
+        message: `Added ${selected.length} item${selected.length > 1 ? 's' : ''} to shopping list!`,
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Error adding to shopping list:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to add items to shopping list',
+        severity: 'error',
+      });
+    }
   };
 
   const difficultyColors = {
@@ -846,30 +919,66 @@ export default function RecipePage() {
                               >
                                 You'll Need ({recipe.missingIngredients.length})
                               </Typography>
-                              <Box
-                                component="ul"
-                                sx={{
-                                  m: 0,
-                                  pl: 2.5,
-                                  listStyle: 'disc',
-                                }}
-                              >
+                              <Box sx={{ mb: 1 }}>
                                 {recipe.missingIngredients.map((ingredient, idx) => (
-                                  <Typography
-                                    component="li"
+                                  <FormControlLabel
                                     key={idx}
-                                    variant="caption"
-                                    sx={{
-                                      fontFamily: 'Outfit, sans-serif',
-                                      color: '#92400E',
-                                      fontSize: '12px',
-                                      lineHeight: 1.6,
-                                    }}
-                                  >
-                                    {ingredient}
-                                  </Typography>
+                                    control={
+                                      <Checkbox
+                                        size="small"
+                                        checked={
+                                          (selectedIngredients[`recipe-${index}`] || []).includes(ingredient)
+                                        }
+                                        onChange={() => handleIngredientToggle(index, ingredient)}
+                                        sx={{
+                                          color: '#F59E0B',
+                                          '&.Mui-checked': { color: '#F59E0B' },
+                                          py: 0.25,
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      <Typography
+                                        variant="caption"
+                                        sx={{
+                                          fontFamily: 'Outfit, sans-serif',
+                                          color: '#92400E',
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        {ingredient}
+                                      </Typography>
+                                    }
+                                    sx={{ display: 'flex', my: 0 }}
+                                  />
                                 ))}
                               </Box>
+                              <Button
+                                size="small"
+                                variant="contained"
+                                fullWidth
+                                startIcon={<ShoppingCart />}
+                                onClick={() => handleAddToShoppingList(index, recipe.name)}
+                                disabled={(selectedIngredients[`recipe-${index}`] || []).length === 0}
+                                sx={{
+                                  bgcolor: '#F59E0B',
+                                  color: 'white',
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontWeight: 600,
+                                  fontSize: '11px',
+                                  textTransform: 'none',
+                                  py: 0.75,
+                                  '&:hover': {
+                                    bgcolor: '#D97706',
+                                  },
+                                  '&:disabled': {
+                                    bgcolor: '#FCD34D',
+                                    color: 'white',
+                                  },
+                                }}
+                              >
+                                Add to Shopping List
+                              </Button>
                             </Box>
                           )}
                         </Box>

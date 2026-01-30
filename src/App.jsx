@@ -19,6 +19,7 @@ import UploadPage from './components/receipt/UploadPage';
 import SearchPage from './components/search/SearchPage';
 import Analytics from './components/analytics/Analytics';
 import RecipePage from './components/recipe/RecipePage';
+import ShoppingListPage from './components/shopping/ShoppingListPage';
 
 function App() {
   return (
@@ -57,6 +58,16 @@ function App() {
                 <ProtectedRoute>
                   <MainLayout>
                     <RecipePage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shopping-list"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <ShoppingListPage />
                   </MainLayout>
                 </ProtectedRoute>
               }

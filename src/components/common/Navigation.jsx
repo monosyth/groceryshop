@@ -27,6 +27,7 @@ import {
   Logout,
   Menu as MenuIcon,
   Restaurant,
+  List as ListIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -65,6 +66,7 @@ export default function Navigation() {
     { label: 'Dashboard', path: '/dashboard', icon: <Dashboard />, emoji: '🏠' },
     { label: 'Upload', path: '/upload', icon: <Upload />, emoji: '📸' },
     { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
+    { label: 'Shopping List', path: '/shopping-list', icon: <ListIcon />, emoji: '🛒' },
     { label: 'Analytics', path: '/analytics', icon: <BarChart />, emoji: '📊' },
   ];
 
