@@ -9,28 +9,20 @@ import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
 
-  // Debug logging
-  console.log('Dashboard - user:', user);
-  console.log('Dashboard - loading:', loading);
-
   // Fetch receipts with real-time updates
   useEffect(() => {
-    console.log('useEffect running, user:', user);
-    if (!user) {
-      console.log('No user, returning early');
-      return;
-    }
+    if (!currentUser) return;
 
     // Query receipts for current user
     const q = query(
       collection(db, 'receipts'),
-      where('userId', '==', user.uid)
+      where('userId', '==', currentUser.uid)
     );
 
     // Subscribe to real-time updates
@@ -63,7 +55,7 @@ export default function Dashboard() {
 
     // Cleanup subscription
     return () => unsubscribe();
-  }, [user]);
+  }, [currentUser]);
 
   // Handle receipt card click
   const handleReceiptClick = (receipt) => {
