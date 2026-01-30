@@ -57,41 +57,32 @@ export default function LandingPage() {
     {
       icon: '📸',
       title: 'Snap & Forget',
-      description: 'Take a photo of your grocery receipt. Advanced scanning technology automatically extracts every item, price, and category. No more manual entry or spreadsheet headaches.',
+      description: 'Snap a photo, we extract everything automatically.',
     },
     {
       icon: '📊',
       title: 'Visual Insights',
-      description: 'See spending patterns emerge through beautiful, interactive charts and graphs. Track your grocery budget by store, category, and time period with real-time analytics.',
+      description: 'Beautiful charts show where your money goes.',
     },
     {
       icon: '🔍',
       title: 'Smart Search',
-      description: 'Find any item instantly with powerful keyword search. Looking for "that organic cheese from Whole Foods last month"? We\'ll find it in seconds across all your receipts.',
+      description: 'Find any item across all your receipts instantly.',
     },
     {
       icon: '💰',
       title: 'Budget Clarity',
-      description: 'Get complete visibility into your grocery spending habits. Compare stores, track price changes, and identify opportunities to save money on your weekly shopping.',
-    },
-  ];
-
-  const benefits = [
-    {
-      title: 'Never Lose a Receipt',
-      description: 'All your grocery receipts stored securely in the cloud. Access them anytime, anywhere from any device.',
+      description: 'Compare stores and track price changes over time.',
     },
     {
-      title: 'Price Tracking',
-      description: 'See how prices change over time. Know if you\'re getting a good deal or if it\'s time to shop elsewhere.',
+      icon: '🗂️',
+      title: 'Cloud Storage',
+      description: 'All receipts backed up and accessible anywhere.',
     },
     {
-      title: 'Category Breakdown',
-      description: 'Understand your spending by category - produce, meat, dairy, snacks. Optimize your grocery budget based on real data.',
-    },
-    {
-      title: 'Multi-Store Comparison',
-      description: 'Shopping at multiple stores? Compare prices and spending across Whole Foods, Trader Joe\'s, Albertsons, and more.',
+      icon: '📦',
+      title: 'Auto Categories',
+      description: 'Items automatically sorted by type for easy insights.',
     },
   ];
 
@@ -253,17 +244,17 @@ export default function LandingPage() {
       </AppBar>
 
       {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 5 }, position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={6}>
+      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 }, position: 'relative', zIndex: 1 }}>
+        <Grid container spacing={5} alignItems="center">
+          <Grid item xs={12} md={7}>
             <Box className="animate-slide-up">
               <Typography
                 variant="h1"
                 className="hero-title"
                 sx={{
-                  fontSize: { xs: '48px', md: '72px' },
+                  fontSize: { xs: '42px', md: '56px' },
                   fontWeight: 900,
-                  lineHeight: 1.1,
+                  lineHeight: 1.2,
                   mb: 2,
                   color: '#1B5E20',
                 }}
@@ -278,7 +269,7 @@ export default function LandingPage() {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  Reimagined
+                  Simplified
                 </Box>
               </Typography>
             </Box>
@@ -288,15 +279,15 @@ export default function LandingPage() {
                 variant="h5"
                 className="body-text"
                 sx={{
-                  fontSize: { xs: '20px', md: '24px' },
+                  fontSize: { xs: '18px', md: '20px' },
                   color: '#5D4037',
                   mb: 2,
-                  lineHeight: 1.6,
+                  lineHeight: 1.5,
                   fontWeight: 400,
+                  maxWidth: '500px',
                 }}
               >
-                Stop the receipt madness. Just snap, and watch your grocery chaos transform
-                into crystal-clear spending insights. Track every purchase, compare prices across stores, and take control of your grocery budget with powerful analytics.
+                Snap receipts, track spending, save money. That simple.
               </Typography>
             </Box>
 
@@ -350,7 +341,7 @@ export default function LandingPage() {
           </Grid>
 
           {/* Hero Visual */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={5}>
             <Box
               className="animate-slide-up animate-delay-2"
               sx={{
@@ -449,31 +440,31 @@ export default function LandingPage() {
               variant="h2"
               className="hero-title"
               sx={{
-                fontSize: { xs: '36px', md: '56px' },
+                fontSize: { xs: '32px', md: '42px' },
                 fontWeight: 900,
                 color: '#1B5E20',
-                mb: 1.5,
+                mb: 1,
               }}
             >
               Everything You Need
             </Typography>
             <Typography
-              variant="h6"
+              variant="subtitle1"
               className="body-text"
               sx={{
                 color: '#5D4037',
-                maxWidth: 600,
+                maxWidth: 500,
                 mx: 'auto',
-                fontSize: '18px',
+                fontSize: '16px',
               }}
             >
-              Powerful features disguised as effortless simplicity
+              Powerful features, zero hassle
             </Typography>
           </Box>
 
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {features.map((feature, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card
                   className={`feature-card animate-slide-up animate-delay-${index + 1}`}
                   elevation={0}
@@ -486,11 +477,11 @@ export default function LandingPage() {
                     position: 'relative',
                   }}
                 >
-                  <CardContent sx={{ p: 3, textAlign: 'center' }}>
+                  <CardContent sx={{ p: 2.5, textAlign: 'center' }}>
                     <Box
                       sx={{
-                        fontSize: '56px',
-                        mb: 1.5,
+                        fontSize: '48px',
+                        mb: 1,
                         display: 'inline-block',
                         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
                       }}
@@ -500,104 +491,19 @@ export default function LandingPage() {
                     <Typography
                       variant="h6"
                       className="body-text"
-                      sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.75 }}
+                      sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5, fontSize: '18px' }}
                     >
                       {feature.title}
                     </Typography>
                     <Typography
                       variant="body2"
                       className="body-text"
-                      sx={{ color: '#5D4037', lineHeight: 1.6 }}
+                      sx={{ color: '#5D4037', lineHeight: 1.5, fontSize: '14px' }}
                     >
                       {feature.description}
                     </Typography>
                   </CardContent>
                 </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Benefits Section */}
-      <Box sx={{ py: 6, bgcolor: 'rgba(255, 152, 0, 0.05)', position: 'relative', zIndex: 1 }}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 5 }}>
-            <Typography
-              variant="h2"
-              className="hero-title"
-              sx={{
-                fontSize: { xs: '36px', md: '56px' },
-                fontWeight: 900,
-                color: '#1B5E20',
-                mb: 1.5,
-              }}
-            >
-              More Than Just Storage
-            </Typography>
-            <Typography
-              variant="h6"
-              className="body-text"
-              sx={{
-                color: '#5D4037',
-                maxWidth: 600,
-                mx: 'auto',
-                fontSize: '18px',
-              }}
-            >
-              Your complete grocery intelligence platform
-            </Typography>
-          </Box>
-
-          <Grid container spacing={4}>
-            {benefits.map((benefit, index) => (
-              <Grid item xs={12} sm={6} key={index}>
-                <Paper
-                  className={`feature-card animate-slide-up animate-delay-${(index % 4) + 1}`}
-                  elevation={0}
-                  sx={{
-                    p: 3,
-                    background: 'white',
-                    borderRadius: '24px',
-                    border: '2px solid rgba(255, 152, 0, 0.2)',
-                    height: '100%',
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
-                    <Box
-                      sx={{
-                        minWidth: 48,
-                        height: 48,
-                        borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(255, 152, 0, 0.3)',
-                      }}
-                    >
-                      <Typography sx={{ fontSize: '24px' }}>
-                        {index === 0 ? '🗂️' : index === 1 ? '💵' : index === 2 ? '📦' : '🏪'}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography
-                        variant="h6"
-                        className="body-text"
-                        sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}
-                      >
-                        {benefit.title}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        className="body-text"
-                        sx={{ color: '#5D4037', lineHeight: 1.7, fontSize: '16px' }}
-                      >
-                        {benefit.description}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Paper>
               </Grid>
             ))}
           </Grid>
@@ -654,25 +560,26 @@ export default function LandingPage() {
                 variant="h2"
                 className="hero-title"
                 sx={{
-                  fontSize: { xs: '36px', md: '48px' },
+                  fontSize: { xs: '32px', md: '42px' },
                   fontWeight: 900,
                   color: 'white',
                   mb: 1.5,
                 }}
               >
-                Ready to Transform Your Grocery Game?
+                Start Tracking Today
               </Typography>
               <Typography
-                variant="h6"
+                variant="subtitle1"
                 className="body-text"
                 sx={{
                   color: 'rgba(255, 255, 255, 0.9)',
                   mb: 3,
-                  maxWidth: 500,
+                  maxWidth: 450,
                   mx: 'auto',
+                  fontSize: '16px',
                 }}
               >
-                Join the smart shoppers who've already ditched spreadsheets for snapshots
+                Free forever. No credit card. Sign in with Google to start.
               </Typography>
               <Button
                 variant="contained"
