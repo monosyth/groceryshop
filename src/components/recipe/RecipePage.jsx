@@ -38,7 +38,7 @@ import { useAuth } from '../../context/AuthContext';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients, analyzePantryPhoto } from '../../services/geminiService';
-import { parseRecipeFromUrl } from '../../services/recipeUrlService';
+import { parseRecipeFromText } from '../../services/recipeUrlService';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
@@ -53,7 +53,7 @@ export default function RecipePage() {
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({}); // Track checked ingredients per recipe
-  const [recipeUrl, setRecipeUrl] = useState('');
+  const [recipeText, setRecipeText] = useState('');
   const [importingRecipe, setImportingRecipe] = useState(false);
   const [importedRecipe, setImportedRecipe] = useState(null);
   const [importedRecipeIngredients, setImportedRecipeIngredients] = useState([]);
@@ -307,13 +307,13 @@ export default function RecipePage() {
     }
   };
 
-  // Handle import recipe from URL
+  // Handle import recipe from text
   const handleImportRecipe = async () => {
-    if (!recipeUrl.trim()) return;
+    if (!recipeText.trim()) return;
 
     setImportingRecipe(true);
     try {
-      const parsedRecipe = await parseRecipeFromUrl(recipeUrl);
+      const parsedRecipe = await parseRecipeFromText(recipeText);
 
       // Match ingredients with what user has
       const userIngredientSet = new Set(allIngredients.map((ing) => ing.toLowerCase()));
@@ -428,7 +428,7 @@ export default function RecipePage() {
 
       // Clear the imported recipe
       setImportedRecipe(null);
-      setRecipeUrl('');
+      setRecipeText('');
     } catch (error) {
       console.error('Error adding to shopping list:', error);
       setSnackbar({
@@ -803,7 +803,7 @@ export default function RecipePage() {
                         mb: 1.5,
                       }}
                     >
-                      🔗 Import Recipe from URL
+                      📝 Paste Recipe
                     </Typography>
 
                     <Typography
@@ -815,58 +815,56 @@ export default function RecipePage() {
                         fontSize: '12px',
                       }}
                     >
-                      Paste a recipe link to extract ingredients and save it
+                      Copy a recipe from any website and paste it here
                     </Typography>
 
-                    <Box sx={{ display: 'flex', gap: 1, mb: importingRecipe ? 1.5 : 0 }}>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        placeholder="https://recipe-url.com"
-                        value={recipeUrl}
-                        onChange={(e) => setRecipeUrl(e.target.value)}
-                        disabled={importingRecipe}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') handleImportRecipe();
-                        }}
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            fontFamily: 'Outfit, sans-serif',
-                            fontSize: '12px',
-                            bgcolor: 'white',
-                            '& fieldset': { borderColor: '#C4B5FD' },
-                            '&:hover fieldset': { borderColor: '#7C3AED' },
-                            '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
-                          },
-                        }}
-                      />
-                      <Button
-                        variant="contained"
-                        onClick={handleImportRecipe}
-                        disabled={!recipeUrl.trim() || importingRecipe}
-                        sx={{
-                          bgcolor: '#7C3AED',
-                          color: 'white',
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      placeholder="Paste recipe ingredients and instructions here..."
+                      value={recipeText}
+                      onChange={(e) => setRecipeText(e.target.value)}
+                      disabled={importingRecipe}
+                      sx={{
+                        mb: 1,
+                        '& .MuiOutlinedInput-root': {
                           fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          fontSize: '13px',
-                          textTransform: 'none',
-                          border: '2px solid #5B21B6',
-                          boxShadow: '2px 2px 0px #5B21B6',
-                          px: 2,
-                          minWidth: 'auto',
-                          '&:hover': {
-                            bgcolor: '#6D28D9',
-                          },
-                          '&:disabled': {
-                            bgcolor: '#C4B5FD',
-                            color: 'white',
-                          },
-                        }}
-                      >
-                        <AddLink />
-                      </Button>
-                    </Box>
+                          fontSize: '12px',
+                          bgcolor: 'white',
+                          '& fieldset': { borderColor: '#C4B5FD' },
+                          '&:hover fieldset': { borderColor: '#7C3AED' },
+                          '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
+                        },
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<Restaurant />}
+                      onClick={handleImportRecipe}
+                      disabled={!recipeText.trim() || importingRecipe}
+                      sx={{
+                        bgcolor: '#7C3AED',
+                        color: 'white',
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        fontSize: '13px',
+                        textTransform: 'none',
+                        border: '2px solid #5B21B6',
+                        boxShadow: '2px 2px 0px #5B21B6',
+                        py: 1,
+                        '&:hover': {
+                          bgcolor: '#6D28D9',
+                        },
+                        '&:disabled': {
+                          bgcolor: '#C4B5FD',
+                          color: 'white',
+                        },
+                      }}
+                    >
+                      Extract Recipe
+                    </Button>
 
                     {importingRecipe && (
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -929,7 +927,7 @@ export default function RecipePage() {
                       size="small"
                       onClick={() => {
                         setImportedRecipe(null);
-                        setRecipeUrl('');
+                        setRecipeText('');
                         setImportedRecipeIngredients([]);
                       }}
                     >

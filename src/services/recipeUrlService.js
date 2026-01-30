@@ -1,18 +1,9 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
-export const parseRecipeFromUrl = async (url) => {
+export const parseRecipeFromText = async (recipeText) => {
   try {
-    // Fetch the webpage content
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch recipe page');
-    }
-
-    const html = await response.text();
-
-    // Use Gemini to parse the recipe
-    const prompt = `You are a recipe parser. Extract the recipe information from this HTML and return it in the following JSON format:
+    const prompt = `You are a recipe parser. Extract the recipe information from this text/HTML and return it in the following JSON format:
 
 {
   "name": "Recipe name",
@@ -30,8 +21,8 @@ Important:
 - Keep ingredients simple and searchable
 - If any field is not available, use null
 
-Here's the HTML:
-${html.substring(0, 50000)}`;
+Here's the recipe text/HTML:
+${recipeText.substring(0, 50000)}`;
 
     const geminiResponse = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
@@ -64,9 +55,6 @@ ${html.substring(0, 50000)}`;
     // Clean and parse the JSON
     const jsonText = generatedText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     const recipe = JSON.parse(jsonText);
-
-    // Add the source URL
-    recipe.sourceUrl = url;
 
     return recipe;
   } catch (error) {
