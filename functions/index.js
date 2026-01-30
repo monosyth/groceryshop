@@ -8,6 +8,109 @@ const db = admin.firestore();
 const storage = admin.storage();
 
 /**
+ * Call Gemini API with automatic retry for transient failures
+ */
+async function callGeminiWithRetry(model, prompt, base64Image, maxRetries = 3) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`Gemini API attempt ${attempt}/${maxRetries}`);
+
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            mimeType: 'image/jpeg',
+            data: base64Image,
+          },
+        },
+      ]);
+
+      const response = await result.response;
+      const text = response.text();
+
+      console.log(`Gemini API succeeded on attempt ${attempt}`);
+      return text;
+    } catch (error) {
+      lastError = error;
+      console.error(`Gemini API attempt ${attempt} failed:`, error.message);
+
+      // Check if error is retryable (503, 429, network errors)
+      const isRetryable =
+        error.message?.includes('503') ||
+        error.message?.includes('Service Unavailable') ||
+        error.message?.includes('429') ||
+        error.message?.includes('Too Many Requests') ||
+        error.message?.includes('ECONNRESET') ||
+        error.message?.includes('ETIMEDOUT');
+
+      // If not retryable or last attempt, throw
+      if (!isRetryable || attempt === maxRetries) {
+        throw error;
+      }
+
+      // Exponential backoff: 2s, 4s, 8s
+      const delayMs = Math.pow(2, attempt) * 1000;
+      console.log(`Retrying in ${delayMs}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+
+  throw lastError;
+}
+
+/**
+ * Determine error type and create user-friendly message
+ */
+function getErrorInfo(error) {
+  const errorMessage = error.message || '';
+
+  // Temporary service issues (retryable)
+  if (errorMessage.includes('503') || errorMessage.includes('Service Unavailable')) {
+    return {
+      isRetryable: true,
+      userMessage: 'The AI service is temporarily unavailable. Please try again in a few moments.',
+    };
+  }
+
+  if (errorMessage.includes('429') || errorMessage.includes('Too Many Requests')) {
+    return {
+      isRetryable: true,
+      userMessage: 'The AI service is busy. Please try again in a few moments.',
+    };
+  }
+
+  if (errorMessage.includes('ECONNRESET') || errorMessage.includes('ETIMEDOUT')) {
+    return {
+      isRetryable: true,
+      userMessage: 'Network connection issue. Please try again.',
+    };
+  }
+
+  // Permanent errors (not retryable)
+  if (errorMessage.includes('API key')) {
+    return {
+      isRetryable: false,
+      userMessage: 'Configuration error. Please contact support.',
+    };
+  }
+
+  if (errorMessage.includes('parse') || errorMessage.includes('JSON')) {
+    return {
+      isRetryable: false,
+      userMessage: 'Could not read the receipt. Please try a clearer photo.',
+    };
+  }
+
+  // Generic error
+  return {
+    isRetryable: true,
+    userMessage: 'Analysis failed. Please try again.',
+  };
+}
+
+/**
  * Analyze receipt using Gemini AI when a new receipt document is created
  */
 exports.analyzeReceipt = onDocumentCreated(
@@ -49,19 +152,8 @@ exports.analyzeReceipt = onDocumentCreated(
       // Create the prompt
       const prompt = createReceiptAnalysisPrompt();
 
-      // Call Gemini API
-      const result = await model.generateContent([
-        prompt,
-        {
-          inlineData: {
-            mimeType: 'image/jpeg',
-            data: base64Image,
-          },
-        },
-      ]);
-
-      const response = await result.response;
-      const text = response.text();
+      // Call Gemini API with retry logic
+      const text = await callGeminiWithRetry(model, prompt, base64Image);
 
       console.log('Gemini response:', text);
 
@@ -83,10 +175,15 @@ exports.analyzeReceipt = onDocumentCreated(
     } catch (error) {
       console.error(`Error analyzing receipt ${receiptId}:`, error);
 
+      // Determine if error is retryable and create user-friendly message
+      const errorInfo = getErrorInfo(error);
+
       // Update receipt with error status
       await db.collection('receipts').doc(receiptId).update({
-        'metadata.analysisStatus': 'failed',
-        'metadata.processingError': error.message,
+        'metadata.analysisStatus': errorInfo.isRetryable ? 'failed_retryable' : 'failed',
+        'metadata.processingError': errorInfo.userMessage,
+        'metadata.technicalError': error.message,
+        'metadata.retryable': errorInfo.isRetryable,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
     }

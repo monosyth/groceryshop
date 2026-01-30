@@ -166,6 +166,48 @@ export const deleteReceipt = async (receiptId) => {
 };
 
 /**
+ * Retry analysis for a failed receipt
+ * @param {string} receiptId - Receipt ID
+ * @returns {Promise<void>}
+ */
+export const retryReceiptAnalysis = async (receiptId) => {
+  try {
+    const docRef = doc(db, RECEIPTS_COLLECTION, receiptId);
+
+    // Reset status to trigger Cloud Function again
+    await updateDoc(docRef, {
+      'metadata.analysisStatus': 'pending',
+      'metadata.processingError': null,
+      'metadata.technicalError': null,
+      'metadata.retryable': null,
+      'metadata.retryCount': serverTimestamp(), // Timestamp to track retries
+      updatedAt: serverTimestamp(),
+    });
+
+    // Delete and recreate document to trigger onCreate
+    const receipt = await getReceipt(receiptId);
+    await deleteDoc(docRef);
+
+    // Create new document with same data
+    await addDoc(collection(db, RECEIPTS_COLLECTION), {
+      ...receipt,
+      id: undefined, // Remove old ID
+      metadata: {
+        ...receipt.metadata,
+        analysisStatus: 'pending',
+        processingError: null,
+        technicalError: null,
+        retryable: null,
+      },
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error('retryReceiptAnalysis error:', error);
+    throw error;
+  }
+};
+
+/**
  * Search receipts
  * @param {string} userId - User ID
  * @param {Object} filters - Search filters { storeName, startDate, endDate, minAmount, maxAmount }

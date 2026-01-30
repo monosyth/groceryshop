@@ -1,11 +1,11 @@
-import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton } from '@mui/material';
-import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty } from '@mui/icons-material';
+import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button, IconButton } from '@mui/material';
+import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
 /**
  * Receipt card component displaying receipt summary
  */
-export default function ReceiptCard({ receipt, onClick }) {
+export default function ReceiptCard({ receipt, onClick, onRetry }) {
   const { storeInfo, summary, metadata, imageUrl } = receipt;
 
   // Status badge configuration
@@ -15,6 +15,8 @@ export default function ReceiptCard({ receipt, onClick }) {
         return { label: 'Analyzed', color: 'success', icon: <CheckCircle sx={{ fontSize: 16 }} /> };
       case 'processing':
         return { label: 'Processing', color: 'warning', icon: <HourglassEmpty sx={{ fontSize: 16 }} /> };
+      case 'failed_retryable':
+        return { label: 'Try Again', color: 'warning', icon: <Error sx={{ fontSize: 16 }} /> };
       case 'failed':
         return { label: 'Failed', color: 'error', icon: <Error sx={{ fontSize: 16 }} /> };
       default:
@@ -23,6 +25,14 @@ export default function ReceiptCard({ receipt, onClick }) {
   };
 
   const statusConfig = getStatusConfig(metadata?.analysisStatus);
+  const isRetryable = metadata?.analysisStatus === 'failed_retryable' || metadata?.retryable;
+
+  const handleRetryClick = (e) => {
+    e.stopPropagation(); // Prevent card click
+    if (onRetry) {
+      onRetry(receipt.id);
+    }
+  };
 
   return (
     <Card
@@ -108,11 +118,25 @@ export default function ReceiptCard({ receipt, onClick }) {
           </Box>
         )}
 
-        {/* Error Message */}
-        {metadata?.analysisStatus === 'failed' && metadata?.processingError && (
-          <Typography variant="caption" color="error" sx={{ mt: 1, display: 'block' }}>
-            {metadata.processingError}
-          </Typography>
+        {/* Error Message & Retry Button */}
+        {(metadata?.analysisStatus === 'failed' || metadata?.analysisStatus === 'failed_retryable') && metadata?.processingError && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+              {metadata.processingError}
+            </Typography>
+            {isRetryable && onRetry && (
+              <Button
+                size="small"
+                variant="outlined"
+                color="primary"
+                startIcon={<Refresh />}
+                onClick={handleRetryClick}
+                sx={{ mt: 1 }}
+              >
+                Retry Analysis
+              </Button>
+            )}
+          </Box>
         )}
       </CardContent>
     </Card>

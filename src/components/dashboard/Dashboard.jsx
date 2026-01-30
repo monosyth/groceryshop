@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Container, Typography, Box, Grid, Paper, CircularProgress } from '@mui/material';
+import { Container, Typography, Box, Grid, Paper, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { Receipt as ReceiptIcon } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
-import { getUserReceipts } from '../../services/receiptService';
+import { getUserReceipts, retryReceiptAnalysis } from '../../services/receiptService';
 import ReceiptCard, { ReceiptCardSkeleton } from '../receipt/ReceiptCard';
 import ReceiptDetail from '../receipt/ReceiptDetail';
 import SearchBar from '../search/SearchBar';
@@ -20,6 +20,9 @@ export default function Dashboard() {
   const [searchText, setSearchText] = useState('');
   const [filters, setFilters] = useState({ dateRange: 'all', category: 'all' });
   const [sortBy, setSortBy] = useState('date-desc');
+
+  // Snackbar state
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   // Fetch receipts with real-time updates
   useEffect(() => {
@@ -67,6 +70,30 @@ export default function Dashboard() {
   const handleReceiptClick = (receipt) => {
     setSelectedReceipt(receipt);
     setDetailOpen(true);
+  };
+
+  // Handle retry analysis
+  const handleRetryAnalysis = async (receiptId) => {
+    try {
+      await retryReceiptAnalysis(receiptId);
+      setSnackbar({
+        open: true,
+        message: 'Retrying analysis... Please wait a moment.',
+        severity: 'info',
+      });
+    } catch (error) {
+      console.error('Retry error:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to retry. Please try again.',
+        severity: 'error',
+      });
+    }
+  };
+
+  // Handle snackbar close
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   // Handle detail dialog close
@@ -231,7 +258,11 @@ export default function Dashboard() {
         <Grid container spacing={3}>
           {filteredAndSortedReceipts.map((receipt) => (
             <Grid item xs={12} sm={6} md={4} key={receipt.id}>
-              <ReceiptCard receipt={receipt} onClick={() => handleReceiptClick(receipt)} />
+              <ReceiptCard
+              receipt={receipt}
+              onClick={() => handleReceiptClick(receipt)}
+              onRetry={handleRetryAnalysis}
+            />
             </Grid>
           ))}
         </Grid>
@@ -239,6 +270,18 @@ export default function Dashboard() {
 
       {/* Receipt Detail Dialog */}
       <ReceiptDetail receipt={selectedReceipt} open={detailOpen} onClose={handleDetailClose} />
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
