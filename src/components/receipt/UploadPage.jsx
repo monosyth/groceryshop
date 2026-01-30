@@ -68,9 +68,9 @@ export default function UploadPage() {
             variant="h3"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 900,
+              fontWeight: 700,
               color: '#15803D',
-              fontSize: { xs: '32px', md: '42px' },
+              fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
           >
@@ -80,7 +80,7 @@ export default function UploadPage() {
             variant="body1"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
               color: '#78350F',
             }}
           >
@@ -92,23 +92,24 @@ export default function UploadPage() {
         {uploadSuccess && (
           <Box
             sx={{
-              bgcolor: '#D1FAE5',
-              borderRadius: '24px',
-              border: '4px solid #047857',
-              boxShadow: '6px 6px 0px #047857',
+              bgcolor: '#ECFDF5',
+              borderRadius: '12px',
+              border: '2px solid #10B981',
+              boxShadow: '3px 3px 0px #6EE7B7',
               p: 4,
               mb: 3,
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '80px', mb: 2 }}>🎉</Box>
+            <Box sx={{ fontSize: '56px', mb: 2 }}>🎉</Box>
             <Typography
               variant="h5"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#065F46',
                 mb: 2,
+                fontSize: '20px',
               }}
             >
               Receipt Uploaded Successfully!
@@ -117,7 +118,7 @@ export default function UploadPage() {
               variant="body1"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 500,
+                fontWeight: 400,
                 color: '#065F46',
                 mb: 3,
               }}
@@ -125,24 +126,24 @@ export default function UploadPage() {
               AI analysis has begun. Your receipt will appear in the dashboard shortly with all items,
               prices, and store information extracted.
             </Typography>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center">
               <Button
                 onClick={handleViewDashboard}
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 700,
-                  fontSize: '16px',
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: '15px',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  px: 3,
+                  py: 1,
+                  borderRadius: '10px',
                   textTransform: 'none',
-                  bgcolor: '#047857',
+                  bgcolor: '#10B981',
                   color: 'white',
-                  border: '3px solid #065F46',
-                  boxShadow: '4px 4px 0px #065F46',
+                  border: '2px solid #059669',
+                  boxShadow: '2px 2px 0px #059669',
                   '&:hover': {
-                    bgcolor: '#065F46',
-                    transform: 'scale(1.05)',
+                    bgcolor: '#059669',
+                    transform: 'translateY(-1px)',
                   },
                   transition: 'all 0.2s ease',
                 }}
@@ -151,21 +152,21 @@ export default function UploadPage() {
               </Button>
               <Button
                 onClick={handleUploadAnother}
-                startIcon={<Box sx={{ fontSize: '20px' }}>📸</Box>}
+                startIcon={<Box sx={{ fontSize: '16px' }}>📸</Box>}
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 700,
-                  fontSize: '16px',
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: '15px',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  px: 3,
+                  py: 1,
+                  borderRadius: '10px',
                   textTransform: 'none',
                   bgcolor: 'white',
-                  color: '#047857',
-                  border: '3px solid #047857',
+                  color: '#10B981',
+                  border: '2px solid #10B981',
                   '&:hover': {
                     bgcolor: '#F0FDF4',
-                    transform: 'scale(1.05)',
+                    transform: 'translateY(-1px)',
                   },
                   transition: 'all 0.2s ease',
                 }}
@@ -180,24 +181,25 @@ export default function UploadPage() {
         {!uploadSuccess && (
           <Box
             sx={{
-              bgcolor: '#DBEAFE',
-              borderRadius: '20px',
-              border: '3px solid #1E40AF',
-              boxShadow: '4px 4px 0px #1E40AF',
-              p: 3,
+              bgcolor: '#EFF6FF',
+              borderRadius: '10px',
+              border: '2px solid #3B82F6',
+              boxShadow: '2px 2px 0px #93C5FD',
+              p: 2.5,
               mb: 3,
               display: 'flex',
               alignItems: 'center',
               gap: 2,
             }}
           >
-            <Box sx={{ fontSize: '32px' }}>💡</Box>
+            <Box sx={{ fontSize: '24px' }}>💡</Box>
             <Typography
               variant="body2"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 600,
-                color: '#1E3A8A',
+                fontWeight: 500,
+                color: '#1E40AF',
+                fontSize: '13px',
               }}
             >
               <strong>Tip:</strong> For best results, ensure the receipt is well-lit and all text is

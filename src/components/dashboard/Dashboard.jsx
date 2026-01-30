@@ -446,9 +446,9 @@ export default function Dashboard() {
               variant="h3"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 900,
+                fontWeight: 700,
                 color: '#15803D',
-                fontSize: { xs: '32px', md: '42px' },
+                fontSize: { xs: '28px', md: '34px' },
               }}
             >
               {activeTab === 0 ? '🏠 Dashboard' : '🛍️ All Items'}
@@ -456,7 +456,7 @@ export default function Dashboard() {
           </Box>
           <Typography
             variant="body1"
-            sx={{ fontFamily: 'Outfit, sans-serif', color: '#78350F', fontWeight: 500 }}
+            sx={{ fontFamily: 'Outfit, sans-serif', color: '#78350F', fontWeight: 400 }}
           >
             {activeTab === 0
               ? receipts.length > 0
@@ -468,24 +468,24 @@ export default function Dashboard() {
 
         {/* Tabs */}
         {!loading && receipts.length > 0 && (
-          <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
+          <Box sx={{ mb: 3, display: 'flex', gap: 1.5 }}>
             <Button
               onClick={(e) => handleTabChange(e, 0)}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                fontSize: '16px',
-                px: 3,
-                py: 1.5,
-                borderRadius: '15px',
+                fontWeight: 600,
+                fontSize: '14px',
+                px: 2.5,
+                py: 1,
+                borderRadius: '10px',
                 textTransform: 'none',
                 color: activeTab === 0 ? 'white' : '#15803D',
                 bgcolor: activeTab === 0 ? '#15803D' : 'white',
-                border: activeTab === 0 ? '3px solid #166534' : '3px solid #E5E7EB',
-                boxShadow: activeTab === 0 ? '4px 4px 0px #166534' : 'none',
+                border: activeTab === 0 ? '2px solid #166534' : '2px solid #E5E7EB',
+                boxShadow: activeTab === 0 ? '2px 2px 0px #166534' : 'none',
                 transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'scale(1.05)',
+                  transform: 'translateY(-1px)',
                   bgcolor: activeTab === 0 ? '#166534' : '#F9FAFB',
                 },
               }}
@@ -496,19 +496,19 @@ export default function Dashboard() {
               onClick={(e) => handleTabChange(e, 1)}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                fontSize: '16px',
-                px: 3,
-                py: 1.5,
-                borderRadius: '15px',
+                fontWeight: 600,
+                fontSize: '14px',
+                px: 2.5,
+                py: 1,
+                borderRadius: '10px',
                 textTransform: 'none',
                 color: activeTab === 1 ? 'white' : '#15803D',
                 bgcolor: activeTab === 1 ? '#15803D' : 'white',
-                border: activeTab === 1 ? '3px solid #166534' : '3px solid #E5E7EB',
-                boxShadow: activeTab === 1 ? '4px 4px 0px #166534' : 'none',
+                border: activeTab === 1 ? '2px solid #166534' : '2px solid #E5E7EB',
+                boxShadow: activeTab === 1 ? '2px 2px 0px #166534' : 'none',
                 transition: 'all 0.2s ease',
                 '&:hover': {
-                  transform: 'scale(1.05)',
+                  transform: 'translateY(-1px)',
                   bgcolor: activeTab === 1 ? '#166534' : '#F9FAFB',
                 },
               }}

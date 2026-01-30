@@ -122,10 +122,10 @@ export default function Navigation() {
         elevation={0}
         sx={{
           background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-          borderBottom: '3px solid #F59E0B',
+          borderBottom: '2px solid #F59E0B',
         }}
       >
-        <Toolbar sx={{ minHeight: '70px !important' }}>
+        <Toolbar sx={{ minHeight: '64px !important' }}>
           {/* Mobile Menu Icon */}
           {isMobile && (
             <IconButton
@@ -155,19 +155,19 @@ export default function Navigation() {
           >
             <Box
               sx={{
-                width: 50,
-                height: 50,
-                borderRadius: '15px',
+                width: 42,
+                height: 42,
+                borderRadius: '10px',
                 background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '28px',
-                transform: 'rotate(-5deg)',
-                boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)',
-                transition: 'transform 0.3s ease',
+                fontSize: '22px',
+                transform: 'rotate(-3deg)',
+                boxShadow: '0 2px 10px rgba(16, 185, 129, 0.25)',
+                transition: 'transform 0.2s ease',
                 '&:hover': {
-                  transform: 'rotate(-5deg) scale(1.1)',
+                  transform: 'rotate(-3deg) scale(1.05)',
                 },
               }}
             >
@@ -175,8 +175,8 @@ export default function Navigation() {
             </Box>
             <Typography
               sx={{
-                fontSize: '24px',
-                fontWeight: 900,
+                fontSize: '20px',
+                fontWeight: 700,
                 color: '#15803D',
                 fontFamily: 'Outfit, sans-serif',
                 letterSpacing: '-0.02em',
@@ -198,25 +198,24 @@ export default function Navigation() {
                     to={item.path}
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 700,
-                      fontSize: '16px',
-                      px: 3,
-                      py: 1.5,
-                      borderRadius: '15px',
+                      fontWeight: 600,
+                      fontSize: '14px',
+                      px: 2.5,
+                      py: 1,
+                      borderRadius: '10px',
                       textTransform: 'none',
                       color: isActive ? 'white' : '#15803D',
                       bgcolor: isActive ? '#15803D' : 'transparent',
-                      border: isActive ? '3px solid #166534' : '3px solid transparent',
-                      boxShadow: isActive ? '4px 4px 0px #166534' : 'none',
-                      transform: isActive ? 'rotate(-1deg)' : 'none',
+                      border: isActive ? '2px solid #166534' : '2px solid transparent',
+                      boxShadow: isActive ? '2px 2px 0px #166534' : 'none',
                       transition: 'all 0.2s ease',
                       '&:hover': {
                         bgcolor: isActive ? '#166534' : 'rgba(21, 128, 61, 0.1)',
-                        transform: isActive ? 'rotate(-1deg) scale(1.05)' : 'scale(1.05)',
+                        transform: 'translateY(-1px)',
                       },
                     }}
                   >
-                    <Box component="span" sx={{ fontSize: '20px', mr: 1 }}>
+                    <Box component="span" sx={{ fontSize: '16px', mr: 0.75 }}>
                       {item.emoji}
                     </Box>
                     {item.label}
@@ -254,20 +253,20 @@ export default function Navigation() {
                 <Avatar
                   src={currentUser.photoURL}
                   sx={{
-                    width: 40,
-                    height: 40,
-                    border: '3px solid #15803D',
+                    width: 36,
+                    height: 36,
+                    border: '2px solid #15803D',
                   }}
                 />
               ) : (
                 <Avatar
                   sx={{
-                    width: 40,
-                    height: 40,
+                    width: 36,
+                    height: 36,
                     bgcolor: '#EC4899',
-                    border: '3px solid #BE185D',
+                    border: '2px solid #BE185D',
                     fontFamily: 'Outfit, sans-serif',
-                    fontWeight: 800,
+                    fontWeight: 600,
                   }}
                 >
                   {currentUser?.displayName?.charAt(0) || 'U'}
@@ -285,9 +284,9 @@ export default function Navigation() {
             PaperProps={{
               sx: {
                 mt: 1,
-                borderRadius: '15px',
-                border: '3px solid #15803D',
-                boxShadow: '4px 4px 0px #15803D',
+                borderRadius: '10px',
+                border: '2px solid #15803D',
+                boxShadow: '2px 2px 0px rgba(21, 128, 61, 0.3)',
               },
             }}
           >

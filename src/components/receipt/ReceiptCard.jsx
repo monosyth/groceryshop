@@ -2,12 +2,12 @@ import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button }
 import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
-// Colorful card colors that rotate
+// Softer, more sophisticated card colors that rotate
 const cardColors = [
-  { bg: '#DBEAFE', border: '#1E40AF', shadow: '#1E40AF' }, // Blue
-  { bg: '#FED7E2', border: '#BE185D', shadow: '#BE185D' }, // Pink
-  { bg: '#D1FAE5', border: '#047857', shadow: '#047857' }, // Green
-  { bg: '#FEF3C7', border: '#B45309', shadow: '#B45309' }, // Yellow
+  { bg: '#EFF6FF', border: '#3B82F6', shadow: '#93C5FD' }, // Blue
+  { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
+  { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
+  { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
 ];
 
 /**
@@ -55,13 +55,13 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         display: 'flex',
         flexDirection: 'column',
         bgcolor: cardColor.bg,
-        borderRadius: '24px',
-        border: `4px solid ${cardColor.border}`,
-        boxShadow: `6px 6px 0px ${cardColor.shadow}`,
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        borderRadius: '12px',
+        border: `2px solid ${cardColor.border}`,
+        boxShadow: `3px 3px 0px ${cardColor.shadow}`,
+        transition: 'all 0.2s ease',
         '&:hover': {
-          transform: 'scale(1.05) rotate(-2deg)',
-          boxShadow: `8px 8px 0px ${cardColor.shadow}`,
+          transform: 'translateY(-4px)',
+          boxShadow: `4px 4px 0px ${cardColor.shadow}`,
         },
       }}
     >
@@ -85,25 +85,26 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
             color={statusConfig.color}
             size="small"
             sx={{
-              fontWeight: 700,
+              fontWeight: 600,
               fontFamily: 'Outfit, sans-serif',
-              borderRadius: '12px',
-              fontSize: '13px',
+              borderRadius: '8px',
+              fontSize: '12px',
             }}
           />
         </Box>
 
         {/* Store Name */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ fontSize: '20px' }}>🏪</Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 1 }}>
+          <Box sx={{ fontSize: '18px' }}>🏪</Box>
           <Typography
             variant="h6"
             component="h3"
             noWrap
             sx={{
-              fontWeight: 800,
+              fontWeight: 600,
               fontFamily: 'Outfit, sans-serif',
               color: cardColor.border,
+              fontSize: '18px',
             }}
           >
             {storeInfo?.name || 'Unknown Store'}
@@ -111,14 +112,15 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         </Box>
 
         {/* Date */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Box sx={{ fontSize: '16px' }}>📅</Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 1 }}>
+          <Box sx={{ fontSize: '14px' }}>📅</Box>
           <Typography
             variant="body2"
             sx={{
               fontFamily: 'Outfit, sans-serif',
               color: 'text.secondary',
-              fontWeight: 600,
+              fontWeight: 500,
+              fontSize: '13px',
             }}
           >
             {storeInfo?.date ? formatDate(storeInfo.date) : 'No date'}
@@ -132,8 +134,9 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
             mb: 2,
             fontFamily: 'Outfit, sans-serif',
             color: 'text.secondary',
-            minHeight: '20px',
-            fontWeight: 500,
+            minHeight: '18px',
+            fontWeight: 400,
+            fontSize: '13px',
           }}
         >
           {storeInfo?.location || '\u00A0'}
@@ -150,16 +153,17 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               pt: 2,
-              borderTop: `3px solid ${cardColor.border}`,
+              borderTop: `2px solid ${cardColor.border}`,
             }}
           >
-            <Box sx={{ fontSize: '24px' }}>💰</Box>
+            <Box sx={{ fontSize: '20px' }}>💰</Box>
             <Typography
               variant="h5"
               sx={{
-                fontWeight: 900,
+                fontWeight: 700,
                 fontFamily: 'Outfit, sans-serif',
                 color: cardColor.border,
+                fontSize: '22px',
               }}
             >
               {formatCurrency(summary.total)}

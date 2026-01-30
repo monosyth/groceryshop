@@ -88,24 +88,25 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
       {error && (
         <Box
           sx={{
-            bgcolor: '#FED7E2',
-            borderRadius: '20px',
-            border: '3px solid #BE185D',
-            boxShadow: '4px 4px 0px #BE185D',
-            p: 3,
-            mb: 3,
+            bgcolor: '#FCE7F3',
+            borderRadius: '10px',
+            border: '2px solid #EC4899',
+            boxShadow: '2px 2px 0px #F9A8D4',
+            p: 2.5,
+            mb: 2,
             display: 'flex',
             alignItems: 'center',
-            gap: 2,
+            gap: 1.5,
           }}
         >
-          <Box sx={{ fontSize: '32px' }}>⚠️</Box>
+          <Box sx={{ fontSize: '24px' }}>⚠️</Box>
           <Typography
             variant="body2"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 600,
-              color: '#831843',
+              fontWeight: 500,
+              color: '#BE185D',
+              fontSize: '13px',
             }}
           >
             {error}
@@ -121,43 +122,44 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
           onDrop={handleDrop}
           elevation={0}
           sx={{
-            p: 8,
+            p: 6,
             textAlign: 'center',
-            bgcolor: dragActive ? '#FEF3C7' : '#FED7E2',
-            borderRadius: '32px',
-            border: dragActive ? '5px dashed #B45309' : '5px dashed #BE185D',
-            boxShadow: dragActive ? '8px 8px 0px #B45309' : '8px 8px 0px #BE185D',
+            bgcolor: dragActive ? '#FEF3C7' : '#FCE7F3',
+            borderRadius: '16px',
+            border: dragActive ? '3px dashed #F59E0B' : '3px dashed #EC4899',
+            boxShadow: dragActive ? '4px 4px 0px #FCD34D' : '4px 4px 0px #F9A8D4',
             cursor: 'pointer',
-            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transition: 'all 0.2s ease',
             '&:hover': {
               bgcolor: '#FEF3C7',
-              border: '5px dashed #B45309',
-              boxShadow: '8px 8px 0px #B45309',
-              transform: 'scale(1.02)',
+              border: '3px dashed #F59E0B',
+              boxShadow: '4px 4px 0px #FCD34D',
+              transform: 'translateY(-2px)',
             },
           }}
           onClick={handleButtonClick}
         >
           <Box
             sx={{
-              fontSize: '120px',
+              fontSize: '72px',
               mb: 2,
               animation: dragActive ? 'bounce 0.6s ease-in-out infinite' : 'none',
               '@keyframes bounce': {
                 '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
+                '50%': { transform: 'translateY(-12px)' },
               },
             }}
           >
             📸
           </Box>
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 900,
-              color: dragActive ? '#78350F' : '#831843',
-              mb: 1,
+              fontWeight: 600,
+              color: dragActive ? '#78350F' : '#BE185D',
+              mb: 0.5,
+              fontSize: '22px',
             }}
           >
             Drop your receipt here
@@ -166,37 +168,38 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
             variant="body1"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 600,
+              fontWeight: 400,
               color: dragActive ? '#92400E' : '#9F1239',
-              mb: 4,
+              mb: 3,
+              fontSize: '14px',
             }}
           >
             or click to browse files
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Box sx={{ display: 'flex', gap: 1.5, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Button
-              startIcon={<Box sx={{ fontSize: '20px' }}>📁</Box>}
+              startIcon={<Box sx={{ fontSize: '16px' }}>📁</Box>}
               onClick={(e) => {
                 e.stopPropagation();
                 handleButtonClick();
               }}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                fontSize: '16px',
-                px: 4,
-                py: 1.5,
-                borderRadius: '15px',
+                fontWeight: 600,
+                fontSize: '14px',
+                px: 3,
+                py: 1,
+                borderRadius: '10px',
                 textTransform: 'none',
-                bgcolor: '#BE185D',
+                bgcolor: '#EC4899',
                 color: 'white',
-                border: '3px solid #9F1239',
-                boxShadow: '4px 4px 0px #9F1239',
+                border: '2px solid #BE185D',
+                boxShadow: '2px 2px 0px #BE185D',
                 '&:hover': {
-                  bgcolor: '#9F1239',
-                  transform: 'scale(1.05) rotate(-2deg)',
-                  boxShadow: '6px 6px 0px #831843',
+                  bgcolor: '#BE185D',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '3px 3px 0px #BE185D',
                 },
                 transition: 'all 0.2s ease',
               }}
@@ -204,25 +207,25 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
               Choose File
             </Button>
             <Button
-              startIcon={<Box sx={{ fontSize: '20px' }}>📷</Box>}
+              startIcon={<Box sx={{ fontSize: '16px' }}>📷</Box>}
               onClick={(e) => {
                 e.stopPropagation();
                 onCameraClick?.();
               }}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                fontSize: '16px',
-                px: 4,
-                py: 1.5,
-                borderRadius: '15px',
+                fontWeight: 600,
+                fontSize: '14px',
+                px: 3,
+                py: 1,
+                borderRadius: '10px',
                 textTransform: 'none',
                 bgcolor: 'white',
-                color: '#BE185D',
-                border: '3px solid #BE185D',
+                color: '#EC4899',
+                border: '2px solid #EC4899',
                 '&:hover': {
                   bgcolor: '#FCE7F3',
-                  transform: 'scale(1.05) rotate(2deg)',
+                  transform: 'translateY(-1px)',
                 },
                 transition: 'all 0.2s ease',
               }}
@@ -234,11 +237,12 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
           <Typography
             variant="caption"
             sx={{
-              mt: 3,
+              mt: 2.5,
               display: 'block',
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 600,
+              fontWeight: 500,
               color: dragActive ? '#92400E' : '#9F1239',
+              fontSize: '12px',
             }}
           >
             Supported formats: JPEG, PNG, WebP (max 10MB)
@@ -260,31 +264,32 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
             sx={{
               p: 3,
               position: 'relative',
-              bgcolor: '#DBEAFE',
-              borderRadius: '24px',
-              border: '4px solid #1E40AF',
-              boxShadow: '6px 6px 0px #1E40AF',
+              bgcolor: '#EFF6FF',
+              borderRadius: '12px',
+              border: '2px solid #3B82F6',
+              boxShadow: '3px 3px 0px #93C5FD',
             }}
           >
             <IconButton
               onClick={handleClear}
+              size="small"
               sx={{
                 position: 'absolute',
-                top: 12,
-                right: 12,
+                top: 10,
+                right: 10,
                 bgcolor: 'white',
-                border: '2px solid #BE185D',
+                border: '2px solid #EC4899',
                 zIndex: 1,
                 '&:hover': {
-                  bgcolor: '#BE185D',
+                  bgcolor: '#EC4899',
                   color: 'white',
-                  transform: 'scale(1.1) rotate(90deg)',
+                  transform: 'rotate(90deg)',
                 },
                 transition: 'all 0.2s ease',
               }}
               disabled={loading}
             >
-              <Close />
+              <Close fontSize="small" />
             </IconButton>
 
             {preview && (
@@ -294,25 +299,26 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                 alt="Receipt preview"
                 sx={{
                   width: '100%',
-                  maxHeight: 500,
+                  maxHeight: 450,
                   objectFit: 'contain',
-                  borderRadius: '16px',
-                  mb: 3,
-                  border: '3px solid #1E3A8A',
+                  borderRadius: '10px',
+                  mb: 2.5,
+                  border: '2px solid #3B82F6',
                   bgcolor: 'white',
                 }}
               />
             )}
 
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                <Box sx={{ fontSize: '24px' }}>📄</Box>
+            <Box sx={{ mb: 2.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.5 }}>
+                <Box sx={{ fontSize: '20px' }}>📄</Box>
                 <Typography
                   variant="body1"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    fontWeight: 700,
-                    color: '#1E3A8A',
+                    fontWeight: 600,
+                    color: '#1E40AF',
+                    fontSize: '14px',
                   }}
                 >
                   {selectedFile.name}
@@ -322,9 +328,10 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                 variant="body2"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 600,
-                  color: '#1E40AF',
-                  ml: 4,
+                  fontWeight: 500,
+                  color: '#3B82F6',
+                  ml: 3.5,
+                  fontSize: '12px',
                 }}
               >
                 {formatFileSize(selectedFile.size)}
@@ -332,16 +339,17 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
             </Box>
 
             {loading && (
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2.5 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ fontSize: '20px' }}>⏳</Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                    <Box sx={{ fontSize: '16px' }}>⏳</Box>
                     <Typography
                       variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 700,
-                        color: '#1E3A8A',
+                        fontWeight: 600,
+                        color: '#1E40AF',
+                        fontSize: '13px',
                       }}
                     >
                       Uploading...
@@ -351,8 +359,9 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                     variant="body2"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 800,
-                      color: '#1E40AF',
+                      fontWeight: 600,
+                      color: '#3B82F6',
+                      fontSize: '13px',
                     }}
                   >
                     {Math.round(progress || 0)}%
@@ -362,12 +371,12 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
                   variant="determinate"
                   value={progress || 0}
                   sx={{
-                    height: 12,
-                    borderRadius: '10px',
-                    bgcolor: '#93C5FD',
+                    height: 8,
+                    borderRadius: '6px',
+                    bgcolor: '#BFDBFE',
                     '& .MuiLinearProgress-bar': {
-                      bgcolor: '#1E40AF',
-                      borderRadius: '10px',
+                      bgcolor: '#3B82F6',
+                      borderRadius: '6px',
                     },
                   }}
                 />
@@ -379,22 +388,22 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
               size="large"
               onClick={handleUpload}
               disabled={loading}
-              startIcon={<Box sx={{ fontSize: '24px' }}>🚀</Box>}
+              startIcon={<Box sx={{ fontSize: '20px' }}>🚀</Box>}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 800,
-                fontSize: '18px',
-                py: 2,
-                borderRadius: '16px',
+                fontWeight: 600,
+                fontSize: '15px',
+                py: 1.5,
+                borderRadius: '10px',
                 textTransform: 'none',
-                bgcolor: '#1E40AF',
+                bgcolor: '#3B82F6',
                 color: 'white',
-                border: '3px solid #1E3A8A',
-                boxShadow: '4px 4px 0px #1E3A8A',
+                border: '2px solid #1E40AF',
+                boxShadow: '2px 2px 0px #1E40AF',
                 '&:hover': {
-                  bgcolor: '#1E3A8A',
-                  transform: 'scale(1.03)',
-                  boxShadow: '6px 6px 0px #1E3A8A',
+                  bgcolor: '#1E40AF',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '3px 3px 0px #1E40AF',
                 },
                 '&:disabled': {
                   bgcolor: '#93C5FD',

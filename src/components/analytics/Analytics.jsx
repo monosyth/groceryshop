@@ -35,12 +35,12 @@ import {
 } from '../../utils/analytics';
 import { formatCurrency } from '../../utils/formatters';
 
-// Playful card colors
+// Softer, more sophisticated card colors
 const cardColors = [
-  { bg: '#DBEAFE', border: '#1E40AF', shadow: '#1E40AF' }, // Blue
-  { bg: '#FED7E2', border: '#BE185D', shadow: '#BE185D' }, // Pink
-  { bg: '#D1FAE5', border: '#047857', shadow: '#047857' }, // Green
-  { bg: '#FEF3C7', border: '#B45309', shadow: '#B45309' }, // Yellow
+  { bg: '#EFF6FF', border: '#3B82F6', shadow: '#93C5FD' }, // Blue
+  { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
+  { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
+  { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
 ];
 
 export default function AnalyticsPage() {
@@ -131,9 +131,9 @@ export default function AnalyticsPage() {
               variant="h3"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 900,
+                fontWeight: 700,
                 color: '#15803D',
-                fontSize: { xs: '32px', md: '42px' },
+                fontSize: { xs: '28px', md: '34px' },
               }}
             >
               📊 Analytics
@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
               variant="body1"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 500,
+                fontWeight: 400,
                 color: '#78350F',
               }}
             >
@@ -152,21 +152,22 @@ export default function AnalyticsPage() {
           <Card
             sx={{
               bgcolor: '#FEF3C7',
-              borderRadius: '24px',
-              border: '4px solid #B45309',
-              boxShadow: '6px 6px 0px #B45309',
-              p: 6,
+              borderRadius: '16px',
+              border: '2px solid #F59E0B',
+              boxShadow: '3px 3px 0px #FCD34D',
+              p: 5,
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '80px', mb: 2 }}>📈</Box>
+            <Box sx={{ fontSize: '56px', mb: 2 }}>📈</Box>
             <Typography
               variant="h5"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#78350F',
                 mb: 1,
+                fontSize: '20px',
               }}
             >
               No Data Yet
@@ -175,7 +176,7 @@ export default function AnalyticsPage() {
               variant="body1"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                fontWeight: 500,
+                fontWeight: 400,
                 color: '#92400E',
               }}
             >
@@ -196,9 +197,9 @@ export default function AnalyticsPage() {
             variant="h3"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 900,
+              fontWeight: 700,
               color: '#15803D',
-              fontSize: { xs: '32px', md: '42px' },
+              fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
           >
@@ -208,7 +209,7 @@ export default function AnalyticsPage() {
             variant="body1"
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              fontWeight: 500,
+              fontWeight: 400,
               color: '#78350F',
             }}
           >
@@ -217,33 +218,34 @@ export default function AnalyticsPage() {
         </Box>
 
         {/* Summary Stats */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid container spacing={2.5} sx={{ mb: 4 }}>
           {statCards.map((stat, index) => (
             <Grid item xs={6} md={3} key={index}>
               <Card
                 sx={{
                   height: '100%',
                   bgcolor: stat.colorScheme.bg,
-                  borderRadius: '20px',
-                  border: `4px solid ${stat.colorScheme.border}`,
-                  boxShadow: `6px 6px 0px ${stat.colorScheme.shadow}`,
-                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  borderRadius: '12px',
+                  border: `2px solid ${stat.colorScheme.border}`,
+                  boxShadow: `3px 3px 0px ${stat.colorScheme.shadow}`,
+                  transition: 'all 0.2s ease',
                   '&:hover': {
-                    transform: 'scale(1.05) rotate(-2deg)',
-                    boxShadow: `8px 8px 0px ${stat.colorScheme.shadow}`,
+                    transform: 'translateY(-2px)',
+                    boxShadow: `4px 4px 0px ${stat.colorScheme.shadow}`,
                   },
                 }}
               >
                 <CardContent sx={{ p: 2.5 }}>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Box sx={{ fontSize: '48px', mb: 1 }}>{stat.emoji}</Box>
+                    <Box sx={{ fontSize: '36px', mb: 1 }}>{stat.emoji}</Box>
                     <Typography
                       variant="h5"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 900,
+                        fontWeight: 700,
                         color: stat.colorScheme.border,
                         mb: 0.5,
+                        fontSize: '22px',
                       }}
                     >
                       {stat.value}
@@ -252,9 +254,10 @@ export default function AnalyticsPage() {
                       variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         color: stat.colorScheme.border,
-                        opacity: 0.8,
+                        opacity: 0.75,
+                        fontSize: '13px',
                       }}
                     >
                       {stat.title}
@@ -266,69 +269,70 @@ export default function AnalyticsPage() {
           ))}
         </Grid>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={2.5}>
           {/* Spending Trend Chart */}
           {spendingByDate.length > 0 && (
             <Grid item xs={12}>
               <Card
                 sx={{
-                  bgcolor: '#DBEAFE',
-                  borderRadius: '24px',
-                  border: '4px solid #1E40AF',
-                  boxShadow: '6px 6px 0px #1E40AF',
+                  bgcolor: '#EFF6FF',
+                  borderRadius: '12px',
+                  border: '2px solid #3B82F6',
+                  boxShadow: '3px 3px 0px #93C5FD',
                   p: 3,
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '28px' }}>📈</Box>
+                  <Box sx={{ fontSize: '20px' }}>📈</Box>
                   <Typography
                     variant="h6"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 800,
-                      color: '#1E3A8A',
+                      fontWeight: 600,
+                      color: '#1E40AF',
+                      fontSize: '18px',
                     }}
                   >
                     Spending Over Time
                   </Typography>
                 </Box>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={spendingByDate}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#93C5FD" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#BFDBFE" />
                     <XAxis
                       dataKey="date"
-                      stroke="#1E3A8A"
-                      style={{ fontSize: '12px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#1E40AF"
+                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
-                      stroke="#1E3A8A"
-                      style={{ fontSize: '12px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#1E40AF"
+                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
-                        borderRadius: 12,
-                        border: '3px solid #1E40AF',
-                        fontSize: '13px',
+                        borderRadius: 8,
+                        border: '2px solid #3B82F6',
+                        fontSize: '12px',
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
+                        fontWeight: 500,
                       }}
                     />
                     <Legend
                       wrapperStyle={{
-                        fontSize: '13px',
-                        paddingTop: '15px',
+                        fontSize: '12px',
+                        paddingTop: '12px',
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 700,
+                        fontWeight: 500,
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="amount"
-                      stroke="#1E40AF"
-                      strokeWidth={4}
-                      dot={{ fill: '#1E40AF', r: 6, strokeWidth: 2, stroke: '#fff' }}
-                      activeDot={{ r: 9 }}
+                      stroke="#3B82F6"
+                      strokeWidth={3}
+                      dot={{ fill: '#3B82F6', r: 4, strokeWidth: 2, stroke: '#fff' }}
+                      activeDot={{ r: 6 }}
                       name="Daily Spending"
                     />
                   </LineChart>
@@ -342,53 +346,54 @@ export default function AnalyticsPage() {
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  bgcolor: '#FED7E2',
-                  borderRadius: '24px',
-                  border: '4px solid #BE185D',
-                  boxShadow: '6px 6px 0px #BE185D',
+                  bgcolor: '#FCE7F3',
+                  borderRadius: '12px',
+                  border: '2px solid #EC4899',
+                  boxShadow: '3px 3px 0px #F9A8D4',
                   p: 3,
                   height: '100%',
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '28px' }}>🏷️</Box>
+                  <Box sx={{ fontSize: '20px' }}>🏷️</Box>
                   <Typography
                     variant="h6"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 800,
-                      color: '#831843',
+                      fontWeight: 600,
+                      color: '#BE185D',
+                      fontSize: '18px',
                     }}
                   >
                     Spending by Category
                   </Typography>
                 </Box>
-                <ResponsiveContainer width="100%" height={280}>
+                <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={spendingByCategory} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke="#FBCFE8" />
                     <XAxis
                       type="number"
-                      stroke="#831843"
-                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#BE185D"
+                      style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={90}
-                      stroke="#831843"
-                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#BE185D"
+                      style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
-                        borderRadius: 12,
-                        border: '3px solid #BE185D',
-                        fontSize: '12px',
+                        borderRadius: 8,
+                        border: '2px solid #EC4899',
+                        fontSize: '11px',
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
+                        fontWeight: 500,
                       }}
                     />
-                    <Bar dataKey="value" fill="#BE185D" radius={[0, 8, 8, 0]} name="Spending" />
+                    <Bar dataKey="value" fill="#EC4899" radius={[0, 6, 6, 0]} name="Spending" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>
@@ -400,53 +405,54 @@ export default function AnalyticsPage() {
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  bgcolor: '#D1FAE5',
-                  borderRadius: '24px',
-                  border: '4px solid #047857',
-                  boxShadow: '6px 6px 0px #047857',
+                  bgcolor: '#ECFDF5',
+                  borderRadius: '12px',
+                  border: '2px solid #10B981',
+                  boxShadow: '3px 3px 0px #6EE7B7',
                   p: 3,
                   height: '100%',
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '28px' }}>🏪</Box>
+                  <Box sx={{ fontSize: '20px' }}>🏪</Box>
                   <Typography
                     variant="h6"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 800,
-                      color: '#065F46',
+                      fontWeight: 600,
+                      color: '#059669',
+                      fontSize: '18px',
                     }}
                   >
                     Top Stores
                   </Typography>
                 </Box>
-                <ResponsiveContainer width="100%" height={280}>
+                <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={spendingByStore} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke="#A7F3D0" />
                     <XAxis
                       type="number"
-                      stroke="#065F46"
-                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#059669"
+                      style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={100}
-                      stroke="#065F46"
-                      style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+                      stroke="#059669"
+                      style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
-                        borderRadius: 12,
-                        border: '3px solid #047857',
-                        fontSize: '12px',
+                        borderRadius: 8,
+                        border: '2px solid #10B981',
+                        fontSize: '11px',
                         fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
+                        fontWeight: 500,
                       }}
                     />
-                    <Bar dataKey="value" fill="#047857" radius={[0, 8, 8, 0]} name="Spending" />
+                    <Bar dataKey="value" fill="#10B981" radius={[0, 6, 6, 0]} name="Spending" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>
