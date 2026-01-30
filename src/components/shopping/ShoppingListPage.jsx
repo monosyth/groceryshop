@@ -38,7 +38,6 @@ import {
   deleteDoc,
   doc,
   serverTimestamp,
-  orderBy,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 
@@ -59,8 +58,7 @@ export default function ShoppingListPage() {
 
     const q = query(
       collection(db, 'shoppingList'),
-      where('userId', '==', currentUser.uid),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', currentUser.uid)
     );
 
     const unsubscribe = onSnapshot(
@@ -72,6 +70,12 @@ export default function ShoppingListPage() {
             id: doc.id,
             ...doc.data(),
           });
+        });
+        // Sort by createdAt descending in JavaScript
+        items.sort((a, b) => {
+          const dateA = a.createdAt?.toDate() || new Date(0);
+          const dateB = b.createdAt?.toDate() || new Date(0);
+          return dateB - dateA;
         });
         setShoppingList(items);
         setLoading(false);

@@ -24,7 +24,7 @@ import {
   Link as LinkIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
-import { collection, query, where, onSnapshot, deleteDoc, doc, orderBy } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 export default function MyRecipesPage() {
@@ -39,8 +39,7 @@ export default function MyRecipesPage() {
 
     const q = query(
       collection(db, 'savedRecipes'),
-      where('userId', '==', currentUser.uid),
-      orderBy('savedAt', 'desc')
+      where('userId', '==', currentUser.uid)
     );
 
     const unsubscribe = onSnapshot(
@@ -52,6 +51,12 @@ export default function MyRecipesPage() {
             id: doc.id,
             ...doc.data(),
           });
+        });
+        // Sort by savedAt descending in JavaScript
+        recipeData.sort((a, b) => {
+          const dateA = a.savedAt?.toDate() || new Date(0);
+          const dateB = b.savedAt?.toDate() || new Date(0);
+          return dateB - dateA;
         });
         setRecipes(recipeData);
         setLoading(false);
