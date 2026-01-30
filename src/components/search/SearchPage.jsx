@@ -105,7 +105,7 @@ export default function SearchPage() {
   const filteredItems = useMemo(() => {
     let items = [...allItems];
 
-    // Text search - search item name, receipt text, keywords, and category
+    // Text search - search item name, receipt text, keywords, category, store, and location
     if (searchText.trim()) {
       const searchLower = searchText.toLowerCase().trim();
       items = items.filter((item) => {
@@ -126,6 +126,12 @@ export default function SearchPage() {
 
         // Search in category
         if (item.category?.toLowerCase().includes(searchLower)) return true;
+
+        // Search in store name (matches Dashboard behavior)
+        if (item.receiptStore?.toLowerCase().includes(searchLower)) return true;
+
+        // Search in store location (matches Dashboard behavior)
+        if (item.receiptLocation?.toLowerCase().includes(searchLower)) return true;
 
         return false;
       });
