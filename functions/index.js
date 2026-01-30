@@ -37,7 +37,7 @@ exports.analyzeReceipt = onDocumentCreated(
 
       // Initialize Gemini
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
       // Download image from Storage
       const imagePath = receiptData.imagePath;
