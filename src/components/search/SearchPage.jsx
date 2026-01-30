@@ -235,16 +235,18 @@ export default function SearchPage() {
       />
 
       {/* Results Header */}
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" color="text.secondary">
-          {searchText || filters.category !== 'all' || filters.dateRange !== 'all'
-            ? `Found ${filteredItems.length} item${filteredItems.length !== 1 ? 's' : ''}`
-            : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
-        </Typography>
-      </Box>
+      {filteredItems.length > 0 && (
+        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h6" color="text.secondary">
+            {searchText || filters.category !== 'all' || filters.dateRange !== 'all'
+              ? `Found ${filteredItems.length} item${filteredItems.length !== 1 ? 's' : ''}`
+              : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
+          </Typography>
+        </Box>
+      )}
 
-      {/* Empty state - no search */}
-      {!searchText && filters.category === 'all' && filters.dateRange === 'all' && (
+      {/* Empty state - no items at all */}
+      {allItems.length === 0 && (
         <Paper
           elevation={2}
           sx={{
@@ -258,17 +260,18 @@ export default function SearchPage() {
         >
           <SearchIcon sx={{ fontSize: 64, color: 'primary.light' }} />
           <Typography variant="h6" fontWeight="600">
-            Start Searching
+            No Receipts Yet
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Enter a search term, select filters, or choose a category to find items
+            Upload a receipt to start tracking your grocery items
           </Typography>
         </Paper>
       )}
 
-      {/* Empty state - no results */}
-      {(searchText || filters.category !== 'all' || filters.dateRange !== 'all') &&
-        filteredItems.length === 0 && (
+      {/* Empty state - no results after search/filter */}
+      {allItems.length > 0 &&
+        filteredItems.length === 0 &&
+        (searchText || filters.category !== 'all' || filters.dateRange !== 'all') && (
           <Paper
             elevation={2}
             sx={{
