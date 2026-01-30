@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
 } from '@mui/material';
 import {
   CameraAlt,
@@ -30,11 +31,14 @@ import {
   AccessTime,
   Link as LinkIcon,
   ShoppingCart,
+  AddLink,
+  Save,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
-import { collection, query, where, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients, analyzePantryPhoto } from '../../services/geminiService';
+import { parseRecipeFromUrl } from '../../services/recipeUrlService';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
@@ -49,6 +53,10 @@ export default function RecipePage() {
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [selectedIngredients, setSelectedIngredients] = useState({}); // Track selected ingredients per recipe
+  const [recipeUrl, setRecipeUrl] = useState('');
+  const [importingRecipe, setImportingRecipe] = useState(false);
+  const [importedRecipe, setImportedRecipe] = useState(null);
+  const [importedRecipeIngredients, setImportedRecipeIngredients] = useState([]);
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -299,6 +307,149 @@ export default function RecipePage() {
     }
   };
 
+  // Handle import recipe from URL
+  const handleImportRecipe = async () => {
+    if (!recipeUrl.trim()) return;
+
+    setImportingRecipe(true);
+    try {
+      const parsedRecipe = await parseRecipeFromUrl(recipeUrl);
+
+      // Match ingredients with what user has
+      const userIngredientSet = new Set(allIngredients.map((ing) => ing.toLowerCase()));
+      const matched = [];
+      const missing = [];
+
+      parsedRecipe.ingredients.forEach((ingredient) => {
+        const ingredientLower = ingredient.toLowerCase();
+        let found = false;
+
+        // Check if any user ingredient matches
+        for (const userIng of userIngredientSet) {
+          if (ingredientLower.includes(userIng) || userIng.includes(ingredientLower)) {
+            matched.push(ingredient);
+            found = true;
+            break;
+          }
+        }
+
+        if (!found) {
+          missing.push(ingredient);
+        }
+      });
+
+      setImportedRecipe({
+        ...parsedRecipe,
+        matchedIngredients: matched,
+        missingIngredients: missing,
+      });
+
+      setImportedRecipeIngredients([]);
+
+      setSnackbar({
+        open: true,
+        message: 'Recipe imported successfully!',
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Error importing recipe:', error);
+      setSnackbar({
+        open: true,
+        message: error.message || 'Failed to import recipe',
+        severity: 'error',
+      });
+    } finally {
+      setImportingRecipe(false);
+    }
+  };
+
+  // Handle save imported recipe
+  const handleSaveImportedRecipe = async () => {
+    if (!importedRecipe) return;
+
+    try {
+      const recipesRef = collection(db, 'savedRecipes');
+      await addDoc(recipesRef, {
+        userId: currentUser.uid,
+        ...importedRecipe,
+        savedAt: serverTimestamp(),
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Recipe saved! View it in My Recipes.',
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to save recipe',
+        severity: 'error',
+      });
+    }
+  };
+
+  // Handle add imported recipe ingredients to shopping list
+  const handleAddImportedToShoppingList = async () => {
+    if (importedRecipeIngredients.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select ingredients to add',
+        severity: 'warning',
+      });
+      return;
+    }
+
+    try {
+      const shoppingListRef = collection(db, 'shoppingList');
+      const promises = importedRecipeIngredients.map((ingredient) =>
+        addDoc(shoppingListRef, {
+          userId: currentUser.uid,
+          name: ingredient,
+          checked: false,
+          fromRecipe: importedRecipe.name,
+          createdAt: serverTimestamp(),
+        })
+      );
+
+      await Promise.all(promises);
+
+      // Also save the recipe
+      await handleSaveImportedRecipe();
+
+      setImportedRecipeIngredients([]);
+
+      setSnackbar({
+        open: true,
+        message: `Added ${promises.length} items to shopping list and saved recipe!`,
+        severity: 'success',
+      });
+
+      // Clear the imported recipe
+      setImportedRecipe(null);
+      setRecipeUrl('');
+    } catch (error) {
+      console.error('Error adding to shopping list:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to add items to shopping list',
+        severity: 'error',
+      });
+    }
+  };
+
+  // Toggle imported recipe ingredient
+  const handleToggleImportedIngredient = (ingredient) => {
+    setImportedRecipeIngredients((prev) => {
+      if (prev.includes(ingredient)) {
+        return prev.filter((ing) => ing !== ingredient);
+      } else {
+        return [...prev, ingredient];
+      }
+    });
+  };
+
   const difficultyColors = {
     Easy: '#10B981',
     Medium: '#F59E0B',
@@ -383,10 +534,10 @@ export default function RecipePage() {
           </Card>
         ) : (
           <Box>
-            {/* Top Section - Groceries and Pantry */}
+            {/* Top Section - Groceries, Pantry, and Recipe Import */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {/* Your Groceries */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Card
                   sx={{
                     bgcolor: '#ECFDF5',
@@ -475,7 +626,7 @@ export default function RecipePage() {
               </Grid>
 
               {/* Add Pantry Items */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Card
                   sx={{
                     bgcolor: '#FFEDD5',
@@ -629,7 +780,320 @@ export default function RecipePage() {
                   </CardContent>
                 </Card>
               </Grid>
+
+              {/* Import Recipe from URL */}
+              <Grid item xs={12} md={4}>
+                <Card
+                  sx={{
+                    bgcolor: '#EDE9FE',
+                    borderRadius: '12px',
+                    border: '2px solid #7C3AED',
+                    boxShadow: '3px 3px 0px #C4B5FD',
+                    height: '100%',
+                  }}
+                >
+                  <CardContent sx={{ p: 2.5 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#5B21B6',
+                        fontSize: '16px',
+                        mb: 1.5,
+                      }}
+                    >
+                      🔗 Import Recipe from URL
+                    </Typography>
+
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        color: '#5B21B6',
+                        mb: 1.5,
+                        fontSize: '12px',
+                      }}
+                    >
+                      Paste a recipe link to extract ingredients and save it
+                    </Typography>
+
+                    <Box sx={{ display: 'flex', gap: 1, mb: importingRecipe ? 1.5 : 0 }}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        placeholder="https://recipe-url.com"
+                        value={recipeUrl}
+                        onChange={(e) => setRecipeUrl(e.target.value)}
+                        disabled={importingRecipe}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') handleImportRecipe();
+                        }}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            fontFamily: 'Outfit, sans-serif',
+                            fontSize: '12px',
+                            bgcolor: 'white',
+                            '& fieldset': { borderColor: '#C4B5FD' },
+                            '&:hover fieldset': { borderColor: '#7C3AED' },
+                            '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
+                          },
+                        }}
+                      />
+                      <Button
+                        variant="contained"
+                        onClick={handleImportRecipe}
+                        disabled={!recipeUrl.trim() || importingRecipe}
+                        sx={{
+                          bgcolor: '#7C3AED',
+                          color: 'white',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '13px',
+                          textTransform: 'none',
+                          border: '2px solid #5B21B6',
+                          boxShadow: '2px 2px 0px #5B21B6',
+                          px: 2,
+                          minWidth: 'auto',
+                          '&:hover': {
+                            bgcolor: '#6D28D9',
+                          },
+                          '&:disabled': {
+                            bgcolor: '#C4B5FD',
+                            color: 'white',
+                          },
+                        }}
+                      >
+                        <AddLink />
+                      </Button>
+                    </Box>
+
+                    {importingRecipe && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CircularProgress size={18} sx={{ color: '#7C3AED' }} />
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            color: '#5B21B6',
+                            fontSize: '11px',
+                          }}
+                        >
+                          Importing recipe...
+                        </Typography>
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
+
+            {/* Imported Recipe Preview */}
+            {importedRecipe && (
+              <Card
+                sx={{
+                  bgcolor: 'white',
+                  borderRadius: '12px',
+                  border: '2px solid #7C3AED',
+                  boxShadow: '3px 3px 0px #C4B5FD',
+                  mb: 3,
+                }}
+              >
+                <CardContent sx={{ p: 2.5 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 2 }}>
+                    <Box>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 700,
+                          color: '#5B21B6',
+                          fontSize: '18px',
+                          mb: 0.5,
+                        }}
+                      >
+                        {importedRecipe.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          color: '#6B7280',
+                          fontSize: '13px',
+                        }}
+                      >
+                        {importedRecipe.description}
+                      </Typography>
+                    </Box>
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        setImportedRecipe(null);
+                        setRecipeUrl('');
+                        setImportedRecipeIngredients([]);
+                      }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </Box>
+
+                  {/* Ingredient matching */}
+                  <Grid container spacing={2}>
+                    {/* What You Have */}
+                    {importedRecipe.matchedIngredients && importedRecipe.matchedIngredients.length > 0 && (
+                      <Grid item xs={12} sm={6}>
+                        <Box
+                          sx={{
+                            bgcolor: '#ECFDF5',
+                            borderRadius: '8px',
+                            border: '1px solid #6EE7B7',
+                            p: 1.5,
+                          }}
+                        >
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.75 }}>
+                            <CheckCircle sx={{ fontSize: 14, color: '#059669' }} />
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                color: '#059669',
+                                fontWeight: 700,
+                                fontSize: '11px',
+                                textTransform: 'uppercase',
+                              }}
+                            >
+                              You Have ({importedRecipe.matchedIngredients.length})
+                            </Typography>
+                          </Box>
+                          <Box component="ul" sx={{ m: 0, pl: 2.5, listStyle: 'disc' }}>
+                            {importedRecipe.matchedIngredients.map((ingredient, idx) => (
+                              <Typography
+                                component="li"
+                                key={idx}
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#059669',
+                                  fontSize: '12px',
+                                  lineHeight: 1.6,
+                                }}
+                              >
+                                {ingredient}
+                              </Typography>
+                            ))}
+                          </Box>
+                        </Box>
+                      </Grid>
+                    )}
+
+                    {/* What You Need */}
+                    {importedRecipe.missingIngredients && importedRecipe.missingIngredients.length > 0 && (
+                      <Grid item xs={12} sm={6}>
+                        <Box
+                          sx={{
+                            bgcolor: '#FEF3C7',
+                            borderRadius: '8px',
+                            border: '1px solid #FCD34D',
+                            p: 1.5,
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              fontFamily: 'Outfit, sans-serif',
+                              color: '#92400E',
+                              fontWeight: 700,
+                              fontSize: '11px',
+                              textTransform: 'uppercase',
+                              display: 'block',
+                              mb: 0.75,
+                            }}
+                          >
+                            You'll Need ({importedRecipe.missingIngredients.length})
+                          </Typography>
+                          <Box sx={{ mb: 1 }}>
+                            {importedRecipe.missingIngredients.map((ingredient, idx) => (
+                              <FormControlLabel
+                                key={idx}
+                                control={
+                                  <Checkbox
+                                    size="small"
+                                    checked={importedRecipeIngredients.includes(ingredient)}
+                                    onChange={() => handleToggleImportedIngredient(ingredient)}
+                                    sx={{
+                                      color: '#F59E0B',
+                                      '&.Mui-checked': { color: '#F59E0B' },
+                                      py: 0.25,
+                                    }}
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      fontFamily: 'Outfit, sans-serif',
+                                      color: '#92400E',
+                                      fontSize: '12px',
+                                    }}
+                                  >
+                                    {ingredient}
+                                  </Typography>
+                                }
+                                sx={{ display: 'flex', my: 0 }}
+                              />
+                            ))}
+                          </Box>
+                        </Box>
+                      </Grid>
+                    )}
+                  </Grid>
+
+                  <Box sx={{ display: 'flex', gap: 1.5, mt: 2 }}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<ShoppingCart />}
+                      onClick={handleAddImportedToShoppingList}
+                      disabled={importedRecipeIngredients.length === 0}
+                      sx={{
+                        bgcolor: '#F59E0B',
+                        color: 'white',
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        fontSize: '13px',
+                        textTransform: 'none',
+                        py: 1,
+                        '&:hover': { bgcolor: '#D97706' },
+                        '&:disabled': { bgcolor: '#FCD34D', color: 'white' },
+                      }}
+                    >
+                      Add to Shopping List & Save
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      startIcon={<Save />}
+                      onClick={handleSaveImportedRecipe}
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        fontSize: '13px',
+                        textTransform: 'none',
+                        color: '#7C3AED',
+                        borderColor: '#7C3AED',
+                        border: '2px solid #7C3AED',
+                        '&:hover': {
+                          bgcolor: '#F5F3FF',
+                          borderColor: '#6D28D9',
+                          border: '2px solid #6D28D9',
+                        },
+                      }}
+                    >
+                      Save Only
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Available Ingredients and Generate Button */}
             {allIngredients.length > 0 && (
