@@ -111,7 +111,8 @@ function createReceiptAnalysisPrompt() {
       "category": "One of: grocery|produce|meat|dairy|bakery|frozen|beverages|snacks|household|personal care|health|other",
       "quantity": "Quantity as number (default 1)",
       "unitPrice": "Unit price as number",
-      "totalPrice": "Total price for this item as number"
+      "totalPrice": "Total price for this item as number",
+      "keywords": "Array of search keywords/synonyms for this item - include brand names, common names, variants (e.g. for 'SKITTLES TROPICA' add: ['candy', 'sweets', 'skittles', 'tropical', 'fruit candy']; for 'COF MATE LIQ VAN' add: ['creamer', 'coffee creamer', 'vanilla', 'coffee mate', 'liquid creamer'])"
     }
   ],
   "summary": {
@@ -127,6 +128,7 @@ Important instructions:
 - Be precise with numbers - no dollar signs, just numbers (e.g., 12.99 not $12.99)
 - If you can't read a value, set it to null or 0 for numbers
 - Categorize each item appropriately
+- For keywords: add common search terms, synonyms, brand names, product types (5-10 keywords per item)
 - The total in summary should match the receipt total
 - Respond ONLY with valid JSON, no additional text
 - If quantity is not visible, assume 1
@@ -166,6 +168,7 @@ function parseGeminiResponse(text) {
         quantity: item.quantity || 1,
         unitPrice: parseFloat(item.unitPrice) || 0,
         totalPrice: parseFloat(item.totalPrice) || 0,
+        keywords: Array.isArray(item.keywords) ? item.keywords : [],
       })),
       summary: {
         subtotal: parseFloat(parsed.summary?.subtotal) || 0,

@@ -9,8 +9,9 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  IconButton,
 } from '@mui/material';
-import { Search, FilterList, Sort } from '@mui/icons-material';
+import { Search, FilterList, Sort, Clear } from '@mui/icons-material';
 
 /**
  * Search and filter bar for receipts
@@ -63,6 +64,12 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
     onSearchChange(value);
   };
 
+  // Handle clear search
+  const handleClearSearch = () => {
+    setSearchText('');
+    onSearchChange('');
+  };
+
   // Handle date range change
   const handleDateRangeChange = (value) => {
     setDateRange(value);
@@ -88,13 +95,29 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
       {/* Search Input */}
       <TextField
         fullWidth
-        placeholder="Search by store, item, or location..."
+        placeholder="Search by store, item, keywords (candy, creamer, etc)..."
         value={searchText}
         onChange={handleSearchChange}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
               <Search color="action" />
+            </InputAdornment>
+          ),
+          endAdornment: searchText && (
+            <InputAdornment position="end">
+              <IconButton
+                size="small"
+                onClick={handleClearSearch}
+                edge="end"
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'action.hover',
+                  },
+                }}
+              >
+                <Clear />
+              </IconButton>
             </InputAdornment>
           ),
         }}
