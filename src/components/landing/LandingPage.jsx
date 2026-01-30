@@ -8,7 +8,7 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { Google as GoogleIcon } from '@mui/icons-material';
+import { Google as GoogleIcon, ShoppingCart } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function LandingPage() {
@@ -170,12 +170,11 @@ export default function LandingPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '28px',
                   transform: 'rotate(-5deg)',
                   boxShadow: '0 4px 20px rgba(16, 185, 129, 0.4)',
                 }}
               >
-                🛒
+                <ShoppingCart sx={{ color: 'white', fontSize: '28px' }} />
               </Box>
               <Typography
                 sx={{

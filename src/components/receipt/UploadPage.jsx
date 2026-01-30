@@ -181,10 +181,10 @@ export default function UploadPage() {
         {!uploadSuccess && (
           <Box
             sx={{
-              bgcolor: '#F0FDFA',
+              bgcolor: '#FFEDD5',
               borderRadius: '10px',
-              border: '2px solid #14B8A6',
-              boxShadow: '2px 2px 0px #5EEAD4',
+              border: '2px solid #F97316',
+              boxShadow: '2px 2px 0px #FCD34D',
               p: 2.5,
               mb: 3,
               display: 'flex',
@@ -198,7 +198,7 @@ export default function UploadPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 500,
-                color: '#0D9488',
+                color: '#EA580C',
                 fontSize: '13px',
               }}
             >

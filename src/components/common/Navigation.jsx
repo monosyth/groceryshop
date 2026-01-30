@@ -79,7 +79,7 @@ export default function Navigation() {
           gap: 1,
         }}
       >
-        <Box sx={{ fontSize: '28px' }}>🛒</Box>
+        <ShoppingCart sx={{ fontSize: '28px', color: 'white' }} />
         <Typography variant="h6" fontWeight="900" sx={{ fontFamily: 'Outfit, sans-serif' }}>
           GrozeryShop
         </Typography>
@@ -162,7 +162,6 @@ export default function Navigation() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '22px',
                 transform: 'rotate(-3deg)',
                 boxShadow: '0 2px 10px rgba(16, 185, 129, 0.25)',
                 transition: 'transform 0.2s ease',
@@ -171,7 +170,7 @@ export default function Navigation() {
                 },
               }}
             >
-              🛒
+              <ShoppingCart sx={{ fontSize: '22px', color: 'white' }} />
             </Box>
             <Typography
               sx={{
