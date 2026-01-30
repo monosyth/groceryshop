@@ -56,33 +56,23 @@ export default function LandingPage() {
   const features = [
     {
       icon: '📸',
-      title: 'Snap & Forget',
-      description: 'Snap a photo, we extract everything automatically.',
+      title: 'Snap & Track',
+      description: 'Photo your receipt, we handle the rest',
     },
     {
       icon: '📊',
-      title: 'Visual Insights',
-      description: 'Beautiful charts show where your money goes.',
+      title: 'See Patterns',
+      description: 'Charts show where your money goes',
     },
     {
       icon: '🔍',
-      title: 'Smart Search',
-      description: 'Find any item across all your receipts instantly.',
+      title: 'Find Anything',
+      description: 'Search across all your receipts',
     },
     {
       icon: '💰',
-      title: 'Budget Clarity',
-      description: 'Compare stores and track price changes over time.',
-    },
-    {
-      icon: '🗂️',
-      title: 'Cloud Storage',
-      description: 'All receipts backed up and accessible anywhere.',
-    },
-    {
-      icon: '📦',
-      title: 'Auto Categories',
-      description: 'Items automatically sorted by type for easy insights.',
+      title: 'Save Money',
+      description: 'Compare prices and track spending',
     },
   ];
 
@@ -211,241 +201,112 @@ export default function LandingPage() {
       </AppBar>
 
       {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 }, position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={5} alignItems="center">
-          <Grid item xs={12} md={7}>
-            <Box className="animate-slide-up">
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: { xs: '40px', md: '52px' },
-                  fontWeight: 700,
-                  lineHeight: 1.2,
-                  mb: 2,
-                  color: '#111827',
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                Track your groceries.{' '}
-                <Box
-                  component="span"
-                  sx={{
-                    color: '#16A34A',
-                  }}
-                >
-                  Save money.
-                </Box>
-              </Typography>
-            </Box>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
+        <Box sx={{ textAlign: 'center', maxWidth: '700px', mx: 'auto' }}>
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: { xs: '36px', md: '48px' },
+              fontWeight: 700,
+              lineHeight: 1.2,
+              mb: 2,
+              color: '#111827',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Track your groceries. Save money.
+          </Typography>
 
-            <Box className="animate-slide-up animate-delay-1">
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: '18px', md: '20px' },
-                  color: '#6B7280',
-                  mb: 3,
-                  lineHeight: 1.6,
-                  fontWeight: 400,
-                  maxWidth: '500px',
-                }}
-              >
-                Snap a photo of your receipt. We'll automatically track every item and show you where your money goes.
-              </Typography>
-            </Box>
+          <Typography
+            variant="h5"
+            sx={{
+              fontSize: { xs: '16px', md: '18px' },
+              color: '#6B7280',
+              mb: 3,
+              lineHeight: 1.5,
+              fontWeight: 400,
+            }}
+          >
+            Snap a photo of your receipt. We'll automatically track every item and show you where your money goes.
+          </Typography>
 
-            <Box className="animate-slide-up animate-delay-2" sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                startIcon={<GoogleIcon />}
-                sx={{
-                  bgcolor: '#16A34A',
-                  color: 'white',
-                  px: 4,
-                  py: 1.5,
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  borderRadius: '10px',
-                  textTransform: 'none',
-                  boxShadow: 'none',
-                  '&:hover': {
-                    bgcolor: '#15803D',
-                    boxShadow: 'none',
-                  },
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {loading ? 'Signing In...' : 'Sign In with Google'}
-              </Button>
-            </Box>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            startIcon={<GoogleIcon />}
+            sx={{
+              bgcolor: '#16A34A',
+              color: 'white',
+              px: 4,
+              py: 1.5,
+              fontSize: '16px',
+              fontWeight: 600,
+              borderRadius: '10px',
+              textTransform: 'none',
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: '#15803D',
+                boxShadow: 'none',
+              },
+              transition: 'all 0.2s ease',
+            }}
+          >
+            {loading ? 'Signing In...' : 'Sign In with Google'}
+          </Button>
 
-            {/* Trust Badge */}
-            <Box className="animate-slide-up animate-delay-3" sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Typography
-                variant="body1"
-                className="body-text"
-                sx={{
-                  color: '#795548',
-                  fontSize: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  fontWeight: 500,
-                }}
-              >
-                ✨ Free forever • No credit card required • Smart automation
-              </Typography>
-            </Box>
-          </Grid>
-
-          {/* Hero Visual */}
-          <Grid item xs={12} md={5}>
-            <Box
-              className="animate-slide-up animate-delay-2"
-              sx={{
-                position: 'relative',
-                transform: 'perspective(1000px) rotateY(-5deg)',
-                transformStyle: 'preserve-3d',
-              }}
-            >
-              <Paper
-                elevation={0}
-                sx={{
-                  background: '#F9FAFB',
-                  borderRadius: '16px',
-                  p: 3,
-                  border: '1px solid #E5E7EB',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <Box sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-                  <Box
-                    sx={{
-                      fontSize: '100px',
-                      mb: 1.5,
-                      display: 'inline-block',
-                      animation: 'float 3s ease-in-out infinite',
-                    }}
-                  >
-                    🧾
-                  </Box>
-                  <Typography
-                    variant="h5"
-                    sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '18px' }}
-                  >
-                    Upload Receipt
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ color: '#6B7280', mb: 2, fontSize: '14px' }}
-                  >
-                    Automatically extracts items, prices, categories
-                  </Typography>
-
-                  {/* Mock receipt items */}
-                  <Box sx={{ textAlign: 'left', bgcolor: 'white', p: 2, borderRadius: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
-                    {['🥑 Avocados', '🍞 Whole Wheat Bread', '🥛 Organic Milk'].map((item, i) => (
-                      <Box
-                        key={i}
-                        className="animate-slide-up"
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          py: 1,
-                          borderBottom: i < 2 ? '1px solid #E0E0E0' : 'none',
-                          animationDelay: `${0.5 + i * 0.1}s`,
-                          opacity: 0,
-                        }}
-                      >
-                        <Typography className="body-text" sx={{ fontSize: '14px' }}>
-                          {item}
-                        </Typography>
-                        <Typography className="body-text" sx={{ fontSize: '14px', fontWeight: 600 }}>
-                          ${(Math.random() * 5 + 2).toFixed(2)}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              </Paper>
-            </Box>
-          </Grid>
-        </Grid>
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#9CA3AF',
+              fontSize: '14px',
+              mt: 2,
+            }}
+          >
+            Free forever • No credit card required
+          </Typography>
+        </Box>
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ py: 6, position: 'relative', zIndex: 1 }}>
+      <Box sx={{ py: 4, bgcolor: '#F9FAFB', position: 'relative', zIndex: 1 }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 5 }}>
+          <Box sx={{ textAlign: 'center', mb: 3 }}>
             <Typography
               variant="h2"
               sx={{
-                fontSize: { xs: '32px', md: '36px' },
+                fontSize: { xs: '28px', md: '32px' },
                 fontWeight: 700,
                 color: '#111827',
                 mb: 1,
                 letterSpacing: '-0.01em',
               }}
             >
-              Simple, powerful features
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              sx={{
-                color: '#6B7280',
-                maxWidth: 500,
-                mx: 'auto',
-                fontSize: '16px',
-              }}
-            >
-              Everything you need to manage your grocery spending
+              Everything you need
             </Typography>
           </Box>
 
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             {features.map((feature, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card
-                  className={`feature-card animate-slide-up animate-delay-${index + 1}`}
-                  elevation={0}
-                  sx={{
-                    height: '100%',
-                    background: '#FFFFFF',
-                    borderRadius: '16px',
-                    border: '1px solid #E5E7EB',
-                    overflow: 'visible',
-                    position: 'relative',
-                  }}
-                >
-                  <CardContent sx={{ p: 2.5, textAlign: 'center' }}>
-                    <Box
-                      sx={{
-                        fontSize: '48px',
-                        mb: 1,
-                        display: 'inline-block',
-                        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
-                      }}
-                    >
-                      {feature.icon}
-                    </Box>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '17px' }}
-                    >
-                      {feature.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: '#6B7280', lineHeight: 1.5, fontSize: '14px' }}
-                    >
-                      {feature.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Box sx={{ textAlign: 'center', p: 2 }}>
+                  <Box sx={{ fontSize: '40px', mb: 0.5 }}>
+                    {feature.icon}
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '16px' }}
+                  >
+                    {feature.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: '#6B7280', lineHeight: 1.4, fontSize: '14px' }}
+                  >
+                    {feature.description}
+                  </Typography>
+                </Box>
               </Grid>
             ))}
           </Grid>
@@ -455,150 +316,76 @@ export default function LandingPage() {
       {/* CTA Section */}
       <Box
         sx={{
-          py: 6,
+          py: 4,
           position: 'relative',
           overflow: 'hidden',
         }}
       >
         <Container maxWidth="md">
-          <Paper
-            elevation={0}
+          <Box
             sx={{
-              p: { xs: 4, md: 6 },
+              p: 4,
               background: '#16A34A',
-              borderRadius: '16px',
+              borderRadius: '12px',
               textAlign: 'center',
-              position: 'relative',
-              overflow: 'hidden',
             }}
           >
-            <Box sx={{ position: 'relative', zIndex: 1 }}>
-              <Typography
-                variant="h2"
-                sx={{
-                  fontSize: { xs: '28px', md: '32px' },
-                  fontWeight: 700,
-                  color: 'white',
-                  mb: 1.5,
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                Ready to get started?
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  mb: 3,
-                  maxWidth: 450,
-                  mx: 'auto',
-                  fontSize: '16px',
-                }}
-              >
-                Free forever. No credit card required.
-              </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                startIcon={<GoogleIcon />}
-                sx={{
-                  bgcolor: 'white',
-                  color: '#16A34A',
-                  px: 4,
-                  py: 1.5,
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  borderRadius: '10px',
-                  textTransform: 'none',
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: '24px', md: '28px' },
+                fontWeight: 700,
+                color: 'white',
+                mb: 2,
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Ready to get started?
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              startIcon={<GoogleIcon />}
+              sx={{
+                bgcolor: 'white',
+                color: '#16A34A',
+                px: 4,
+                py: 1.5,
+                fontSize: '16px',
+                fontWeight: 600,
+                borderRadius: '10px',
+                textTransform: 'none',
+                boxShadow: 'none',
+                '&:hover': {
+                  bgcolor: '#F9FAFB',
                   boxShadow: 'none',
-                  '&:hover': {
-                    bgcolor: '#F9FAFB',
-                    boxShadow: 'none',
-                  },
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {loading ? 'Signing In...' : 'Sign In with Google'}
-              </Button>
-            </Box>
-          </Paper>
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {loading ? 'Signing In...' : 'Sign In with Google'}
+            </Button>
+          </Box>
         </Container>
       </Box>
 
       {/* Footer */}
       <Box
         sx={{
-          bgcolor: '#1B5E20',
-          color: 'white',
-          py: 4,
+          bgcolor: '#F9FAFB',
+          borderTop: '1px solid #E5E7EB',
+          py: 3,
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                <Box
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: '12px',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ShoppingCart sx={{ fontSize: 28 }} />
-                </Box>
-                <Typography variant="h5" className="hero-title" sx={{ fontWeight: 900 }}>
-                  GrozeryShop
-                </Typography>
-              </Box>
-              <Typography
-                variant="body2"
-                sx={{ opacity: 0.9, maxWidth: 400, fontSize: '14px' }}
-              >
-                Snap receipts, track spending, save money.
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6} sx={{ textAlign: { xs: 'left', md: 'right' } }}>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'flex-start', md: 'flex-end' } }}>
-                <Button
-                  variant="contained"
-                  startIcon={<GoogleIcon />}
-                  onClick={handleGoogleSignIn}
-                  disabled={loading}
-                  sx={{
-                    bgcolor: 'white',
-                    color: '#16A34A',
-                    fontWeight: 600,
-                    textTransform: 'none',
-                    borderRadius: '8px',
-                    px: 3,
-                    py: 1,
-                    fontSize: '15px',
-                    boxShadow: 'none',
-                    '&:hover': {
-                      bgcolor: '#F9FAFB',
-                      boxShadow: 'none',
-                    },
-                  }}
-                >
-                  {loading ? 'Signing In...' : 'Sign In with Google'}
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-          <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <Box sx={{ textAlign: 'center' }}>
             <Typography
               variant="body2"
-              className="body-text"
-              textAlign="center"
-              sx={{ opacity: 0.7 }}
+              sx={{ color: '#6B7280', fontSize: '14px' }}
             >
-              © 2026 GrozeryShop • Made with 💚 for smart shoppers
+              © 2026 GrozeryShop
             </Typography>
           </Box>
         </Container>
