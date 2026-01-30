@@ -61,65 +61,151 @@ export default function UploadPage() {
   };
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" gutterBottom fontWeight="bold" color="secondary.main">
-          Upload Receipt
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Take a photo or upload an image of your grocery receipt
-        </Typography>
-      </Box>
+    <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Container maxWidth="md">
+        <Box sx={{ pt: 4, pb: 3 }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 900,
+              color: '#15803D',
+              fontSize: { xs: '32px', md: '42px' },
+              mb: 1,
+            }}
+          >
+            📸 Upload Receipt
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 500,
+              color: '#78350F',
+            }}
+          >
+            Take a photo or upload an image of your grocery receipt
+          </Typography>
+        </Box>
 
-      {/* Success Confirmation */}
-      {uploadSuccess && (
-        <Alert
-          severity="success"
-          icon={<CheckCircle />}
-          sx={{ mb: 3 }}
-          action={
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+        {/* Success Confirmation */}
+        {uploadSuccess && (
+          <Box
+            sx={{
+              bgcolor: '#D1FAE5',
+              borderRadius: '24px',
+              border: '4px solid #047857',
+              boxShadow: '6px 6px 0px #047857',
+              p: 4,
+              mb: 3,
+              textAlign: 'center',
+            }}
+          >
+            <Box sx={{ fontSize: '80px', mb: 2 }}>🎉</Box>
+            <Typography
+              variant="h5"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 800,
+                color: '#065F46',
+                mb: 2,
+              }}
+            >
+              Receipt Uploaded Successfully!
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 500,
+                color: '#065F46',
+                mb: 3,
+              }}
+            >
+              AI analysis has begun. Your receipt will appear in the dashboard shortly with all items,
+              prices, and store information extracted.
+            </Typography>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
               <Button
-                color="inherit"
-                size="small"
                 onClick={handleViewDashboard}
-                sx={{ whiteSpace: 'nowrap' }}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  px: 4,
+                  py: 1.5,
+                  borderRadius: '15px',
+                  textTransform: 'none',
+                  bgcolor: '#047857',
+                  color: 'white',
+                  border: '3px solid #065F46',
+                  boxShadow: '4px 4px 0px #065F46',
+                  '&:hover': {
+                    bgcolor: '#065F46',
+                    transform: 'scale(1.05)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
               >
                 View Dashboard
               </Button>
               <Button
-                color="inherit"
-                size="small"
-                variant="outlined"
                 onClick={handleUploadAnother}
-                startIcon={<UploadIcon />}
-                sx={{ whiteSpace: 'nowrap' }}
+                startIcon={<Box sx={{ fontSize: '20px' }}>📸</Box>}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  px: 4,
+                  py: 1.5,
+                  borderRadius: '15px',
+                  textTransform: 'none',
+                  bgcolor: 'white',
+                  color: '#047857',
+                  border: '3px solid #047857',
+                  '&:hover': {
+                    bgcolor: '#F0FDF4',
+                    transform: 'scale(1.05)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
               >
                 Upload Another
               </Button>
             </Stack>
-          }
-        >
-          <Typography variant="body1" fontWeight="600">
-            Receipt Uploaded Successfully!
-          </Typography>
-          <Typography variant="body2">
-            AI analysis has begun. Your receipt will appear in the dashboard shortly with all items,
-            prices, and store information extracted.
-          </Typography>
-        </Alert>
-      )}
+          </Box>
+        )}
 
-      {/* Info Alert */}
-      {!uploadSuccess && (
-        <Alert severity="info" sx={{ mb: 3 }}>
-          <Typography variant="body2">
-            <strong>Tip:</strong> For best results, ensure the receipt is well-lit and all text is
-            clearly visible. AI analysis will automatically extract items, prices, and store
-            information.
-          </Typography>
-        </Alert>
-      )}
+        {/* Info Alert */}
+        {!uploadSuccess && (
+          <Box
+            sx={{
+              bgcolor: '#DBEAFE',
+              borderRadius: '20px',
+              border: '3px solid #1E40AF',
+              boxShadow: '4px 4px 0px #1E40AF',
+              p: 3,
+              mb: 3,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Box sx={{ fontSize: '32px' }}>💡</Box>
+            <Typography
+              variant="body2"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 600,
+                color: '#1E3A8A',
+              }}
+            >
+              <strong>Tip:</strong> For best results, ensure the receipt is well-lit and all text is
+              clearly visible. AI analysis will automatically extract items, prices, and store
+              information.
+            </Typography>
+          </Box>
+        )}
 
       {/* Upload Form */}
       {!uploadSuccess && (
@@ -132,12 +218,13 @@ export default function UploadPage() {
         />
       )}
 
-      {/* Camera Modal */}
-      <ReceiptCamera
-        open={cameraOpen}
-        onClose={() => setCameraOpen(false)}
-        onCapture={handleCameraCapture}
-      />
-    </Container>
+        {/* Camera Modal */}
+        <ReceiptCamera
+          open={cameraOpen}
+          onClose={() => setCameraOpen(false)}
+          onCapture={handleCameraCapture}
+        />
+      </Container>
+    </Box>
   );
 }

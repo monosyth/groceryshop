@@ -437,32 +437,86 @@ export default function Dashboard() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ pb: 4 }}>
-      {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h3" gutterBottom fontWeight="bold" color="primary.main">
-          Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          {activeTab === 0
-            ? receipts.length > 0
-              ? `Showing ${filteredAndSortedReceipts.length} of ${receipts.length} receipt${receipts.length === 1 ? '' : 's'}`
-              : 'Welcome to your grocery tracking dashboard!'
-            : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
-        </Typography>
-      </Box>
+    <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Container maxWidth="lg">
+        {/* Header */}
+        <Box sx={{ pt: 4, pb: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 900,
+                color: '#15803D',
+                fontSize: { xs: '32px', md: '42px' },
+              }}
+            >
+              {activeTab === 0 ? '🏠 Dashboard' : '🛍️ All Items'}
+            </Typography>
+          </Box>
+          <Typography
+            variant="body1"
+            sx={{ fontFamily: 'Outfit, sans-serif', color: '#78350F', fontWeight: 500 }}
+          >
+            {activeTab === 0
+              ? receipts.length > 0
+                ? `${filteredAndSortedReceipts.length} of ${receipts.length} receipt${receipts.length === 1 ? '' : 's'}`
+                : 'Upload your first receipt to get started!'
+              : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
+          </Typography>
+        </Box>
 
-      {/* Tabs */}
-      {!loading && receipts.length > 0 && (
-        <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
-          sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
-        >
-          <Tab label="Receipts" />
-          <Tab label="Items" />
-        </Tabs>
-      )}
+        {/* Tabs */}
+        {!loading && receipts.length > 0 && (
+          <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
+            <Button
+              onClick={(e) => handleTabChange(e, 0)}
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                fontSize: '16px',
+                px: 3,
+                py: 1.5,
+                borderRadius: '15px',
+                textTransform: 'none',
+                color: activeTab === 0 ? 'white' : '#15803D',
+                bgcolor: activeTab === 0 ? '#15803D' : 'white',
+                border: activeTab === 0 ? '3px solid #166534' : '3px solid #E5E7EB',
+                boxShadow: activeTab === 0 ? '4px 4px 0px #166534' : 'none',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  bgcolor: activeTab === 0 ? '#166534' : '#F9FAFB',
+                },
+              }}
+            >
+              📋 Receipts
+            </Button>
+            <Button
+              onClick={(e) => handleTabChange(e, 1)}
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                fontSize: '16px',
+                px: 3,
+                py: 1.5,
+                borderRadius: '15px',
+                textTransform: 'none',
+                color: activeTab === 1 ? 'white' : '#15803D',
+                bgcolor: activeTab === 1 ? '#15803D' : 'white',
+                border: activeTab === 1 ? '3px solid #166534' : '3px solid #E5E7EB',
+                boxShadow: activeTab === 1 ? '4px 4px 0px #166534' : 'none',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  bgcolor: activeTab === 1 ? '#166534' : '#F9FAFB',
+                },
+              }}
+            >
+              🛍️ Items
+            </Button>
+          </Box>
+        )}
 
       {/* Search and Filters */}
       {!loading && receipts.length > 0 && (
@@ -485,28 +539,46 @@ export default function Dashboard() {
         </Grid>
       )}
 
-      {/* Empty State - No receipts at all */}
-      {!loading && receipts.length === 0 && (
-        <Paper
-          elevation={2}
-          sx={{
-            p: 8,
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <ReceiptIcon sx={{ fontSize: 80, color: 'primary.light' }} />
-          <Typography variant="h5" fontWeight="600">
-            No Receipts Yet
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Start uploading receipts to see them here!
-          </Typography>
-        </Paper>
-      )}
+        {/* Empty State - No receipts at all */}
+        {!loading && receipts.length === 0 && (
+          <Paper
+            elevation={0}
+            sx={{
+              p: 8,
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              bgcolor: 'white',
+              borderRadius: '24px',
+              border: '4px solid #DBEAFE',
+              boxShadow: '6px 6px 0px #DBEAFE',
+            }}
+          >
+            <Box sx={{ fontSize: '80px', mb: 1 }}>🧾</Box>
+            <Typography
+              variant="h5"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 800,
+                color: '#15803D',
+              }}
+            >
+              No Receipts Yet!
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                color: '#78350F',
+                maxWidth: 400,
+              }}
+            >
+              Upload your first receipt to start tracking your grocery spending
+            </Typography>
+          </Paper>
+        )}
 
       {/* Receipts Tab Content */}
       {!loading && receipts.length > 0 && activeTab === 0 && (
@@ -514,7 +586,7 @@ export default function Dashboard() {
           {/* Empty State - No results from filters */}
           {filteredAndSortedReceipts.length === 0 && (
             <Paper
-              elevation={2}
+              elevation={0}
               sx={{
                 p: 8,
                 textAlign: 'center',
@@ -522,13 +594,30 @@ export default function Dashboard() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: 2,
+                bgcolor: 'white',
+                borderRadius: '24px',
+                border: '4px solid #FED7E2',
+                boxShadow: '6px 6px 0px #FED7E2',
               }}
             >
-              <ReceiptIcon sx={{ fontSize: 80, color: 'text.disabled' }} />
-              <Typography variant="h5" fontWeight="600">
+              <Box sx={{ fontSize: '80px', mb: 1 }}>🔍</Box>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 800,
+                  color: '#15803D',
+                }}
+              >
                 No Receipts Found
               </Typography>
-              <Typography variant="body1" color="text.secondary">
+              <Typography
+                variant="body1"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  color: '#78350F',
+                }}
+              >
                 Try adjusting your search or filters
               </Typography>
             </Paper>
@@ -557,7 +646,7 @@ export default function Dashboard() {
           {/* Empty State - No items */}
           {filteredItems.length === 0 && (searchText || filters.category !== 'all' || filters.dateRange !== 'all') && (
             <Paper
-              elevation={2}
+              elevation={0}
               sx={{
                 p: 6,
                 textAlign: 'center',
@@ -565,13 +654,30 @@ export default function Dashboard() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: 2,
+                bgcolor: 'white',
+                borderRadius: '24px',
+                border: '4px solid #D1FAE5',
+                boxShadow: '6px 6px 0px #D1FAE5',
               }}
             >
-              <ReceiptIcon sx={{ fontSize: 64, color: 'text.disabled' }} />
-              <Typography variant="h6" fontWeight="600">
+              <Box sx={{ fontSize: '64px', mb: 1 }}>🔍</Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 800,
+                  color: '#15803D',
+                }}
+              >
                 No Items Found
               </Typography>
-              <Typography variant="body1" color="text.secondary">
+              <Typography
+                variant="body1"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  color: '#78350F',
+                }}
+              >
                 Try adjusting your search or filters
               </Typography>
             </Paper>
@@ -579,10 +685,18 @@ export default function Dashboard() {
 
           {/* Items Table */}
           {filteredItems.length > 0 && (
-            <TableContainer component={Paper} elevation={1}>
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{
+                borderRadius: '16px',
+                border: '3px solid #E5E7EB',
+                overflow: 'hidden',
+              }}
+            >
               <Table>
                 <TableHead>
-                  <TableRow sx={{ bgcolor: 'grey.50' }}>
+                  <TableRow sx={{ bgcolor: '#FEF3C7' }}>
                     <TableCell sx={{ fontWeight: 600 }}>
                       <Button
                         size="small"
@@ -745,17 +859,18 @@ export default function Dashboard() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar for feedback */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Container>
+        {/* Snackbar for feedback */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={4000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Container>
+    </Box>
   );
 }

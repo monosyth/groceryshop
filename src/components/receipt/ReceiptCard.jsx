@@ -1,6 +1,14 @@
-import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button, IconButton } from '@mui/material';
+import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button } from '@mui/material';
 import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+
+// Colorful card colors that rotate
+const cardColors = [
+  { bg: '#DBEAFE', border: '#1E40AF', shadow: '#1E40AF' }, // Blue
+  { bg: '#FED7E2', border: '#BE185D', shadow: '#BE185D' }, // Pink
+  { bg: '#D1FAE5', border: '#047857', shadow: '#047857' }, // Green
+  { bg: '#FEF3C7', border: '#B45309', shadow: '#B45309' }, // Yellow
+];
 
 /**
  * Receipt card component displaying receipt summary
@@ -8,19 +16,23 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 export default function ReceiptCard({ receipt, onClick, onRetry }) {
   const { storeInfo, summary, metadata, imageUrl } = receipt;
 
+  // Assign a color based on receipt ID (consistent color per receipt)
+  const colorIndex = receipt.id ? receipt.id.charCodeAt(0) % cardColors.length : 0;
+  const cardColor = cardColors[colorIndex];
+
   // Status badge configuration
   const getStatusConfig = (status) => {
     switch (status) {
       case 'completed':
-        return { label: 'Analyzed', color: 'success', icon: <CheckCircle sx={{ fontSize: 16 }} /> };
+        return { label: '✓ Analyzed', color: 'success', icon: <CheckCircle sx={{ fontSize: 16 }} /> };
       case 'processing':
-        return { label: 'Processing', color: 'warning', icon: <HourglassEmpty sx={{ fontSize: 16 }} /> };
+        return { label: '⏳ Processing', color: 'warning', icon: <HourglassEmpty sx={{ fontSize: 16 }} /> };
       case 'failed_retryable':
-        return { label: 'Try Again', color: 'warning', icon: <Error sx={{ fontSize: 16 }} /> };
+        return { label: '⚠️ Try Again', color: 'warning', icon: <Error sx={{ fontSize: 16 }} /> };
       case 'failed':
-        return { label: 'Failed', color: 'error', icon: <Error sx={{ fontSize: 16 }} /> };
+        return { label: '✗ Failed', color: 'error', icon: <Error sx={{ fontSize: 16 }} /> };
       default:
-        return { label: 'Pending', color: 'default', icon: <HourglassEmpty sx={{ fontSize: 16 }} /> };
+        return { label: '⏳ Pending', color: 'default', icon: <HourglassEmpty sx={{ fontSize: 16 }} /> };
     }
   };
 
@@ -39,13 +51,17 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        transition: 'all 0.3s ease',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        bgcolor: cardColor.bg,
+        borderRadius: '24px',
+        border: `4px solid ${cardColor.border}`,
+        boxShadow: `6px 6px 0px ${cardColor.shadow}`,
+        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
         '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: 6,
+          transform: 'scale(1.05) rotate(-2deg)',
+          boxShadow: `8px 8px 0px ${cardColor.shadow}`,
         },
       }}
     >
@@ -68,26 +84,43 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
             label={statusConfig.label}
             color={statusConfig.color}
             size="small"
-            icon={statusConfig.icon}
             sx={{
-              fontWeight: 600,
-              borderRadius: 2,
+              fontWeight: 700,
+              fontFamily: 'Outfit, sans-serif',
+              borderRadius: '12px',
+              fontSize: '13px',
             }}
           />
         </Box>
 
         {/* Store Name */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <Store color="primary" sx={{ fontSize: 20 }} />
-          <Typography variant="h6" component="h3" noWrap sx={{ fontWeight: 600 }}>
+          <Box sx={{ fontSize: '20px' }}>🏪</Box>
+          <Typography
+            variant="h6"
+            component="h3"
+            noWrap
+            sx={{
+              fontWeight: 800,
+              fontFamily: 'Outfit, sans-serif',
+              color: cardColor.border,
+            }}
+          >
             {storeInfo?.name || 'Unknown Store'}
           </Typography>
         </Box>
 
         {/* Date */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-          <CalendarToday sx={{ fontSize: 18, color: 'text.secondary' }} />
-          <Typography variant="body2" color="text.secondary">
+          <Box sx={{ fontSize: '16px' }}>📅</Box>
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              color: 'text.secondary',
+              fontWeight: 600,
+            }}
+          >
             {storeInfo?.date ? formatDate(storeInfo.date) : 'No date'}
           </Typography>
         </Box>
@@ -95,11 +128,12 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         {/* Location */}
         <Typography
           variant="body2"
-          color="text.secondary"
           sx={{
             mb: 2,
-            fontStyle: 'italic',
+            fontFamily: 'Outfit, sans-serif',
+            color: 'text.secondary',
             minHeight: '20px',
+            fontWeight: 500,
           }}
         >
           {storeInfo?.location || '\u00A0'}
@@ -114,14 +148,20 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 1,
+              justifyContent: 'space-between',
               pt: 2,
-              borderTop: 1,
-              borderColor: 'divider',
+              borderTop: `3px solid ${cardColor.border}`,
             }}
           >
-            <AttachMoney color="secondary" sx={{ fontSize: 24 }} />
-            <Typography variant="h5" color="secondary.main" sx={{ fontWeight: 700 }}>
+            <Box sx={{ fontSize: '24px' }}>💰</Box>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 900,
+                fontFamily: 'Outfit, sans-serif',
+                color: cardColor.border,
+              }}
+            >
               {formatCurrency(summary.total)}
             </Typography>
           </Box>
@@ -130,17 +170,31 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         {/* Error Message & Retry Button */}
         {(metadata?.analysisStatus === 'failed' || metadata?.analysisStatus === 'failed_retryable') && metadata?.processingError && (
           <Box sx={{ mt: 2 }}>
-            <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+            <Typography
+              variant="body2"
+              color="error"
+              sx={{ mb: 1, fontFamily: 'Outfit, sans-serif', fontWeight: 600 }}
+            >
               {metadata.processingError}
             </Typography>
             {isRetryable && onRetry && (
               <Button
                 size="small"
-                variant="outlined"
-                color="primary"
+                variant="contained"
                 startIcon={<Refresh />}
                 onClick={handleRetryClick}
-                sx={{ mt: 1 }}
+                sx={{
+                  mt: 1,
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  borderRadius: '12px',
+                  bgcolor: cardColor.border,
+                  border: `2px solid ${cardColor.shadow}`,
+                  '&:hover': {
+                    bgcolor: cardColor.shadow,
+                  },
+                }}
               >
                 Retry Analysis
               </Button>
@@ -157,10 +211,15 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
  */
 export function ReceiptCardSkeleton() {
   return (
-    <Card>
-      <Skeleton variant="rectangular" height={160} />
+    <Card
+      sx={{
+        borderRadius: '24px',
+        border: '4px solid #E5E7EB',
+      }}
+    >
+      <Skeleton variant="rectangular" height={200} />
       <CardContent>
-        <Skeleton variant="rounded" width={100} height={24} sx={{ mb: 2 }} />
+        <Skeleton variant="rounded" width={100} height={24} sx={{ mb: 2, borderRadius: '12px' }} />
         <Skeleton variant="text" width="80%" height={32} sx={{ mb: 1 }} />
         <Skeleton variant="text" width="60%" height={20} sx={{ mb: 1 }} />
         <Skeleton variant="text" width="70%" height={20} sx={{ mb: 2 }} />
