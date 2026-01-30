@@ -52,7 +52,7 @@ export default function RecipePage() {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [selectedIngredients, setSelectedIngredients] = useState({}); // Track selected ingredients per recipe
+  const [checkedIngredients, setCheckedIngredients] = useState({}); // Track checked ingredients per recipe
   const [recipeUrl, setRecipeUrl] = useState('');
   const [importingRecipe, setImportingRecipe] = useState(false);
   const [importedRecipe, setImportedRecipe] = useState(null);
@@ -238,7 +238,7 @@ export default function RecipePage() {
 
   // Handle ingredient selection
   const handleIngredientToggle = (recipeIndex, ingredient) => {
-    setSelectedIngredients((prev) => {
+    setCheckedIngredients((prev) => {
       const recipeKey = `recipe-${recipeIndex}`;
       const current = prev[recipeKey] || [];
 
@@ -259,7 +259,7 @@ export default function RecipePage() {
   // Add selected ingredients to shopping list
   const handleAddToShoppingList = async (recipeIndex, recipeName) => {
     const recipeKey = `recipe-${recipeIndex}`;
-    const selected = selectedIngredients[recipeKey] || [];
+    const selected = checkedIngredients[recipeKey] || [];
 
     if (selected.length === 0) {
       setSnackbar({
@@ -287,7 +287,7 @@ export default function RecipePage() {
       await Promise.all(promises);
 
       // Clear selection for this recipe
-      setSelectedIngredients((prev) => ({
+      setCheckedIngredients((prev) => ({
         ...prev,
         [recipeKey]: [],
       }));
@@ -1391,7 +1391,7 @@ export default function RecipePage() {
                                       <Checkbox
                                         size="small"
                                         checked={
-                                          (selectedIngredients[`recipe-${index}`] || []).includes(ingredient)
+                                          (checkedIngredients[`recipe-${index}`] || []).includes(ingredient)
                                         }
                                         onChange={() => handleIngredientToggle(index, ingredient)}
                                         sx={{
@@ -1423,7 +1423,7 @@ export default function RecipePage() {
                                 fullWidth
                                 startIcon={<ShoppingCart />}
                                 onClick={() => handleAddToShoppingList(index, recipe.name)}
-                                disabled={(selectedIngredients[`recipe-${index}`] || []).length === 0}
+                                disabled={(checkedIngredients[`recipe-${index}`] || []).length === 0}
                                 sx={{
                                   bgcolor: '#F59E0B',
                                   color: 'white',
