@@ -61,6 +61,36 @@ export default function RecipePage() {
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
+  // Helper function to sort ingredients by priority
+  // Basic staples (water, salt, pepper, oil, etc.) go to the bottom
+  const sortIngredientsByPriority = (ingredients) => {
+    const basicIngredients = [
+      'water', 'salt', 'pepper', 'black pepper', 'white pepper',
+      'olive oil', 'vegetable oil', 'cooking oil', 'oil',
+      'butter', 'sugar', 'flour', 'all-purpose flour',
+      'baking powder', 'baking soda', 'vanilla extract',
+      'garlic powder', 'onion powder', 'paprika',
+    ];
+
+    const priority = [];
+    const basic = [];
+
+    ingredients.forEach((ingredient) => {
+      const lowerIngredient = ingredient.toLowerCase();
+      const isBasic = basicIngredients.some((basicItem) =>
+        lowerIngredient.includes(basicItem) || basicItem.includes(lowerIngredient)
+      );
+
+      if (isBasic) {
+        basic.push(ingredient);
+      } else {
+        priority.push(ingredient);
+      }
+    });
+
+    return [...priority, ...basic];
+  };
+
   // Fetch receipts
   useEffect(() => {
     if (!currentUser) return;
@@ -1010,7 +1040,7 @@ export default function RecipePage() {
                             You'll Need ({importedRecipe.missingIngredients.length})
                           </Typography>
                           <Box sx={{ mb: 1 }}>
-                            {importedRecipe.missingIngredients.map((ingredient, idx) => (
+                            {sortIngredientsByPriority(importedRecipe.missingIngredients).map((ingredient, idx) => (
                               <FormControlLabel
                                 key={idx}
                                 control={
@@ -1382,7 +1412,7 @@ export default function RecipePage() {
                                 You'll Need ({recipe.missingIngredients.length})
                               </Typography>
                               <Box sx={{ mb: 1 }}>
-                                {recipe.missingIngredients.map((ingredient, idx) => (
+                                {sortIngredientsByPriority(recipe.missingIngredients).map((ingredient, idx) => (
                                   <FormControlLabel
                                     key={idx}
                                     control={
