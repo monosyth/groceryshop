@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -175,91 +175,78 @@ export default function AnalyticsPage() {
       </Box>
 
       {/* Summary Stats */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
         {statCards.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card
-              elevation={2}
-              sx={{
-                height: '100%',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                },
-              }}
-            >
-              <CardContent>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    mb: 2,
-                  }}
-                >
+          <Grid item xs={6} md={3} key={index}>
+            <Card elevation={1} sx={{ height: '100%' }}>
+              <CardContent sx={{ p: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
                   <Box
                     sx={{
-                      p: 1.5,
-                      borderRadius: 2,
+                      p: 1,
+                      borderRadius: 1.5,
                       bgcolor: stat.bgColor,
                       color: stat.color,
                       display: 'flex',
                     }}
                   >
-                    {stat.icon}
+                    {React.cloneElement(stat.icon, { sx: { fontSize: 28 } })}
+                  </Box>
+                  <Box>
+                    <Typography variant="h5" fontWeight="bold" color={stat.color}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {stat.title}
+                    </Typography>
                   </Box>
                 </Box>
-                <Typography variant="h4" fontWeight="bold" color={stat.color}>
-                  {stat.value}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                  {stat.title}
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
 
-      {/* Spending Trend Chart */}
-      {spendingByDate.length > 0 && (
-        <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
-          <Typography variant="h5" fontWeight="600" sx={{ mb: 3 }}>
-            Spending Over Time
-          </Typography>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={spendingByDate}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" stroke="#666" style={{ fontSize: '12px' }} />
-              <YAxis stroke="#666" style={{ fontSize: '12px' }} />
-              <Tooltip
-                formatter={(value) => formatCurrency(value)}
-                contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0' }}
-              />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="amount"
-                stroke="#2e7d32"
-                strokeWidth={3}
-                dot={{ fill: '#2e7d32', r: 4 }}
-                activeDot={{ r: 6 }}
-                name="Spending"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </Paper>
-      )}
+      <Grid container spacing={2}>
+        {/* Spending Trend Chart */}
+        {spendingByDate.length > 0 && (
+          <Grid item xs={12}>
+            <Paper elevation={1} sx={{ p: 2.5, borderRadius: 2 }}>
+              <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
+                Spending Over Time
+              </Typography>
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={spendingByDate}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                  <XAxis dataKey="date" stroke="#666" style={{ fontSize: '11px' }} />
+                  <YAxis stroke="#666" style={{ fontSize: '11px' }} />
+                  <Tooltip
+                    formatter={(value) => formatCurrency(value)}
+                    contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0', fontSize: '12px' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="amount"
+                    stroke="#2e7d32"
+                    strokeWidth={2.5}
+                    dot={{ fill: '#2e7d32', r: 5 }}
+                    activeDot={{ r: 7 }}
+                    name="Spending"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+        )}
 
-      <Grid container spacing={3}>
         {/* Category Breakdown */}
         {spendingByCategory.length > 0 && (
           <Grid item xs={12} md={6}>
-            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, height: '100%' }}>
-              <Typography variant="h5" fontWeight="600" sx={{ mb: 3 }}>
+            <Paper elevation={1} sx={{ p: 2.5, borderRadius: 2, height: '100%' }}>
+              <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
                 Spending by Category
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie
                     data={spendingByCategory}
@@ -267,7 +254,7 @@ export default function AnalyticsPage() {
                     cy="50%"
                     labelLine={false}
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
+                    outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
                   >
@@ -275,7 +262,10 @@ export default function AnalyticsPage() {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => formatCurrency(value)} />
+                  <Tooltip
+                    formatter={(value) => formatCurrency(value)}
+                    contentStyle={{ fontSize: '12px' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </Paper>
@@ -285,20 +275,26 @@ export default function AnalyticsPage() {
         {/* Top Stores */}
         {spendingByStore.length > 0 && (
           <Grid item xs={12} md={6}>
-            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, height: '100%' }}>
-              <Typography variant="h5" fontWeight="600" sx={{ mb: 3 }}>
+            <Paper elevation={1} sx={{ p: 2.5, borderRadius: 2, height: '100%' }}>
+              <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
                 Top Stores
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={spendingByStore} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                  <XAxis type="number" stroke="#666" style={{ fontSize: '12px' }} />
-                  <YAxis dataKey="name" type="category" width={120} stroke="#666" style={{ fontSize: '12px' }} />
+                  <XAxis type="number" stroke="#666" style={{ fontSize: '11px' }} />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={100}
+                    stroke="#666"
+                    style={{ fontSize: '11px' }}
+                  />
                   <Tooltip
                     formatter={(value) => formatCurrency(value)}
-                    contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0' }}
+                    contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0', fontSize: '12px' }}
                   />
-                  <Bar dataKey="value" fill="#ff6f00" radius={[0, 8, 8, 0]} name="Spending" />
+                  <Bar dataKey="value" fill="#ff6f00" radius={[0, 6, 6, 0]} name="Spending" />
                 </BarChart>
               </ResponsiveContainer>
             </Paper>
