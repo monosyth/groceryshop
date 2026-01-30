@@ -5,32 +5,14 @@ import {
   Box,
   Button,
   Typography,
-  Grid,
-  Paper,
-  Card,
-  CardContent,
-  AppBar,
-  Toolbar,
-  useTheme,
-  useMediaQuery,
   Snackbar,
   Alert,
 } from '@mui/material';
-import {
-  ShoppingCart,
-  CameraAlt,
-  Insights,
-  Search,
-  TrendingUp,
-  AutoAwesome,
-  Google as GoogleIcon,
-} from '@mui/icons-material';
+import { Google as GoogleIcon } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -53,342 +35,464 @@ export default function LandingPage() {
     }
   };
 
-  const features = [
-    {
-      icon: '📸',
-      title: 'Snap & Track',
-      description: 'Photo your receipt, we handle the rest',
-    },
-    {
-      icon: '📊',
-      title: 'See Patterns',
-      description: 'Charts show where your money goes',
-    },
-    {
-      icon: '🔍',
-      title: 'Find Anything',
-      description: 'Search across all your receipts',
-    },
-    {
-      icon: '💰',
-      title: 'Save Money',
-      description: 'Compare prices and track spending',
-    },
-  ];
-
   return (
     <Box
       sx={{
         minHeight: '100vh',
-        background: '#FFFFFF',
+        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Custom CSS for fonts and animations */}
+      {/* Custom CSS */}
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Caveat:wght@700&display=swap');
 
           * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            font-family: 'Outfit', system-ui, -apple-system, sans-serif !important;
+          }
+
+          .handwriting {
+            font-family: 'Caveat', cursive !important;
           }
 
           @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(3deg); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
           }
 
-          @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-3deg); }
+            75% { transform: rotate(3deg); }
           }
 
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+          @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
           }
 
-          .animate-slide-up {
-            animation: slideUp 0.8s ease-out forwards;
+          .float-slow {
+            animation: float 6s ease-in-out infinite;
           }
 
-          .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
-          .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
-          .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
-          .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+          .float-medium {
+            animation: float 4s ease-in-out infinite;
+          }
+
+          .float-fast {
+            animation: float 3s ease-in-out infinite;
+          }
+
+          .wiggle-hover:hover {
+            animation: wiggle 0.5s ease-in-out;
+          }
 
           .feature-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
           .feature-card:hover {
-            transform: translateY(-8px) scale(1.02);
-          }
-
-          .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 8s ease-in-out infinite;
+            transform: scale(1.08) rotate(-2deg);
           }
         `}
       </style>
 
-      {/* Navigation Bar */}
-      <AppBar
-        position="sticky"
-        elevation={0}
+      {/* Floating decorative elements */}
+      <Box
+        className="float-slow"
         sx={{
-          bgcolor: '#FFFFFF',
-          borderBottom: '1px solid #E5E7EB',
+          position: 'absolute',
+          top: '10%',
+          right: '10%',
+          fontSize: '80px',
+          opacity: 0.3,
+          zIndex: 0,
         }}
       >
-        <Toolbar sx={{ py: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexGrow: 1 }}>
-            <Box
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: '10px',
-                background: '#16A34A',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ShoppingCart sx={{ color: 'white', fontSize: 22 }} />
+        🥑
+      </Box>
+      <Box
+        className="float-medium"
+        sx={{
+          position: 'absolute',
+          top: '60%',
+          left: '5%',
+          fontSize: '60px',
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      >
+        🍞
+      </Box>
+      <Box
+        className="float-fast"
+        sx={{
+          position: 'absolute',
+          top: '30%',
+          left: '15%',
+          fontSize: '70px',
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      >
+        🥛
+      </Box>
+      <Box
+        className="float-slow"
+        sx={{
+          position: 'absolute',
+          bottom: '20%',
+          right: '20%',
+          fontSize: '65px',
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      >
+        🧀
+      </Box>
+
+      {/* Header */}
+      <Box
+        sx={{
+          position: 'relative',
+          zIndex: 10,
+          pt: 3,
+          pb: 2,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box
+                sx={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: '15px',
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  transform: 'rotate(-5deg)',
+                  boxShadow: '0 4px 20px rgba(16, 185, 129, 0.4)',
+                }}
+              >
+                🛒
+              </Box>
+              <Typography
+                sx={{
+                  fontSize: '28px',
+                  fontWeight: 900,
+                  color: '#15803D',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                GrozeryShop
+              </Typography>
             </Box>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 700,
-                color: '#111827',
-                fontSize: '20px',
-              }}
-            >
-              GrozeryShop
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
             <Button
               onClick={handleGoogleSignIn}
               disabled={loading}
               startIcon={<GoogleIcon />}
-              variant="contained"
               sx={{
-                bgcolor: '#16A34A',
-                color: 'white',
-                fontWeight: 600,
+                bgcolor: '#FFFFFF',
+                color: '#15803D',
+                fontWeight: 700,
                 px: 3,
-                py: 1,
-                borderRadius: '8px',
-                textTransform: 'none',
+                py: 1.2,
+                borderRadius: '50px',
                 fontSize: '15px',
-                boxShadow: 'none',
+                textTransform: 'none',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+                border: '2px solid #15803D',
                 '&:hover': {
-                  bgcolor: '#15803D',
-                  boxShadow: 'none',
+                  bgcolor: '#F0FDF4',
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.15)',
                 },
                 transition: 'all 0.2s ease',
               }}
             >
-              {loading ? 'Signing In...' : 'Sign In with Google'}
+              Sign In
             </Button>
           </Box>
-        </Toolbar>
-      </AppBar>
+        </Container>
+      </Box>
 
       {/* Hero Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
-        <Box sx={{ textAlign: 'center', maxWidth: '700px', mx: 'auto' }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 6 } }}>
+        <Box sx={{ textAlign: 'center' }}>
+          {/* Main headline */}
           <Typography
-            variant="h1"
+            className="handwriting"
             sx={{
-              fontSize: { xs: '36px', md: '48px' },
-              fontWeight: 700,
-              lineHeight: 1.2,
+              fontSize: { xs: '24px', md: '32px' },
+              color: '#B45309',
+              mb: 1,
+            }}
+          >
+            Finally, a grocery tracker that doesn't suck
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: { xs: '48px', sm: '60px', md: '72px' },
+              fontWeight: 900,
+              lineHeight: 1,
+              color: '#15803D',
+              letterSpacing: '-0.03em',
+              textShadow: '4px 4px 0px rgba(0,0,0,0.1)',
               mb: 2,
-              color: '#111827',
-              letterSpacing: '-0.02em',
             }}
           >
-            Track your groceries. Save money.
+            Snap. Track.{' '}
+            <Box
+              component="span"
+              sx={{
+                background: 'linear-gradient(135deg, #EC4899 0%, #F43F5E 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Save.
+            </Box>
           </Typography>
 
           <Typography
-            variant="h5"
             sx={{
-              fontSize: { xs: '16px', md: '18px' },
-              color: '#6B7280',
-              mb: 3,
-              lineHeight: 1.5,
-              fontWeight: 400,
+              fontSize: { xs: '18px', md: '22px' },
+              color: '#78350F',
+              maxWidth: '600px',
+              mx: 'auto',
+              mb: 4,
+              fontWeight: 500,
+              lineHeight: 1.4,
             }}
           >
-            Snap a photo of your receipt. We'll automatically track every item and show you where your money goes.
+            Take a pic of your receipt. We'll magically turn it into insights.
+            <Box component="span" sx={{ fontSize: '24px' }}> ✨</Box>
           </Typography>
 
+          {/* CTA Button */}
           <Button
-            variant="contained"
-            size="large"
             onClick={handleGoogleSignIn}
             disabled={loading}
             startIcon={<GoogleIcon />}
             sx={{
-              bgcolor: '#16A34A',
+              bgcolor: '#15803D',
               color: 'white',
-              px: 4,
-              py: 1.5,
-              fontSize: '16px',
-              fontWeight: 600,
-              borderRadius: '10px',
+              fontWeight: 800,
+              px: 5,
+              py: 2,
+              borderRadius: '50px',
+              fontSize: '20px',
               textTransform: 'none',
-              boxShadow: 'none',
+              boxShadow: '0 8px 25px rgba(21, 128, 61, 0.4)',
+              border: '3px solid #166534',
               '&:hover': {
-                bgcolor: '#15803D',
-                boxShadow: 'none',
+                bgcolor: '#166534',
+                transform: 'scale(1.08) rotate(-1deg)',
+                boxShadow: '0 12px 35px rgba(21, 128, 61, 0.5)',
               },
-              transition: 'all 0.2s ease',
+              transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              mb: 2,
             }}
           >
-            {loading ? 'Signing In...' : 'Sign In with Google'}
+            {loading ? 'Loading...' : 'Start For Free'}
           </Button>
 
           <Typography
-            variant="body2"
             sx={{
-              color: '#9CA3AF',
               fontSize: '14px',
-              mt: 2,
+              color: '#92400E',
+              fontWeight: 600,
             }}
           >
-            Free forever • No credit card required
+            No credit card • No BS • Just groceries
           </Typography>
         </Box>
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ py: 4, bgcolor: '#F9FAFB', position: 'relative', zIndex: 1 }}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 3 }}>
-            <Typography
-              variant="h2"
-              sx={{
-                fontSize: { xs: '28px', md: '32px' },
-                fontWeight: 700,
-                color: '#111827',
-                mb: 1,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Everything you need
-            </Typography>
-          </Box>
-
-          <Grid container spacing={2}>
-            {features.map((feature, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
-                <Box sx={{ textAlign: 'center', p: 2 }}>
-                  <Box sx={{ fontSize: '40px', mb: 0.5 }}>
-                    {feature.icon}
-                  </Box>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 600, color: '#111827', mb: 0.5, fontSize: '16px' }}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#6B7280', lineHeight: 1.4, fontSize: '14px' }}
-                  >
-                    {feature.description}
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* CTA Section */}
-      <Box
-        sx={{
-          py: 4,
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <Container maxWidth="md">
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: 4 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' },
+            gap: 3,
+          }}
+        >
+          {/* Feature 1 */}
           <Box
+            className="feature-card wiggle-hover"
             sx={{
-              p: 4,
-              background: '#16A34A',
-              borderRadius: '12px',
-              textAlign: 'center',
+              bgcolor: '#DBEAFE',
+              borderRadius: '24px',
+              p: 3,
+              border: '4px solid #1E40AF',
+              boxShadow: '6px 6px 0px #1E40AF',
+              cursor: 'pointer',
             }}
           >
-            <Typography
-              variant="h2"
-              sx={{
-                fontSize: { xs: '24px', md: '28px' },
-                fontWeight: 700,
-                color: 'white',
-                mb: 2,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Ready to get started?
+            <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#1E3A8A', mb: 1 }}>
+              Snap It
             </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-              startIcon={<GoogleIcon />}
-              sx={{
-                bgcolor: 'white',
-                color: '#16A34A',
-                px: 4,
-                py: 1.5,
-                fontSize: '16px',
-                fontWeight: 600,
-                borderRadius: '10px',
-                textTransform: 'none',
-                boxShadow: 'none',
-                '&:hover': {
-                  bgcolor: '#F9FAFB',
-                  boxShadow: 'none',
-                },
-                transition: 'all 0.2s ease',
-              }}
-            >
-              {loading ? 'Signing In...' : 'Sign In with Google'}
-            </Button>
+            <Typography sx={{ fontSize: '14px', color: '#1E3A8A', lineHeight: 1.4 }}>
+              One photo, done. No typing, no pain.
+            </Typography>
           </Box>
-        </Container>
-      </Box>
+
+          {/* Feature 2 */}
+          <Box
+            className="feature-card wiggle-hover"
+            sx={{
+              bgcolor: '#FED7E2',
+              borderRadius: '24px',
+              p: 3,
+              border: '4px solid #BE185D',
+              boxShadow: '6px 6px 0px #BE185D',
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ fontSize: '56px', mb: 1 }}>📊</Box>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#831843', mb: 1 }}>
+              See Patterns
+            </Typography>
+            <Typography sx={{ fontSize: '14px', color: '#831843', lineHeight: 1.4 }}>
+              Pretty charts that actually make sense.
+            </Typography>
+          </Box>
+
+          {/* Feature 3 */}
+          <Box
+            className="feature-card wiggle-hover"
+            sx={{
+              bgcolor: '#D1FAE5',
+              borderRadius: '24px',
+              p: 3,
+              border: '4px solid #047857',
+              boxShadow: '6px 6px 0px #047857',
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ fontSize: '56px', mb: 1 }}>🔍</Box>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#065F46', mb: 1 }}>
+              Find Stuff
+            </Typography>
+            <Typography sx={{ fontSize: '14px', color: '#065F46', lineHeight: 1.4 }}>
+              Search everything. Even that weird cheese.
+            </Typography>
+          </Box>
+
+          {/* Feature 4 */}
+          <Box
+            className="feature-card wiggle-hover"
+            sx={{
+              bgcolor: '#FEF3C7',
+              borderRadius: '24px',
+              p: 3,
+              border: '4px solid #B45309',
+              boxShadow: '6px 6px 0px #B45309',
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ fontSize: '56px', mb: 1 }}>💰</Box>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#78350F', mb: 1 }}>
+              Save Money
+            </Typography>
+            <Typography sx={{ fontSize: '14px', color: '#78350F', lineHeight: 1.4 }}>
+              See where your cash goes. Be shocked.
+            </Typography>
+          </Box>
+        </Box>
+      </Container>
+
+      {/* Final CTA */}
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, py: 6 }}>
+        <Box
+          sx={{
+            bgcolor: 'white',
+            borderRadius: '32px',
+            p: { xs: 4, md: 6 },
+            textAlign: 'center',
+            border: '6px solid #15803D',
+            boxShadow: '12px 12px 0px #15803D',
+            transform: 'rotate(-1deg)',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { xs: '32px', md: '42px' },
+              fontWeight: 900,
+              color: '#15803D',
+              mb: 2,
+              lineHeight: 1.1,
+            }}
+          >
+            Ready to turn groceries into a game?
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '18px',
+              color: '#166534',
+              mb: 3,
+              fontWeight: 500,
+            }}
+          >
+            Join the cool kids who track their avocados
+          </Typography>
+          <Button
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            startIcon={<GoogleIcon />}
+            sx={{
+              bgcolor: '#EC4899',
+              color: 'white',
+              fontWeight: 800,
+              px: 5,
+              py: 2,
+              borderRadius: '50px',
+              fontSize: '20px',
+              textTransform: 'none',
+              boxShadow: '0 8px 25px rgba(236, 72, 153, 0.4)',
+              border: '3px solid #BE185D',
+              '&:hover': {
+                bgcolor: '#DB2777',
+                transform: 'scale(1.08)',
+                boxShadow: '0 12px 35px rgba(236, 72, 153, 0.5)',
+              },
+              transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            }}
+          >
+            {loading ? 'Loading...' : 'Let\'s Go! 🚀'}
+          </Button>
+        </Box>
+      </Container>
 
       {/* Footer */}
-      <Box
-        sx={{
-          bgcolor: '#F9FAFB',
-          borderTop: '1px solid #E5E7EB',
-          py: 3,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography
-              variant="body2"
-              sx={{ color: '#6B7280', fontSize: '14px' }}
-            >
-              © 2026 GrozeryShop
-            </Typography>
-          </Box>
-        </Container>
+      <Box sx={{ position: 'relative', zIndex: 1, py: 4, textAlign: 'center' }}>
+        <Typography
+          sx={{
+            fontSize: '14px',
+            color: '#92400E',
+            fontWeight: 600,
+          }}
+        >
+          Made with 💚 by people who hate spreadsheets
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '12px',
+            color: '#B45309',
+            mt: 1,
+          }}
+        >
+          © 2026 GrozeryShop • Because receipts shouldn't suck
+        </Typography>
       </Box>
 
       {/* Error Snackbar */}
