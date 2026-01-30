@@ -215,23 +215,24 @@ export default function AnalyticsPage() {
               <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
                 Spending Over Time
               </Typography>
-              <ResponsiveContainer width="100%" height={220}>
+              <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={spendingByDate}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                  <XAxis dataKey="date" stroke="#666" style={{ fontSize: '11px' }} />
-                  <YAxis stroke="#666" style={{ fontSize: '11px' }} />
+                  <XAxis dataKey="date" stroke="#666" style={{ fontSize: '12px' }} />
+                  <YAxis stroke="#666" style={{ fontSize: '12px' }} />
                   <Tooltip
                     formatter={(value) => formatCurrency(value)}
                     contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0', fontSize: '12px' }}
                   />
+                  <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                   <Line
                     type="monotone"
                     dataKey="amount"
                     stroke="#2e7d32"
-                    strokeWidth={2.5}
+                    strokeWidth={3}
                     dot={{ fill: '#2e7d32', r: 5 }}
-                    activeDot={{ r: 7 }}
-                    name="Spending"
+                    activeDot={{ r: 8 }}
+                    name="Daily Spending"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -246,27 +247,23 @@ export default function AnalyticsPage() {
               <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
                 Spending by Category
               </Typography>
-              <ResponsiveContainer width="100%" height={260}>
-                <PieChart>
-                  <Pie
-                    data={spendingByCategory}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={90}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {spendingByCategory.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={spendingByCategory} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                  <XAxis type="number" stroke="#666" style={{ fontSize: '11px' }} />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={90}
+                    stroke="#666"
+                    style={{ fontSize: '11px' }}
+                  />
                   <Tooltip
                     formatter={(value) => formatCurrency(value)}
-                    contentStyle={{ fontSize: '12px' }}
+                    contentStyle={{ borderRadius: 8, border: '1px solid #e0e0e0', fontSize: '12px' }}
                   />
-                </PieChart>
+                  <Bar dataKey="value" fill="#ab47bc" radius={[0, 6, 6, 0]} name="Spending" />
+                </BarChart>
               </ResponsiveContainer>
             </Paper>
           </Grid>

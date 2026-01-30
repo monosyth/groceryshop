@@ -11,14 +11,32 @@ import {
   Stack,
   Paper,
   CircularProgress,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Snackbar,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import {
   Search as SearchIcon,
   Store as StoreIcon,
   CalendarToday as CalendarIcon,
   LocationOn,
+  Edit as EditIcon,
+  ArrowUpward,
+  ArrowDownward,
 } from '@mui/icons-material';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
 import SearchBar from './SearchBar';
@@ -48,7 +66,13 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [filters, setFilters] = useState({ dateRange: 'all', category: 'all' });
-  const [sortBy, setSortBy] = useState('date-desc');
+  const [sortBy, setSortBy] = useState('name-asc');
+
+  // Edit functionality
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   // Load receipts from Firestore
   useEffect(() => {
@@ -173,6 +197,28 @@ export default function SearchPage() {
 
     // Sort items
     switch (sortBy) {
+      case 'name-asc':
+        items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        break;
+      case 'name-desc':
+        items.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+        break;
+      case 'store-asc':
+        items.sort((a, b) =>
+          (a.receiptStore || '').localeCompare(b.receiptStore || '')
+        );
+        break;
+      case 'store-desc':
+        items.sort((a, b) =>
+          (b.receiptStore || '').localeCompare(a.receiptStore || '')
+        );
+        break;
+      case 'amount-asc':
+        items.sort((a, b) => (a.totalPrice || 0) - (b.totalPrice || 0));
+        break;
+      case 'amount-desc':
+        items.sort((a, b) => (b.totalPrice || 0) - (a.totalPrice || 0));
+        break;
       case 'date-desc':
         items.sort((a, b) => {
           if (!a.receiptDate) return 1;
@@ -187,23 +233,100 @@ export default function SearchPage() {
           return a.receiptDate.toDate() - b.receiptDate.toDate();
         });
         break;
-      case 'amount-desc':
-        items.sort((a, b) => (b.totalPrice || 0) - (a.totalPrice || 0));
-        break;
-      case 'amount-asc':
-        items.sort((a, b) => (a.totalPrice || 0) - (b.totalPrice || 0));
-        break;
-      case 'store-asc':
-        items.sort((a, b) =>
-          (a.receiptStore || '').localeCompare(b.receiptStore || '')
-        );
-        break;
       default:
         break;
     }
 
     return items;
   }, [allItems, searchText, filters, sortBy]);
+
+  // Handle edit click
+  const handleEditClick = (item) => {
+    setEditingItem(item);
+    setEditedName(item.name);
+    setEditDialogOpen(true);
+  };
+
+  // Handle save edited name
+  const handleSaveEdit = async () => {
+    if (!editingItem || !editedName.trim()) {
+      return;
+    }
+
+    try {
+      const receiptRef = doc(db, 'receipts', editingItem.receiptId);
+      const receipt = receipts.find((r) => r.id === editingItem.receiptId);
+
+      if (!receipt) {
+        throw new Error('Receipt not found');
+      }
+
+      // Find the item index in the receipt
+      const itemIndex = receipt.items.findIndex((_, idx) => {
+        return `${editingItem.receiptId}-${idx}` === editingItem.itemId;
+      });
+
+      if (itemIndex === -1) {
+        throw new Error('Item not found in receipt');
+      }
+
+      // Update the item name
+      const updatedItems = [...receipt.items];
+      updatedItems[itemIndex] = {
+        ...updatedItems[itemIndex],
+        name: editedName.trim(),
+      };
+
+      // Update Firestore
+      await updateDoc(receiptRef, {
+        items: updatedItems,
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Item name updated successfully',
+        severity: 'success',
+      });
+
+      setEditDialogOpen(false);
+      setEditingItem(null);
+      setEditedName('');
+    } catch (error) {
+      console.error('Error updating item name:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to update item name',
+        severity: 'error',
+      });
+    }
+  };
+
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    setEditDialogOpen(false);
+    setEditingItem(null);
+    setEditedName('');
+  };
+
+  // Handle column sort
+  const handleSort = (column) => {
+    if (sortBy === `${column}-asc`) {
+      setSortBy(`${column}-desc`);
+    } else {
+      setSortBy(`${column}-asc`);
+    }
+  };
+
+  // Get sort icon for column
+  const getSortIcon = (column) => {
+    if (sortBy === `${column}-asc`) {
+      return <ArrowUpward sx={{ fontSize: 16 }} />;
+    }
+    if (sortBy === `${column}-desc`) {
+      return <ArrowDownward sx={{ fontSize: 16 }} />;
+    }
+    return null;
+  };
 
   // Loading state
   if (loading) {
@@ -232,11 +355,12 @@ export default function SearchPage() {
         onSearchChange={setSearchText}
         onFilterChange={setFilters}
         onSortChange={setSortBy}
+        hideSortDropdown={true}
       />
 
       {/* Results Header */}
       {filteredItems.length > 0 && (
-        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ mb: 2 }}>
           <Typography variant="h6" color="text.secondary">
             {searchText || filters.category !== 'all' || filters.dateRange !== 'all'
               ? `Found ${filteredItems.length} item${filteredItems.length !== 1 ? 's' : ''}`
@@ -293,112 +417,180 @@ export default function SearchPage() {
           </Paper>
         )}
 
-      {/* Results List */}
+      {/* Results Table */}
       {filteredItems.length > 0 && (
-        <Stack spacing={2}>
-          {filteredItems.map((item) => (
-            <Card
-              key={item.itemId}
-              elevation={1}
-              sx={{
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                  boxShadow: 3,
-                  bgcolor: 'action.hover',
-                },
-              }}
-            >
-              <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-                <Box
+        <TableContainer component={Paper} elevation={1}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ bgcolor: 'grey.50' }}>
+                <TableCell sx={{ fontWeight: 600 }}>
+                  <Button
+                    size="small"
+                    onClick={() => handleSort('name')}
+                    sx={{
+                      color: 'inherit',
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      minWidth: 'auto',
+                      p: 0,
+                      '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
+                    }}
+                    endIcon={getSortIcon('name')}
+                  >
+                    Item
+                  </Button>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>
+                  <Button
+                    size="small"
+                    onClick={() => handleSort('store')}
+                    sx={{
+                      color: 'inherit',
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      minWidth: 'auto',
+                      p: 0,
+                      '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
+                    }}
+                    endIcon={getSortIcon('store')}
+                  >
+                    Store
+                  </Button>
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600 }}>Qty</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 600 }}>Unit Price</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 600 }}>
+                  <Button
+                    size="small"
+                    onClick={() => handleSort('amount')}
+                    sx={{
+                      color: 'inherit',
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      minWidth: 'auto',
+                      p: 0,
+                      '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
+                    }}
+                    endIcon={getSortIcon('amount')}
+                  >
+                    Total
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredItems.map((item) => (
+                <TableRow
+                  key={item.itemId}
                   sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    gap: { xs: 2, md: 3 },
-                    alignItems: { xs: 'stretch', md: 'center' },
+                    '&:last-child td': { border: 0 },
+                    '&:hover': { bgcolor: 'action.hover' },
                   }}
                 >
-                  {/* Left: Item Info */}
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                      <Typography variant="h6" fontWeight="600" sx={{ flexGrow: 1 }}>
-                        {item.name}
-                      </Typography>
+                  <TableCell>
+                    <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          {item.name}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEditClick(item)}
+                          sx={{
+                            ml: 0.5,
+                            padding: 0.5,
+                            color: 'text.secondary',
+                            '&:hover': { color: 'primary.main' },
+                          }}
+                        >
+                          <EditIcon sx={{ fontSize: 16 }} />
+                        </IconButton>
+                      </Box>
+                      {item.receiptText && item.receiptText !== item.name && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                          Receipt: {item.receiptText}
+                        </Typography>
+                      )}
                       <Chip
                         label={item.category}
-                        color={categoryColors[item.category] || 'default'}
                         size="small"
-                        sx={{ textTransform: 'capitalize' }}
+                        color={categoryColors[item.category] || 'default'}
+                        sx={{ height: 20, fontSize: '0.7rem', textTransform: 'capitalize' }}
                       />
                     </Box>
-                    {item.receiptText && item.receiptText !== item.name && (
-                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
-                        Receipt: {item.receiptText}
-                      </Typography>
-                    )}
-                  </Box>
-
-                  {/* Middle: Store Info */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 0.5,
-                      minWidth: { md: 220 },
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <StoreIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                  </TableCell>
+                  <TableCell>
+                    <Box>
                       <Typography variant="body2" fontWeight="600" color="primary.main">
                         {item.receiptStore}
                       </Typography>
-                    </Box>
-                    {item.receiptLocation && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3.5 }}>
-                        <LocationOn sx={{ fontSize: 14, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary">
+                      {item.receiptLocation && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                           {item.receiptLocation}
                         </Typography>
-                      </Box>
-                    )}
-                    {item.receiptDate && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3.5 }}>
-                        <CalendarIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary">
+                      )}
+                      {item.receiptDate && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                           {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
                         </Typography>
-                      </Box>
-                    )}
-                  </Box>
-
-                  {/* Right: Pricing */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: { xs: 'row', md: 'column' },
-                      justifyContent: { xs: 'space-between', md: 'center' },
-                      alignItems: { md: 'flex-end' },
-                      gap: { xs: 2, md: 0.5 },
-                      minWidth: { md: 140 },
-                      pt: { xs: 1, md: 0 },
-                      borderTop: { xs: 1, md: 0 },
-                      borderColor: { xs: 'divider', md: 'transparent' },
-                    }}
-                  >
-                    <Box sx={{ textAlign: { md: 'right' } }}>
-                      <Typography variant="caption" color="text.secondary" display="block">
-                        Qty: {item.quantity || 1} × ${(item.unitPrice || 0).toFixed(2)}
-                      </Typography>
-                      <Typography variant="h6" fontWeight="700" color="primary.main">
-                        ${(item.totalPrice || 0).toFixed(2)}
-                      </Typography>
+                      )}
                     </Box>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
+                  </TableCell>
+                  <TableCell align="center">{item.quantity || 1}</TableCell>
+                  <TableCell align="right">${(item.unitPrice || 0).toFixed(2)}</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 600 }}>
+                    ${(item.totalPrice || 0).toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
+
+      {/* Edit Dialog */}
+      <Dialog open={editDialogOpen} onClose={handleCancelEdit} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Item Name</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 1 }}>
+            <TextField
+              autoFocus
+              fullWidth
+              label="Item Name"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveEdit();
+                }
+              }}
+              helperText="Update the product name (e.g., 'Tillamook Ice Cream' instead of 'Tillamook Cheese')"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelEdit}>Cancel</Button>
+          <Button onClick={handleSaveEdit} variant="contained" disabled={!editedName.trim()}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

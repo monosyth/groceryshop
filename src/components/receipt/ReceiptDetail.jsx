@@ -20,9 +20,10 @@ import {
   Stack,
   Snackbar,
   Alert,
+  TextField,
 } from '@mui/material';
-import { Close, Store, CalendarToday, LocationOn, Delete } from '@mui/icons-material';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { Close, Store, CalendarToday, LocationOn, Delete, Edit } from '@mui/icons-material';
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '../../firebase';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -34,6 +35,11 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  // Edit functionality
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingItemIndex, setEditingItemIndex] = useState(null);
+  const [editedName, setEditedName] = useState('');
 
   if (!receipt) return null;
 
@@ -82,6 +88,62 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
    */
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  /**
+   * Handle edit item click
+   */
+  const handleEditClick = (index, currentName) => {
+    setEditingItemIndex(index);
+    setEditedName(currentName);
+    setEditDialogOpen(true);
+  };
+
+  /**
+   * Handle save edited name
+   */
+  const handleSaveEdit = async () => {
+    if (editingItemIndex === null || !editedName.trim()) {
+      return;
+    }
+
+    try {
+      const updatedItems = [...items];
+      updatedItems[editingItemIndex] = {
+        ...updatedItems[editingItemIndex],
+        name: editedName.trim(),
+      };
+
+      await updateDoc(doc(db, 'receipts', receipt.id), {
+        items: updatedItems,
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Item name updated successfully',
+        severity: 'success',
+      });
+
+      setEditDialogOpen(false);
+      setEditingItemIndex(null);
+      setEditedName('');
+    } catch (error) {
+      console.error('Error updating item name:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to update item name',
+        severity: 'error',
+      });
+    }
+  };
+
+  /**
+   * Handle cancel edit
+   */
+  const handleCancelEdit = () => {
+    setEditDialogOpen(false);
+    setEditingItemIndex(null);
+    setEditedName('');
   };
 
   // Category colors
@@ -217,9 +279,23 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                     <TableRow key={index} sx={{ '&:last-child td': { border: 0 } }}>
                       <TableCell>
                         <Box>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {item.name}
-                          </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {item.name}
+                            </Typography>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleEditClick(index, item.name)}
+                              sx={{
+                                ml: 0.5,
+                                padding: 0.5,
+                                color: 'text.secondary',
+                                '&:hover': { color: 'primary.main' },
+                              }}
+                            >
+                              <Edit sx={{ fontSize: 16 }} />
+                            </IconButton>
+                          </Box>
                           {item.receiptText && item.receiptText !== item.name && (
                             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>
                               Receipt: {item.receiptText}
@@ -319,6 +395,34 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             startIcon={deleting ? null : <Delete />}
           >
             {deleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Item Dialog */}
+      <Dialog open={editDialogOpen} onClose={handleCancelEdit} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Item Name</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 1 }}>
+            <TextField
+              autoFocus
+              fullWidth
+              label="Item Name"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveEdit();
+                }
+              }}
+              helperText="Update the product name (e.g., 'Tillamook Ice Cream' instead of 'Tillamook Cheese')"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelEdit}>Cancel</Button>
+          <Button onClick={handleSaveEdit} variant="contained" disabled={!editedName.trim()}>
+            Save
           </Button>
         </DialogActions>
       </Dialog>

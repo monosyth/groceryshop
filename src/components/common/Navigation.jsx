@@ -24,7 +24,6 @@ import {
   ShoppingCart,
   Dashboard,
   Upload,
-  Search,
   BarChart,
   AccountCircle,
   Logout,
@@ -66,7 +65,6 @@ export default function Navigation() {
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: <Dashboard /> },
     { label: 'Upload', path: '/upload', icon: <Upload /> },
-    { label: 'Search', path: '/search', icon: <Search /> },
     { label: 'Analytics', path: '/analytics', icon: <BarChart /> },
   ];
 

@@ -12,6 +12,9 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 // Layout
 import MainLayout from './components/layout/MainLayout';
 
+// Landing
+import LandingPage from './components/landing/LandingPage';
+
 // Pages
 import Dashboard from './components/dashboard/Dashboard';
 import UploadPage from './components/receipt/UploadPage';
@@ -26,6 +29,7 @@ function App() {
         <Router>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
 
@@ -71,11 +75,8 @@ function App() {
               }
             />
 
-            {/* Redirect root to dashboard */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-            {/* Catch all - redirect to dashboard */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            {/* Catch all - redirect to landing page */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
       </AuthProvider>

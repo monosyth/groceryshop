@@ -40,6 +40,9 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
       sx={{
         cursor: 'pointer',
         transition: 'all 0.3s ease',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         '&:hover': {
           transform: 'translateY(-4px)',
           boxShadow: 6,
@@ -49,7 +52,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
       {/* Receipt Image */}
       <CardMedia
         component="img"
-        height="160"
+        height="200"
         image={imageUrl}
         alt={storeInfo?.name || 'Receipt'}
         sx={{
@@ -58,7 +61,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         }}
       />
 
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         {/* Status Badge */}
         <Box sx={{ mb: 2 }}>
           <Chip
@@ -82,21 +85,28 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         </Box>
 
         {/* Date */}
-        {storeInfo?.date && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <CalendarToday sx={{ fontSize: 18, color: 'text.secondary' }} />
-            <Typography variant="body2" color="text.secondary">
-              {formatDate(storeInfo.date)}
-            </Typography>
-          </Box>
-        )}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+          <CalendarToday sx={{ fontSize: 18, color: 'text.secondary' }} />
+          <Typography variant="body2" color="text.secondary">
+            {storeInfo?.date ? formatDate(storeInfo.date) : 'No date'}
+          </Typography>
+        </Box>
 
         {/* Location */}
-        {storeInfo?.location && (
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
-            {storeInfo.location}
-          </Typography>
-        )}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            mb: 2,
+            fontStyle: 'italic',
+            minHeight: '20px',
+          }}
+        >
+          {storeInfo?.location || '\u00A0'}
+        </Typography>
+
+        {/* Spacer to push total to bottom */}
+        <Box sx={{ flexGrow: 1 }} />
 
         {/* Total Amount */}
         {summary?.total !== undefined && (
@@ -105,7 +115,6 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              mt: 2,
               pt: 2,
               borderTop: 1,
               borderColor: 'divider',

@@ -16,7 +16,7 @@ import { Search, FilterList, Sort, Clear } from '@mui/icons-material';
 /**
  * Search and filter bar for receipts
  */
-export default function SearchBar({ onSearchChange, onFilterChange, onSortChange }) {
+export default function SearchBar({ onSearchChange, onFilterChange, onSortChange, hideSortDropdown = false }) {
   const [searchText, setSearchText] = useState('');
   const [dateRange, setDateRange] = useState('all');
   const [category, setCategory] = useState('all');
@@ -170,25 +170,27 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
         </FormControl>
 
         {/* Sort Dropdown */}
-        <FormControl sx={{ minWidth: 180 }}>
-          <InputLabel id="sort-by-label">
-            <Sort sx={{ fontSize: 18, mr: 0.5, verticalAlign: 'middle' }} />
-            Sort By
-          </InputLabel>
-          <Select
-            labelId="sort-by-label"
-            value={sortBy}
-            onChange={handleSortChange}
-            label="Sort By"
-            sx={{ borderRadius: 2 }}
-          >
-            {sortOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {!hideSortDropdown && (
+          <FormControl sx={{ minWidth: 180 }}>
+            <InputLabel id="sort-by-label">
+              <Sort sx={{ fontSize: 18, mr: 0.5, verticalAlign: 'middle' }} />
+              Sort By
+            </InputLabel>
+            <Select
+              labelId="sort-by-label"
+              value={sortBy}
+              onChange={handleSortChange}
+              label="Sort By"
+              sx={{ borderRadius: 2 }}
+            >
+              {sortOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
       </Stack>
     </Box>
   );
