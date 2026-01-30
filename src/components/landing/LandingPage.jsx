@@ -233,21 +233,21 @@ export default function LandingPage() {
               mb: 1,
             }}
           >
-            Finally, a grocery tracker that doesn't suck
+            Grocery tracking, but make it fun
           </Typography>
 
           <Typography
             sx={{
               fontSize: { xs: '48px', sm: '60px', md: '72px' },
               fontWeight: 900,
-              lineHeight: 1,
+              lineHeight: 1.1,
               color: '#15803D',
               letterSpacing: '-0.03em',
               textShadow: '4px 4px 0px rgba(0,0,0,0.1)',
               mb: 2,
             }}
           >
-            Snap. Track.{' '}
+            Your groceries,{' '}
             <Box
               component="span"
               sx={{
@@ -257,7 +257,7 @@ export default function LandingPage() {
                 backgroundClip: 'text',
               }}
             >
-              Save.
+              organized
             </Box>
           </Typography>
 
@@ -311,7 +311,7 @@ export default function LandingPage() {
               fontWeight: 600,
             }}
           >
-            No credit card • No BS • Just groceries
+            Free forever • No credit card • Just groceries
           </Typography>
         </Box>
       </Container>
@@ -342,7 +342,7 @@ export default function LandingPage() {
               Snap It
             </Typography>
             <Typography sx={{ fontSize: '14px', color: '#1E3A8A', lineHeight: 1.4 }}>
-              One photo, done. No typing, no pain.
+              One photo and you're done. No typing needed.
             </Typography>
           </Box>
 
@@ -384,7 +384,7 @@ export default function LandingPage() {
               Find Stuff
             </Typography>
             <Typography sx={{ fontSize: '14px', color: '#065F46', lineHeight: 1.4 }}>
-              Search everything. Even that weird cheese.
+              Search across all your receipts in seconds.
             </Typography>
           </Box>
 
@@ -405,7 +405,7 @@ export default function LandingPage() {
               Save Money
             </Typography>
             <Typography sx={{ fontSize: '14px', color: '#78350F', lineHeight: 1.4 }}>
-              See where your cash goes. Be shocked.
+              See where your money goes. Keep more of it.
             </Typography>
           </Box>
         </Box>
@@ -443,7 +443,7 @@ export default function LandingPage() {
               fontWeight: 500,
             }}
           >
-            Join the cool kids who track their avocados
+            Start tracking your groceries the easy way
           </Typography>
           <Button
             onClick={handleGoogleSignIn}
@@ -468,7 +468,7 @@ export default function LandingPage() {
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
           >
-            {loading ? 'Loading...' : 'Let\'s Go! 🚀'}
+            {loading ? 'Loading...' : 'Get Started Free'}
           </Button>
         </Box>
       </Container>
@@ -491,7 +491,7 @@ export default function LandingPage() {
             mt: 1,
           }}
         >
-          © 2026 GrozeryShop • Because receipts shouldn't suck
+          © 2026 GrozeryShop • Making grocery tracking actually enjoyable
         </Typography>
       </Box>
 
