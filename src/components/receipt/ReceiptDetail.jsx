@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
+  DialogActions,
   IconButton,
+  Button,
   Box,
   Typography,
   Divider,
@@ -15,17 +18,71 @@ import {
   Paper,
   Chip,
   Stack,
+  Snackbar,
+  Alert,
 } from '@mui/material';
-import { Close, Store, CalendarToday, LocationOn } from '@mui/icons-material';
+import { Close, Store, CalendarToday, LocationOn, Delete } from '@mui/icons-material';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
+import { db, storage } from '../../firebase';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
 /**
  * Receipt detail dialog showing full item breakdown
  */
 export default function ReceiptDetail({ receipt, open, onClose }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
   if (!receipt) return null;
 
   const { storeInfo, items = [], summary, metadata, imageUrl } = receipt;
+
+  /**
+   * Handle receipt deletion - removes both Firestore document and Storage image
+   */
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      // Delete from Firestore
+      await deleteDoc(doc(db, 'receipts', receipt.id));
+
+      // Delete image from Storage
+      if (receipt.imagePath) {
+        const imageRef = ref(storage, receipt.imagePath);
+        await deleteObject(imageRef);
+      }
+
+      setSnackbar({
+        open: true,
+        message: 'Receipt deleted successfully!',
+        severity: 'success',
+      });
+
+      // Close dialogs and modal
+      setConfirmDelete(false);
+      setTimeout(() => {
+        onClose();
+      }, 500);
+    } catch (error) {
+      console.error('Error deleting receipt:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to delete receipt. Please try again.',
+        severity: 'error',
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  /**
+   * Handle closing snackbar
+   */
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   // Category colors
   const getCategoryColor = (category) => {
@@ -64,9 +121,23 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             Receipt Details
           </Typography>
-          <IconButton onClick={onClose} size="small">
-            <Close />
-          </IconButton>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton
+              onClick={() => setConfirmDelete(true)}
+              size="small"
+              color="error"
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'error.lighter',
+                },
+              }}
+            >
+              <Delete />
+            </IconButton>
+            <IconButton onClick={onClose} size="small">
+              <Close />
+            </IconButton>
+          </Box>
         </Box>
       </DialogTitle>
 
@@ -216,6 +287,48 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
           </Box>
         )}
       </DialogContent>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={confirmDelete}
+        onClose={() => !deleting && setConfirmDelete(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Delete Receipt?</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this receipt? This will permanently remove the receipt
+            data and image. This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDelete(false)} disabled={deleting}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            disabled={deleting}
+            startIcon={deleting ? null : <Delete />}
+          >
+            {deleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }
