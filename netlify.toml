@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   # Disable secret scanning - Firebase API keys are designed to be public
   # Security is enforced via Firebase Security Rules, not by hiding the key
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
