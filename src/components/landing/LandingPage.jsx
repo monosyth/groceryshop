@@ -323,86 +323,86 @@ export default function LandingPage() {
             gap: 3,
           }}
         >
-          {/* Feature 1 */}
+          {/* Feature 1 - Green */}
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#F0FDFA',
+              bgcolor: '#ECFDF5',
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #14B8A6',
-              boxShadow: '6px 6px 0px #14B8A6',
+              border: '4px solid #10B981',
+              boxShadow: '6px 6px 0px #10B981',
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#0D9488', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#059669', mb: 1 }}>
               Snap It
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#0D9488', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: '#059669', lineHeight: 1.4 }}>
               One photo and you're done. No typing needed.
             </Typography>
           </Box>
 
-          {/* Feature 2 */}
+          {/* Feature 2 - Pink */}
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#FED7E2',
+              bgcolor: '#FCE7F3',
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #BE185D',
-              boxShadow: '6px 6px 0px #BE185D',
+              border: '4px solid #EC4899',
+              boxShadow: '6px 6px 0px #EC4899',
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📊</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#831843', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#BE185D', mb: 1 }}>
               See Patterns
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#831843', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: '#BE185D', lineHeight: 1.4 }}>
               Pretty charts that actually make sense.
             </Typography>
           </Box>
 
-          {/* Feature 3 */}
-          <Box
-            className="feature-card wiggle-hover"
-            sx={{
-              bgcolor: '#D1FAE5',
-              borderRadius: '24px',
-              p: 3,
-              border: '4px solid #047857',
-              boxShadow: '6px 6px 0px #047857',
-              cursor: 'pointer',
-            }}
-          >
-            <Box sx={{ fontSize: '56px', mb: 1 }}>🔍</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#065F46', mb: 1 }}>
-              Find Stuff
-            </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#065F46', lineHeight: 1.4 }}>
-              Search across all your receipts in seconds.
-            </Typography>
-          </Box>
-
-          {/* Feature 4 */}
+          {/* Feature 3 - Yellow */}
           <Box
             className="feature-card wiggle-hover"
             sx={{
               bgcolor: '#FEF3C7',
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #B45309',
-              boxShadow: '6px 6px 0px #B45309',
+              border: '4px solid #F59E0B',
+              boxShadow: '6px 6px 0px #F59E0B',
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ fontSize: '56px', mb: 1 }}>🔍</Box>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#D97706', mb: 1 }}>
+              Find Stuff
+            </Typography>
+            <Typography sx={{ fontSize: '14px', color: '#D97706', lineHeight: 1.4 }}>
+              Search across all your receipts in seconds.
+            </Typography>
+          </Box>
+
+          {/* Feature 4 - Orange */}
+          <Box
+            className="feature-card wiggle-hover"
+            sx={{
+              bgcolor: '#FFEDD5',
+              borderRadius: '24px',
+              p: 3,
+              border: '4px solid #F97316',
+              boxShadow: '6px 6px 0px #F97316',
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>💰</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#78350F', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#EA580C', mb: 1 }}>
               Save Money
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#78350F', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: '#EA580C', lineHeight: 1.4 }}>
               See where your money goes. Keep more of it.
             </Typography>
           </Box>
