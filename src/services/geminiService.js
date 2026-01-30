@@ -69,6 +69,9 @@ Return ONLY the JSON array, no additional text.`;
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Rate limit reached. Please wait a minute and try again.');
+      }
       throw new Error(`Gemini API error: ${response.statusText}`);
     }
 
@@ -140,6 +143,9 @@ Focus on ingredients that can be used for cooking. Ignore packaging, brands, or 
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Rate limit reached. Please wait a minute and try again.');
+      }
       throw new Error(`Gemini API error: ${response.statusText}`);
     }
 
