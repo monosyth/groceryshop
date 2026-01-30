@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Typography, Box, Alert } from '@mui/material';
+import { Container, Typography, Box, Alert, Button, Stack } from '@mui/material';
+import { CheckCircle, Upload as UploadIcon } from '@mui/icons-material';
 import UploadForm from './UploadForm';
 import ReceiptCamera from './ReceiptCamera';
-import SuccessDialog from '../common/SuccessDialog';
 import { createReceipt } from '../../services/receiptService';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -12,7 +12,7 @@ export default function UploadPage() {
   const [error, setError] = useState('');
   const [progress, setProgress] = useState(0);
   const [cameraOpen, setCameraOpen] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [receiptId, setReceiptId] = useState(null);
 
   const { currentUser } = useAuth();
@@ -27,6 +27,7 @@ export default function UploadPage() {
     try {
       setLoading(true);
       setError('');
+      setUploadSuccess(false);
       setProgress(0);
 
       // Upload receipt
@@ -35,7 +36,7 @@ export default function UploadPage() {
       });
 
       setReceiptId(newReceiptId);
-      setSuccessOpen(true);
+      setUploadSuccess(true);
     } catch (err) {
       console.error('Upload error:', err);
       setError(err.message || 'Failed to upload receipt. Please try again.');
@@ -48,13 +49,15 @@ export default function UploadPage() {
     handleFileSelect(file);
   };
 
-  const handleViewDashboard = () => {
-    navigate('/dashboard');
+  const handleUploadAnother = () => {
+    setUploadSuccess(false);
+    setError('');
+    setProgress(0);
+    setReceiptId(null);
   };
 
-  const handleSuccessClose = () => {
-    setSuccessOpen(false);
-    setProgress(0);
+  const handleViewDashboard = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -68,38 +71,72 @@ export default function UploadPage() {
         </Typography>
       </Box>
 
+      {/* Success Confirmation */}
+      {uploadSuccess && (
+        <Alert
+          severity="success"
+          icon={<CheckCircle />}
+          sx={{ mb: 3 }}
+          action={
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+              <Button
+                color="inherit"
+                size="small"
+                onClick={handleViewDashboard}
+                sx={{ whiteSpace: 'nowrap' }}
+              >
+                View Dashboard
+              </Button>
+              <Button
+                color="inherit"
+                size="small"
+                variant="outlined"
+                onClick={handleUploadAnother}
+                startIcon={<UploadIcon />}
+                sx={{ whiteSpace: 'nowrap' }}
+              >
+                Upload Another
+              </Button>
+            </Stack>
+          }
+        >
+          <Typography variant="body1" fontWeight="600">
+            Receipt Uploaded Successfully!
+          </Typography>
+          <Typography variant="body2">
+            AI analysis has begun. Your receipt will appear in the dashboard shortly with all items,
+            prices, and store information extracted.
+          </Typography>
+        </Alert>
+      )}
+
       {/* Info Alert */}
-      <Alert severity="info" sx={{ mb: 3 }}>
-        <Typography variant="body2">
-          <strong>Tip:</strong> For best results, ensure the receipt is well-lit and all text is clearly visible.
-          AI analysis will automatically extract items, prices, and store information.
-        </Typography>
-      </Alert>
+      {!uploadSuccess && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+          <Typography variant="body2">
+            <strong>Tip:</strong> For best results, ensure the receipt is well-lit and all text is
+            clearly visible. AI analysis will automatically extract items, prices, and store
+            information.
+          </Typography>
+        </Alert>
+      )}
 
       {/* Upload Form */}
-      <UploadForm
-        onFileSelect={handleFileSelect}
-        onCameraClick={() => setCameraOpen(true)}
-        loading={loading}
-        error={error}
-        progress={progress}
-      />
+      {!uploadSuccess && (
+        <UploadForm
+          onFileSelect={handleFileSelect}
+          onCameraClick={() => setCameraOpen(true)}
+          loading={loading}
+          error={error}
+          progress={progress}
+        />
+      )}
 
       {/* Camera Modal */}
       <ReceiptCamera
         open={cameraOpen}
         onClose={() => setCameraOpen(false)}
         onCapture={handleCameraCapture}
-      />
-
-      {/* Success Dialog */}
-      <SuccessDialog
-        open={successOpen}
-        onClose={handleSuccessClose}
-        title="Receipt Uploaded!"
-        message="Your receipt has been uploaded successfully. AI analysis will begin shortly and you'll be able to view the results in your dashboard."
-        actionLabel="View Dashboard"
-        onAction={handleViewDashboard}
       />
     </Container>
   );
