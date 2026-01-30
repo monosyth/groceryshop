@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -12,6 +13,8 @@ import {
   Toolbar,
   useTheme,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import {
   ShoppingCart,
@@ -20,12 +23,35 @@ import {
   Search,
   TrendingUp,
   AutoAwesome,
+  Google as GoogleIcon,
 } from '@mui/icons-material';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { signInWithGoogle } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setError('');
+      setLoading(true);
+      await signInWithGoogle();
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        setError('Sign-in cancelled');
+      } else {
+        setError('Failed to sign in. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const features = [
     {
@@ -181,18 +207,9 @@ export default function LandingPage() {
           </Box>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Button
-              onClick={() => navigate('/login')}
-              className="body-text"
-              sx={{
-                color: '#2E7D32',
-                fontWeight: 600,
-                '&:hover': { bgcolor: 'rgba(76, 175, 80, 0.08)' },
-              }}
-            >
-              Sign In
-            </Button>
-            <Button
-              onClick={() => navigate('/signup')}
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              startIcon={<GoogleIcon />}
               variant="contained"
               className="body-text"
               sx={{
@@ -210,7 +227,7 @@ export default function LandingPage() {
                 transition: 'all 0.3s ease',
               }}
             >
-              Get Started
+              {loading ? 'Signing In...' : 'Sign In with Google'}
             </Button>
           </Box>
         </Toolbar>
@@ -269,7 +286,9 @@ export default function LandingPage() {
                 variant="contained"
                 size="large"
                 className="body-text"
-                onClick={() => navigate('/signup')}
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                startIcon={<GoogleIcon />}
                 endIcon={<AutoAwesome />}
                 sx={{
                   bgcolor: '#4CAF50',
@@ -288,30 +307,7 @@ export default function LandingPage() {
                   transition: 'all 0.3s ease',
                 }}
               >
-                Start Free
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                className="body-text"
-                onClick={() => navigate('/login')}
-                sx={{
-                  color: '#2E7D32',
-                  borderColor: '#4CAF50',
-                  borderWidth: 2,
-                  px: 4,
-                  py: 2,
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  borderRadius: '16px',
-                  '&:hover': {
-                    borderWidth: 2,
-                    borderColor: '#2E7D32',
-                    bgcolor: 'rgba(76, 175, 80, 0.08)',
-                  },
-                }}
-              >
-                Sign In
+                {loading ? 'Signing In...' : 'Sign In with Google'}
               </Button>
             </Box>
 
@@ -577,7 +573,9 @@ export default function LandingPage() {
                 variant="contained"
                 size="large"
                 className="body-text"
-                onClick={() => navigate('/signup')}
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                startIcon={<GoogleIcon />}
                 endIcon={<AutoAwesome />}
                 sx={{
                   bgcolor: 'white',
@@ -596,7 +594,7 @@ export default function LandingPage() {
                   transition: 'all 0.3s ease',
                 }}
               >
-                Start Free Now
+                {loading ? 'Signing In...' : 'Sign In with Google'}
               </Button>
             </Box>
           </Paper>
@@ -643,33 +641,19 @@ export default function LandingPage() {
             <Grid item xs={12} md={6} sx={{ textAlign: { xs: 'left', md: 'right' } }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'flex-start', md: 'flex-end' } }}>
                 <Button
-                  variant="outlined"
-                  className="body-text"
-                  sx={{
-                    color: 'white',
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    fontWeight: 600,
-                    '&:hover': {
-                      borderColor: 'white',
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                    },
-                  }}
-                  onClick={() => navigate('/login')}
-                >
-                  Sign In
-                </Button>
-                <Button
                   variant="contained"
                   className="body-text"
+                  startIcon={<GoogleIcon />}
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
                   sx={{
                     bgcolor: 'white',
                     color: '#2E7D32',
                     fontWeight: 600,
                     '&:hover': { bgcolor: '#FFF9C4' },
                   }}
-                  onClick={() => navigate('/signup')}
                 >
-                  Get Started
+                  {loading ? 'Signing In...' : 'Sign In with Google'}
                 </Button>
               </Box>
             </Grid>
@@ -686,6 +670,18 @@ export default function LandingPage() {
           </Box>
         </Container>
       </Box>
+
+      {/* Error Snackbar */}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setError('')} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

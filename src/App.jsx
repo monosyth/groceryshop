@@ -5,8 +5,6 @@ import theme from './theme';
 import { AuthProvider } from './context/AuthContext';
 
 // Auth components
-import LoginPage from './components/auth/LoginPage';
-import SignUpPage from './components/auth/SignUpPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Layout
@@ -30,8 +28,6 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
 
             {/* Protected routes */}
             <Route
