@@ -105,12 +105,15 @@ export default function SearchPage() {
   const filteredItems = useMemo(() => {
     let items = [...allItems];
 
-    // Text search - search item name, keywords, and category
+    // Text search - search item name, receipt text, keywords, and category
     if (searchText.trim()) {
       const searchLower = searchText.toLowerCase().trim();
       items = items.filter((item) => {
         // Search in item name
         if (item.name?.toLowerCase().includes(searchLower)) return true;
+
+        // Search in receipt text (shorthand)
+        if (item.receiptText?.toLowerCase().includes(searchLower)) return true;
 
         // Search in keywords array
         if (
@@ -304,6 +307,11 @@ export default function SearchPage() {
                   <Typography variant="h6" gutterBottom fontWeight="600" noWrap>
                     {item.name}
                   </Typography>
+                  {item.receiptText && item.receiptText !== item.name && (
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
+                      Receipt: {item.receiptText}
+                    </Typography>
+                  )}
 
                   {/* Category Chip */}
                   <Box sx={{ mb: 2 }}>

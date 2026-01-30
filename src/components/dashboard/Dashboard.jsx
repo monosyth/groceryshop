@@ -85,8 +85,10 @@ export default function Dashboard() {
       filtered = filtered.filter((receipt) => {
         const storeName = receipt.storeInfo?.name?.toLowerCase() || '';
         const location = receipt.storeInfo?.location?.toLowerCase() || '';
-        const items = receipt.items?.map((item) => item.name?.toLowerCase()).join(' ') || '';
-        return storeName.includes(search) || location.includes(search) || items.includes(search);
+        const itemNames = receipt.items?.map((item) => item.name?.toLowerCase()).join(' ') || '';
+        const receiptTexts = receipt.items?.map((item) => item.receiptText?.toLowerCase()).join(' ') || '';
+        const keywords = receipt.items?.flatMap((item) => item.keywords || []).map((kw) => kw.toLowerCase()).join(' ') || '';
+        return storeName.includes(search) || location.includes(search) || itemNames.includes(search) || receiptTexts.includes(search) || keywords.includes(search);
       });
     }
 

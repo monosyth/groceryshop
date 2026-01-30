@@ -107,7 +107,8 @@ function createReceiptAnalysisPrompt() {
   },
   "items": [
     {
-      "name": "Item name (string)",
+      "name": "Full spelled-out product name with brand (e.g., 'Coffee Mate Liquid Vanilla Creamer', 'Skittles Tropical Candy', 'Fresh Bananas')",
+      "receiptText": "Exact shorthand text from receipt as printed (e.g., 'COF MATE LIQ VAN', 'SKITTLES TROPICA', 'BANANAS')",
       "category": "One of: grocery|produce|meat|dairy|bakery|frozen|beverages|snacks|household|personal care|health|other",
       "quantity": "Quantity as number (default 1)",
       "unitPrice": "Unit price as number",
@@ -125,6 +126,7 @@ function createReceiptAnalysisPrompt() {
 
 Important instructions:
 - Extract ALL items from the receipt
+- For each item, provide BOTH: 1) "name" = full spelled-out product name (e.g., "Coffee Mate Liquid Vanilla Creamer"), 2) "receiptText" = exact shorthand from receipt (e.g., "COF MATE LIQ VAN")
 - Be precise with numbers - no dollar signs, just numbers (e.g., 12.99 not $12.99)
 - If you can't read a value, set it to null or 0 for numbers
 - Categorize each item appropriately
@@ -165,6 +167,7 @@ function parseGeminiResponse(text) {
       },
       items: (parsed.items || []).map((item) => ({
         name: item.name || 'Unknown Item',
+        receiptText: item.receiptText || item.name || 'Unknown Item',
         category: item.category || 'other',
         quantity: item.quantity || 1,
         unitPrice: parseFloat(item.unitPrice) || 0,

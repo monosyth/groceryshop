@@ -220,6 +220,11 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                           <Typography variant="body2" sx={{ fontWeight: 500 }}>
                             {item.name}
                           </Typography>
+                          {item.receiptText && item.receiptText !== item.name && (
+                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>
+                              Receipt: {item.receiptText}
+                            </Typography>
+                          )}
                           <Chip
                             label={item.category}
                             size="small"
