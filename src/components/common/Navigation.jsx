@@ -26,6 +26,7 @@ import {
   AccountCircle,
   Logout,
   Menu as MenuIcon,
+  Restaurant,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -63,6 +64,7 @@ export default function Navigation() {
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: <Dashboard />, emoji: '🏠' },
     { label: 'Upload', path: '/upload', icon: <Upload />, emoji: '📸' },
+    { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
     { label: 'Analytics', path: '/analytics', icon: <BarChart />, emoji: '📊' },
   ];
 

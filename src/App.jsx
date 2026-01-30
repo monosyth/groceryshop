@@ -18,6 +18,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import UploadPage from './components/receipt/UploadPage';
 import SearchPage from './components/search/SearchPage';
 import Analytics from './components/analytics/Analytics';
+import RecipePage from './components/recipe/RecipePage';
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
                 <ProtectedRoute>
                   <MainLayout>
                     <UploadPage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recipes"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <RecipePage />
                   </MainLayout>
                 </ProtectedRoute>
               }

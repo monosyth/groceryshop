@@ -1,11 +1,22 @@
 # GrozeryShop
 
-A modern web application built with React, Firebase, and Material UI for tracking grocery receipts and spending.
+A modern web application built with React, Firebase, and Material UI for tracking grocery receipts, analyzing spending, and generating recipe ideas from your groceries.
+
+## Features
+
+- 📸 **Receipt Upload**: Snap photos of grocery receipts for automatic parsing
+- 📊 **Analytics Dashboard**: Track spending trends, categories, and stores
+- 🛍️ **Item Management**: Browse and search all grocery items across receipts
+- 👨‍🍳 **Recipe Generator**: Get AI-powered recipe suggestions based on your groceries
+  - Select specific receipts or upload pantry photos
+  - Gemini AI suggests real recipes from popular cooking sites
+  - Smart ingredient matching with pantry staples consideration
 
 ## Tech Stack
 
 - **Frontend**: React 19 + Vite
 - **UI Framework**: Material UI (MUI)
+- **AI**: Google Gemini API for recipe generation and image analysis
 - **Backend**: Firebase
   - Authentication
   - Cloud Firestore
@@ -89,6 +100,7 @@ This app is configured to use:
 
 Required environment variables (set in `.env.local`):
 
+### Firebase Configuration
 ```
 VITE_FIREBASE_API_KEY
 VITE_FIREBASE_AUTH_DOMAIN
@@ -97,6 +109,15 @@ VITE_FIREBASE_STORAGE_BUCKET
 VITE_FIREBASE_MESSAGING_SENDER_ID
 VITE_FIREBASE_APP_ID
 ```
+
+### Gemini AI Configuration (Required for Recipe Feature)
+```
+VITE_GEMINI_API_KEY
+```
+
+Get your Gemini API key from: https://makersuite.google.com/app/apikey
+
+**Note**: The Recipe feature requires a Gemini API key. Without it, you can still use all other features of the app.
 
 ## Deployment
 
