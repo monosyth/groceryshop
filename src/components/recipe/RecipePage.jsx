@@ -906,6 +906,7 @@ export default function RecipePage() {
                 </Box>
               )}
             </Grid>
+          </Grid>
           </Box>
         )}
 
