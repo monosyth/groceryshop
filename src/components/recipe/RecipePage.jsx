@@ -655,14 +655,14 @@ export default function RecipePage() {
                         fontSize: '13px',
                       }}
                     >
-                      Copy a recipe from any website and paste it here
+                      Paste a recipe URL or text from any website
                     </Typography>
 
                     <TextField
                       fullWidth
                       multiline
                       rows={3}
-                      placeholder="Paste recipe ingredients and instructions here..."
+                      placeholder="Paste recipe URL (e.g., allrecipes.com) or recipe text..."
                       value={recipeText}
                       onChange={(e) => setRecipeText(e.target.value)}
                       disabled={importingRecipe}
