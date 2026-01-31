@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -23,7 +23,7 @@ import {
   TextField,
 } from '@mui/material';
 import { Close, Store, CalendarToday, LocationOn, Delete, Edit } from '@mui/icons-material';
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { doc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '../../firebase';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -41,9 +41,72 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editedName, setEditedName] = useState('');
 
-  if (!receipt) return null;
+  // Real-time receipt data
+  const [liveReceipt, setLiveReceipt] = useState(receipt);
 
-  const { storeInfo, items = [], summary, metadata, imageUrl } = receipt;
+  // Listen to receipt updates in real-time
+  useEffect(() => {
+    if (!receipt?.id) return;
+
+    const unsubscribe = onSnapshot(
+      doc(db, 'receipts', receipt.id),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          setLiveReceipt({
+            id: docSnap.id,
+            ...docSnap.data(),
+          });
+        }
+      },
+      (error) => {
+        console.error('Error listening to receipt updates:', error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [receipt?.id]);
+
+  // Update live receipt when prop changes
+  useEffect(() => {
+    if (receipt) {
+      setLiveReceipt(receipt);
+    }
+  }, [receipt]);
+
+  if (!liveReceipt) return null;
+
+  const { storeInfo, items = [], summary, metadata, imageUrl } = liveReceipt;
+
+  // Sort items by category and track original indices
+  const categoryOrder = [
+    'produce',
+    'meat',
+    'dairy',
+    'bakery',
+    'frozen',
+    'pantry',
+    'beverages',
+    'snacks',
+    'household',
+    'personal care',
+    'health',
+    'other',
+  ];
+
+  const sortedItems = items
+    .map((item, originalIndex) => ({ ...item, originalIndex }))
+    .sort((a, b) => {
+      const categoryA = a.category?.toLowerCase() || 'other';
+      const categoryB = b.category?.toLowerCase() || 'other';
+      const indexA = categoryOrder.indexOf(categoryA);
+      const indexB = categoryOrder.indexOf(categoryB);
+
+      // If category not in order list, put at end
+      const orderA = indexA === -1 ? categoryOrder.length : indexA;
+      const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+      return orderA - orderB;
+    });
 
   /**
    * Handle receipt deletion - removes both Firestore document and Storage image
@@ -52,11 +115,11 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
     setDeleting(true);
     try {
       // Delete from Firestore
-      await deleteDoc(doc(db, 'receipts', receipt.id));
+      await deleteDoc(doc(db, 'receipts', liveReceipt.id));
 
       // Delete image from Storage
-      if (receipt.imagePath) {
-        const imageRef = ref(storage, receipt.imagePath);
+      if (liveReceipt.imagePath) {
+        const imageRef = ref(storage, liveReceipt.imagePath);
         await deleteObject(imageRef);
       }
 
@@ -93,8 +156,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   /**
    * Handle edit item click
    */
-  const handleEditClick = (index, currentName) => {
-    setEditingItemIndex(index);
+  const handleEditClick = (originalIndex, currentName) => {
+    setEditingItemIndex(originalIndex);
     setEditedName(currentName);
     setEditDialogOpen(true);
   };
@@ -114,7 +177,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
         name: editedName.trim(),
       };
 
-      await updateDoc(doc(db, 'receipts', receipt.id), {
+      await updateDoc(doc(db, 'receipts', liveReceipt.id), {
         items: updatedItems,
       });
 
@@ -146,23 +209,24 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
     setEditedName('');
   };
 
-  // Category colors
-  const getCategoryColor = (category) => {
-    const colors = {
-      grocery: 'success',
-      produce: 'success',
-      meat: 'error',
-      dairy: 'info',
-      bakery: 'warning',
-      frozen: 'primary',
-      beverages: 'info',
-      snacks: 'secondary',
-      household: 'default',
-      'personal care': 'default',
-      health: 'error',
-      other: 'default',
+  // Category colors and emojis (matching shopping list)
+  const getCategoryInfo = (category) => {
+    const categoryMap = {
+      produce: { emoji: '🥬', color: '#22C55E', bg: '#DCFCE7' },
+      meat: { emoji: '🥩', color: '#EF4444', bg: '#FEE2E2' },
+      dairy: { emoji: '🥛', color: '#3B82F6', bg: '#DBEAFE' },
+      bakery: { emoji: '🍞', color: '#F59E0B', bg: '#FEF3C7' },
+      frozen: { emoji: '🧊', color: '#06B6D4', bg: '#CFFAFE' },
+      pantry: { emoji: '🥫', color: '#8B5CF6', bg: '#EDE9FE' },
+      beverages: { emoji: '🥤', color: '#EC4899', bg: '#FCE7F3' },
+      snacks: { emoji: '🍿', color: '#F97316', bg: '#FFEDD5' },
+      household: { emoji: '🧹', color: '#6B7280', bg: '#F3F4F6' },
+      'personal care': { emoji: '🧴', color: '#6B7280', bg: '#F3F4F6' },
+      health: { emoji: '💊', color: '#10B981', bg: '#D1FAE5' },
+      grocery: { emoji: '🛒', color: '#22C55E', bg: '#DCFCE7' },
+      other: { emoji: '📦', color: '#6B7280', bg: '#F3F4F6' },
     };
-    return colors[category?.toLowerCase()] || 'default';
+    return categoryMap[category?.toLowerCase()] || categoryMap.other;
   };
 
   return (
@@ -386,8 +450,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {items.map((item, index) => (
-                    <TableRow key={index} sx={{ '&:last-child td': { border: 0 } }}>
+                  {sortedItems.map((item) => (
+                    <TableRow key={item.originalIndex} sx={{ '&:last-child td': { border: 0 } }}>
                       <TableCell>
                         <Box>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -403,7 +467,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                             </Typography>
                             <IconButton
                               size="small"
-                              onClick={() => handleEditClick(index, item.name)}
+                              onClick={() => handleEditClick(item.originalIndex, item.name)}
                               sx={{
                                 ml: 0.5,
                                 padding: 0.5,
@@ -428,18 +492,28 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                               Receipt: {item.receiptText}
                             </Typography>
                           )}
-                          <Chip
-                            label={item.category}
-                            size="small"
-                            color={getCategoryColor(item.category)}
-                            sx={{
-                              mt: 0.5,
-                              height: 20,
-                              fontSize: '0.7rem',
-                              fontFamily: 'Outfit, sans-serif',
-                              fontWeight: 500,
-                            }}
-                          />
+                          {item.category && (() => {
+                            const categoryInfo = getCategoryInfo(item.category);
+                            return (
+                              <Chip
+                                label={`${categoryInfo.emoji} ${item.category}`}
+                                size="small"
+                                sx={{
+                                  mt: 0.5,
+                                  height: 22,
+                                  fontSize: '11px',
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontWeight: 600,
+                                  bgcolor: categoryInfo.bg,
+                                  color: categoryInfo.color,
+                                  border: `1px solid ${categoryInfo.color}`,
+                                  '& .MuiChip-label': {
+                                    px: 1,
+                                  },
+                                }}
+                              />
+                            );
+                          })()}
                         </Box>
                       </TableCell>
                       <TableCell
