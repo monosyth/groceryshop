@@ -156,7 +156,7 @@ export default function MyRecipesPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#10B981' }} />
+            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
           </Box>
         </Container>
       </Box>
@@ -173,7 +173,7 @@ export default function MyRecipesPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#10B981',
+              color: '#14B8A6',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -257,7 +257,7 @@ export default function MyRecipesPage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 700,
-                        color: '#10B981',
+                        color: '#14B8A6',
                         fontSize: '16px',
                         mb: 1,
                         display: '-webkit-box',
@@ -293,8 +293,8 @@ export default function MyRecipesPage() {
                           label={`${recipe.prepTime}-${recipe.cookTime} min`}
                           size="small"
                           sx={{
-                            bgcolor: '#F0FDF4',
-                            color: '#059669',
+                            bgcolor: '#F0FDFA',
+                            color: '#0D9488',
                             fontFamily: 'Outfit, sans-serif',
                             fontSize: '11px',
                           }}
@@ -349,8 +349,8 @@ export default function MyRecipesPage() {
                                   onChange={() => handleToggleIngredient(recipe.id, ingredient)}
                                   onClick={(e) => e.stopPropagation()}
                                   sx={{
-                                    color: '#10B981',
-                                    '&.Mui-checked': { color: '#10B981' },
+                                    color: '#14B8A6',
+                                    '&.Mui-checked': { color: '#14B8A6' },
                                     py: 0.25,
                                   }}
                                 />
@@ -384,7 +384,7 @@ export default function MyRecipesPage() {
                           disabled={(selectedIngredients[recipe.id] || []).length === 0}
                           sx={{
                             mt: 1.5,
-                            bgcolor: '#10B981',
+                            bgcolor: '#14B8A6',
                             color: 'white',
                             fontFamily: 'Outfit, sans-serif',
                             fontWeight: 600,
@@ -392,10 +392,10 @@ export default function MyRecipesPage() {
                             textTransform: 'none',
                             py: 0.75,
                             '&:hover': {
-                              bgcolor: '#059669',
+                              bgcolor: '#0D9488',
                             },
                             '&:disabled': {
-                              bgcolor: '#6EE7B7',
+                              bgcolor: '#5EEAD4',
                               color: 'white',
                             },
                           }}
@@ -447,7 +447,7 @@ export default function MyRecipesPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 700,
-                  color: '#10B981',
+                  color: '#14B8A6',
                   pr: 6,
                 }}
               >
@@ -477,8 +477,8 @@ export default function MyRecipesPage() {
                       label={`Prep: ${selectedRecipe.prepTime} min`}
                       size="small"
                       sx={{
-                        bgcolor: '#F0FDF4',
-                        color: '#059669',
+                        bgcolor: '#F0FDFA',
+                        color: '#0D9488',
                         fontFamily: 'Outfit, sans-serif',
                       }}
                     />
@@ -514,7 +514,7 @@ export default function MyRecipesPage() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
-                    color: '#10B981',
+                    color: '#14B8A6',
                     fontSize: '16px',
                     mb: 1.5,
                   }}
@@ -547,7 +547,7 @@ export default function MyRecipesPage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#10B981',
+                        color: '#14B8A6',
                         fontSize: '16px',
                         mb: 1.5,
                       }}
@@ -584,7 +584,7 @@ export default function MyRecipesPage() {
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
                       textTransform: 'none',
-                      color: '#10B981',
+                      color: '#14B8A6',
                     }}
                   >
                     View Original

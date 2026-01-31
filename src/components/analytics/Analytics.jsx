@@ -38,7 +38,7 @@ import { formatCurrency } from '../../utils/formatters';
 const cardColors = [
   { bg: '#FFEDD5', border: '#F97316', shadow: '#FCD34D' }, // Orange
   { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
-  { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
+  { bg: '#F0FDFA', border: '#14B8A6', shadow: '#5EEAD4' }, // Green
   { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
 ];
 
@@ -85,7 +85,7 @@ export default function AnalyticsPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#10B981' }} />
+            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
           </Box>
         </Container>
       </Box>
@@ -102,7 +102,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#10B981',
+                color: '#14B8A6',
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -168,7 +168,7 @@ export default function AnalyticsPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#10B981',
+              color: '#14B8A6',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -375,10 +375,10 @@ export default function AnalyticsPage() {
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  bgcolor: '#ECFDF5',
+                  bgcolor: '#F0FDFA',
                   borderRadius: '12px',
-                  border: '2px solid #10B981',
-                  boxShadow: '3px 3px 0px #6EE7B7',
+                  border: '2px solid #14B8A6',
+                  boxShadow: '3px 3px 0px #5EEAD4',
                   p: 3,
                   height: '100%',
                 }}
@@ -390,7 +390,7 @@ export default function AnalyticsPage() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#059669',
+                      color: '#0D9488',
                       fontSize: '18px',
                     }}
                   >
@@ -402,27 +402,27 @@ export default function AnalyticsPage() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#A7F3D0" />
                     <XAxis
                       type="number"
-                      stroke="#059669"
+                      stroke="#0D9488"
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={100}
-                      stroke="#059669"
+                      stroke="#0D9488"
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
                         borderRadius: 8,
-                        border: '2px solid #10B981',
+                        border: '2px solid #14B8A6',
                         fontSize: '11px',
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 500,
                       }}
                     />
-                    <Bar dataKey="value" fill="#10B981" radius={[0, 6, 6, 0]} name="Spending" />
+                    <Bar dataKey="value" fill="#14B8A6" radius={[0, 6, 6, 0]} name="Spending" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>

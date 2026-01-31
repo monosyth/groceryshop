@@ -515,7 +515,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#10B981',
+                color: '#14B8A6',
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -531,12 +531,12 @@ export default function Dashboard() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     textTransform: 'none',
-                    color: '#10B981',
-                    borderColor: '#10B981',
+                    color: '#14B8A6',
+                    borderColor: '#14B8A6',
                     px: 2,
                     '&:hover': {
-                      borderColor: '#059669',
-                      bgcolor: '#F0FDF4',
+                      borderColor: '#0D9488',
+                      bgcolor: '#F0FDFA',
                     },
                   }}
                 >
@@ -550,12 +550,12 @@ export default function Dashboard() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     textTransform: 'none',
-                    color: '#10B981',
-                    borderColor: '#10B981',
+                    color: '#14B8A6',
+                    borderColor: '#14B8A6',
                     px: 2,
                     '&:hover': {
-                      borderColor: '#059669',
-                      bgcolor: '#F0FDF4',
+                      borderColor: '#0D9488',
+                      bgcolor: '#F0FDFA',
                     },
                   }}
                 >
@@ -576,12 +576,12 @@ export default function Dashboard() {
           </Typography>
           {uploading && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-              <CircularProgress size={20} sx={{ color: '#10B981' }} />
+              <CircularProgress size={20} sx={{ color: '#14B8A6' }} />
               <Typography
                 variant="body2"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  color: '#059669',
+                  color: '#0D9488',
                   fontSize: '13px',
                 }}
               >
@@ -621,15 +621,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 0 ? 'white' : '#10B981',
-                bgcolor: activeTab === 0 ? '#10B981' : 'white',
+                color: activeTab === 0 ? 'white' : '#14B8A6',
+                bgcolor: activeTab === 0 ? '#14B8A6' : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 0 ? '#10B981' : '#E5E7EB',
+                borderColor: activeTab === 0 ? '#14B8A6' : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 0 ? '#059669' : '#F9FAFB',
-                  borderColor: activeTab === 0 ? '#059669' : '#D1D5DB',
+                  bgcolor: activeTab === 0 ? '#0D9488' : '#F9FAFB',
+                  borderColor: activeTab === 0 ? '#0D9488' : '#D1D5DB',
                 },
               }}
             >
@@ -645,15 +645,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 1 ? 'white' : '#10B981',
-                bgcolor: activeTab === 1 ? '#10B981' : 'white',
+                color: activeTab === 1 ? 'white' : '#14B8A6',
+                bgcolor: activeTab === 1 ? '#14B8A6' : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 1 ? '#10B981' : '#E5E7EB',
+                borderColor: activeTab === 1 ? '#14B8A6' : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 1 ? '#059669' : '#F9FAFB',
-                  borderColor: activeTab === 1 ? '#059669' : '#D1D5DB',
+                  bgcolor: activeTab === 1 ? '#0D9488' : '#F9FAFB',
+                  borderColor: activeTab === 1 ? '#0D9488' : '#D1D5DB',
                 },
               }}
             >
@@ -706,7 +706,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 800,
-                color: '#10B981',
+                color: '#14B8A6',
               }}
             >
               No Receipts Yet!
@@ -750,7 +750,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#10B981',
+                  color: '#14B8A6',
                 }}
               >
                 No Receipts Found
@@ -800,8 +800,8 @@ export default function Dashboard() {
                 gap: 2,
                 bgcolor: 'white',
                 borderRadius: '24px',
-                border: '4px solid #D1FAE5',
-                boxShadow: '6px 6px 0px #D1FAE5',
+                border: '4px solid #99F6E4',
+                boxShadow: '6px 6px 0px #99F6E4',
               }}
             >
               <Box sx={{ fontSize: '64px', mb: 1 }}>🔍</Box>
@@ -810,7 +810,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#10B981',
+                  color: '#14B8A6',
                 }}
               >
                 No Items Found

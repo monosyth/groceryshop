@@ -221,7 +221,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   // Category colors and emojis (matching shopping list)
   const getCategoryInfo = (category) => {
     const categoryMap = {
-      produce: { emoji: '🥬', color: '#22C55E', bg: '#DCFCE7' },
+      produce: { emoji: '🥬', color: '#14B8A6', bg: '#CCFBF1' },
       meat: { emoji: '🥩', color: '#EF4444', bg: '#FEE2E2' },
       dairy: { emoji: '🥛', color: '#3B82F6', bg: '#DBEAFE' },
       bakery: { emoji: '🍞', color: '#F59E0B', bg: '#FEF3C7' },
@@ -231,8 +231,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
       snacks: { emoji: '🍿', color: '#F97316', bg: '#FFEDD5' },
       household: { emoji: '🧹', color: '#6B7280', bg: '#F3F4F6' },
       'personal care': { emoji: '🧴', color: '#6B7280', bg: '#F3F4F6' },
-      health: { emoji: '💊', color: '#10B981', bg: '#D1FAE5' },
-      grocery: { emoji: '🛒', color: '#22C55E', bg: '#DCFCE7' },
+      health: { emoji: '💊', color: '#14B8A6', bg: '#99F6E4' },
+      grocery: { emoji: '🛒', color: '#14B8A6', bg: '#CCFBF1' },
       other: { emoji: '📦', color: '#6B7280', bg: '#F3F4F6' },
     };
     return categoryMap[category?.toLowerCase()] || categoryMap.other;
@@ -247,8 +247,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
       PaperProps={{
         sx: {
           borderRadius: '16px',
-          border: '2px solid #10B981',
-          boxShadow: '4px 4px 0px #6EE7B7',
+          border: '2px solid #14B8A6',
+          boxShadow: '4px 4px 0px #5EEAD4',
         },
       }}
     >
@@ -260,7 +260,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#10B981',
+              color: '#14B8A6',
               fontSize: '24px',
             }}
           >
@@ -320,10 +320,10 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             sx={{
               flex: 1,
               p: 2.5,
-              bgcolor: '#ECFDF5',
+              bgcolor: '#F0FDFA',
               borderRadius: '12px',
-              border: '2px solid #10B981',
-              boxShadow: '2px 2px 0px #6EE7B7',
+              border: '2px solid #14B8A6',
+              boxShadow: '2px 2px 0px #5EEAD4',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -338,7 +338,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#059669',
+                      color: '#0D9488',
                       fontSize: '18px',
                     }}
                   >
@@ -355,7 +355,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 500,
-                      color: '#059669',
+                      color: '#0D9488',
                       fontSize: '13px',
                     }}
                   >
@@ -372,7 +372,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 500,
-                      color: '#059669',
+                      color: '#0D9488',
                       fontSize: '13px',
                     }}
                   >
@@ -393,7 +393,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                 mb: 2,
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#10B981',
+                color: '#14B8A6',
                 fontSize: '18px',
               }}
             >
@@ -509,7 +509,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                               sx={{
                                 padding: 0.25,
                                 color: 'text.secondary',
-                                '&:hover': { color: '#10B981', bgcolor: '#F0FDF4' },
+                                '&:hover': { color: '#14B8A6', bgcolor: '#F0FDFA' },
                               }}
                             >
                               <Edit sx={{ fontSize: 14 }} />
@@ -717,7 +717,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             variant="contained"
             disabled={!editedName.trim() || savingEdit}
           >
-            {savingEdit ? 'Saving & Recategorizing...' : 'Save & Recategorize'}
+            {savingEdit ? 'Saving...' : 'Save'}
           </Button>
         </DialogActions>
       </Dialog>

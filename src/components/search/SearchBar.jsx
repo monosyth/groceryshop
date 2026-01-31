@@ -137,7 +137,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               borderColor: '#D1D5DB',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#10B981',
+              borderColor: '#14B8A6',
               borderWidth: '1px',
             },
           },
@@ -160,15 +160,15 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 borderRadius: '8px',
                 px: 0.5,
                 height: '32px',
-                bgcolor: dateRange === range.value ? '#10B981' : 'white',
+                bgcolor: dateRange === range.value ? '#14B8A6' : 'white',
                 color: dateRange === range.value ? 'white' : '#374151',
                 border: '1px solid',
-                borderColor: dateRange === range.value ? '#10B981' : '#E5E7EB',
+                borderColor: dateRange === range.value ? '#14B8A6' : '#E5E7EB',
                 transition: 'all 0.15s ease',
                 cursor: 'pointer',
                 '&:hover': {
-                  bgcolor: dateRange === range.value ? '#059669' : '#F9FAFB',
-                  borderColor: dateRange === range.value ? '#059669' : '#D1D5DB',
+                  bgcolor: dateRange === range.value ? '#0D9488' : '#F9FAFB',
+                  borderColor: dateRange === range.value ? '#0D9488' : '#D1D5DB',
                 },
               }}
             />
@@ -183,7 +183,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               fontFamily: 'Outfit, sans-serif',
               fontSize: '14px',
               '&.Mui-focused': {
-                color: '#10B981',
+                color: '#14B8A6',
               },
             }}
           >
@@ -208,7 +208,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 borderColor: '#D1D5DB',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#10B981',
+                borderColor: '#14B8A6',
                 borderWidth: '1px',
               },
             }}
@@ -246,7 +246,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 fontFamily: 'Outfit, sans-serif',
                 fontSize: '14px',
                 '&.Mui-focused': {
-                  color: '#10B981',
+                  color: '#14B8A6',
                 },
               }}
             >
@@ -271,7 +271,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                   borderColor: '#D1D5DB',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#10B981',
+                  borderColor: '#14B8A6',
                   borderWidth: '1px',
                 },
               }}

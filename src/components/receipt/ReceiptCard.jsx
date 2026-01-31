@@ -6,7 +6,7 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 const cardColors = [
   { bg: '#FFEDD5', border: '#F97316', shadow: '#FCD34D' }, // Orange
   { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
-  { bg: '#ECFDF5', border: '#10B981', shadow: '#6EE7B7' }, // Green
+  { bg: '#F0FDFA', border: '#14B8A6', shadow: '#5EEAD4' }, // Green
   { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
 ];
 
@@ -90,7 +90,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
               borderRadius: '8px',
               fontSize: '12px',
               ...(metadata?.analysisStatus === 'completed' && {
-                bgcolor: '#10B981',
+                bgcolor: '#14B8A6',
                 color: 'white',
                 '& .MuiChip-icon': {
                   color: 'white',

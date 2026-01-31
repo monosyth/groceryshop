@@ -78,7 +78,7 @@ export default function Navigation() {
       <Box
         sx={{
           p: 2,
-          background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+          background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
           color: 'white',
           display: 'flex',
           alignItems: 'center',
@@ -106,7 +106,7 @@ export default function Navigation() {
               borderRadius: '8px',
               '&.Mui-selected': {
                 bgcolor: 'rgba(16, 185, 129, 0.12)',
-                borderLeft: '3px solid #10B981',
+                borderLeft: '3px solid #14B8A6',
               },
               '&:hover': {
                 bgcolor: 'rgba(16, 185, 129, 0.08)',
@@ -149,7 +149,7 @@ export default function Navigation() {
               onClick={handleDrawerToggle}
               sx={{
                 mr: 2,
-                color: '#10B981',
+                color: '#14B8A6',
               }}
             >
               <MenuIcon />
@@ -174,7 +174,7 @@ export default function Navigation() {
                 width: 42,
                 height: 42,
                 borderRadius: '10px',
-                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -192,7 +192,7 @@ export default function Navigation() {
               sx={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: '#10B981',
+                color: '#14B8A6',
                 fontFamily: 'Outfit, sans-serif',
                 letterSpacing: '-0.02em',
               }}
@@ -219,14 +219,14 @@ export default function Navigation() {
                       py: 0.5,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: isActive ? 'white' : '#10B981',
-                      bgcolor: isActive ? '#10B981' : 'transparent',
+                      color: isActive ? 'white' : '#14B8A6',
+                      bgcolor: isActive ? '#14B8A6' : 'transparent',
                       border: '1px solid transparent',
                       minWidth: 'auto',
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? '#059669' : 'rgba(16, 185, 129, 0.08)',
-                        border: isActive ? '1px solid #059669' : '1px solid rgba(16, 185, 129, 0.2)',
+                        bgcolor: isActive ? '#0D9488' : 'rgba(16, 185, 129, 0.08)',
+                        border: isActive ? '1px solid #0D9488' : '1px solid rgba(16, 185, 129, 0.2)',
                       },
                     }}
                   >
@@ -270,7 +270,7 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    border: '2px solid #10B981',
+                    border: '2px solid #14B8A6',
                   }}
                 />
               ) : (
@@ -300,7 +300,7 @@ export default function Navigation() {
               sx: {
                 mt: 1,
                 borderRadius: '10px',
-                border: '2px solid #10B981',
+                border: '2px solid #14B8A6',
                 boxShadow: '2px 2px 0px rgba(21, 128, 61, 0.3)',
               },
             }}

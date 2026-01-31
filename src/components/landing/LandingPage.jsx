@@ -166,7 +166,7 @@ export default function LandingPage() {
                   width: 50,
                   height: 50,
                   borderRadius: '15px',
-                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -180,7 +180,7 @@ export default function LandingPage() {
                 sx={{
                   fontSize: '28px',
                   fontWeight: 900,
-                  color: '#10B981',
+                  color: '#14B8A6',
                   letterSpacing: '-0.02em',
                 }}
               >
@@ -193,7 +193,7 @@ export default function LandingPage() {
               startIcon={<GoogleIcon />}
               sx={{
                 bgcolor: '#FFFFFF',
-                color: '#10B981',
+                color: '#14B8A6',
                 fontWeight: 700,
                 px: 3,
                 py: 1.2,
@@ -201,9 +201,9 @@ export default function LandingPage() {
                 fontSize: '15px',
                 textTransform: 'none',
                 boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-                border: '2px solid #10B981',
+                border: '2px solid #14B8A6',
                 '&:hover': {
-                  bgcolor: '#F0FDF4',
+                  bgcolor: '#F0FDFA',
                   transform: 'scale(1.05)',
                   boxShadow: '0 6px 20px rgba(0,0,0,0.15)',
                 },
@@ -238,7 +238,7 @@ export default function LandingPage() {
               fontSize: { xs: '48px', sm: '60px', md: '72px' },
               fontWeight: 900,
               lineHeight: 1.1,
-              color: '#10B981',
+              color: '#14B8A6',
               letterSpacing: '-0.03em',
               textShadow: '4px 4px 0px rgba(0,0,0,0.1)',
               mb: 2,
@@ -279,7 +279,7 @@ export default function LandingPage() {
             disabled={loading}
             startIcon={<GoogleIcon />}
             sx={{
-              bgcolor: '#10B981',
+              bgcolor: '#14B8A6',
               color: 'white',
               fontWeight: 800,
               px: 5,
@@ -288,9 +288,9 @@ export default function LandingPage() {
               fontSize: '20px',
               textTransform: 'none',
               boxShadow: '0 8px 25px rgba(21, 128, 61, 0.4)',
-              border: '3px solid #059669',
+              border: '3px solid #0D9488',
               '&:hover': {
-                bgcolor: '#059669',
+                bgcolor: '#0D9488',
                 transform: 'scale(1.08) rotate(-1deg)',
                 boxShadow: '0 12px 35px rgba(21, 128, 61, 0.5)',
               },
@@ -326,19 +326,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#ECFDF5',
+              bgcolor: '#F0FDFA',
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #10B981',
-              boxShadow: '6px 6px 0px #10B981',
+              border: '4px solid #14B8A6',
+              boxShadow: '6px 6px 0px #14B8A6',
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#059669', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#0D9488', mb: 1 }}>
               Snap It
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#059669', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: '#0D9488', lineHeight: 1.4 }}>
               One photo and you're done. No typing needed.
             </Typography>
           </Box>
@@ -416,8 +416,8 @@ export default function LandingPage() {
             borderRadius: '32px',
             p: { xs: 4, md: 6 },
             textAlign: 'center',
-            border: '6px solid #10B981',
-            boxShadow: '12px 12px 0px #10B981',
+            border: '6px solid #14B8A6',
+            boxShadow: '12px 12px 0px #14B8A6',
             transform: 'rotate(-1deg)',
           }}
         >
@@ -425,7 +425,7 @@ export default function LandingPage() {
             sx={{
               fontSize: { xs: '32px', md: '42px' },
               fontWeight: 900,
-              color: '#10B981',
+              color: '#14B8A6',
               mb: 2,
               lineHeight: 1.1,
             }}
@@ -435,7 +435,7 @@ export default function LandingPage() {
           <Typography
             sx={{
               fontSize: '18px',
-              color: '#059669',
+              color: '#0D9488',
               mb: 3,
               fontWeight: 500,
             }}

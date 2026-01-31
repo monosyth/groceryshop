@@ -72,7 +72,7 @@ export default function PantryPage() {
 
   // Categories for pantry items (same as shopping list)
   const categories = [
-    { value: 'produce', label: '🥬 Produce', color: '#10B981' },
+    { value: 'produce', label: '🥬 Produce', color: '#14B8A6' },
     { value: 'meat', label: '🥩 Meat & Seafood', color: '#EF4444' },
     { value: 'dairy', label: '🥛 Dairy & Eggs', color: '#3B82F6' },
     { value: 'bakery', label: '🍞 Bakery', color: '#F59E0B' },
@@ -509,11 +509,11 @@ export default function PantryPage() {
               width: 28,
               height: 28,
               borderRadius: '6px',
-              bgcolor: '#DCFCE7',
-              border: '1.5px solid #10B981',
+              bgcolor: '#CCFBF1',
+              border: '1.5px solid #14B8A6',
             }}
           >
-            <EditIcon sx={{ fontSize: 16, color: '#065F46' }} />
+            <EditIcon sx={{ fontSize: 16, color: '#0F766E' }} />
           </Box>
         );
       default:
@@ -541,7 +541,7 @@ export default function PantryPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#10B981' }} />
+            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
           </Box>
         </Container>
       </Box>
@@ -559,7 +559,7 @@ export default function PantryPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#10B981',
+                color: '#14B8A6',
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -599,14 +599,14 @@ export default function PantryPage() {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '12px',
                     textTransform: 'none',
-                    color: '#10B981',
-                    border: '1px solid #10B981',
+                    color: '#14B8A6',
+                    border: '1px solid #14B8A6',
                     borderRadius: '8px',
                     px: 2,
                     py: 0.75,
                     '&:hover': {
-                      bgcolor: '#F0FDF4',
-                      border: '1px solid #059669',
+                      bgcolor: '#F0FDFA',
+                      border: '1px solid #0D9488',
                     },
                     '&:disabled': {
                       color: '#9CA3AF',
@@ -622,7 +622,7 @@ export default function PantryPage() {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              color: '#059669',
+              color: '#0D9488',
               fontSize: '16px',
             }}
           >
@@ -633,10 +633,10 @@ export default function PantryPage() {
         {/* Add Item Section */}
         <Card
           sx={{
-            bgcolor: '#ECFDF5',
+            bgcolor: '#F0FDFA',
             borderRadius: '12px',
-            border: '2px solid #10B981',
-            boxShadow: '3px 3px 0px #6EE7B7',
+            border: '2px solid #14B8A6',
+            boxShadow: '3px 3px 0px #5EEAD4',
             mb: 3,
           }}
         >
@@ -662,12 +662,12 @@ export default function PantryPage() {
                 onClick={handleAddItem}
                 disabled={addingItem}
                 sx={{
-                  bgcolor: '#10B981',
+                  bgcolor: '#14B8A6',
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
                   px: 3,
                   '&:hover': {
-                    bgcolor: '#059669',
+                    bgcolor: '#0D9488',
                   },
                 }}
               >
@@ -681,12 +681,12 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#10B981',
-                  borderColor: '#10B981',
+                  color: '#14B8A6',
+                  borderColor: '#14B8A6',
                   px: 2,
                   '&:hover': {
-                    borderColor: '#059669',
-                    bgcolor: '#F0FDF4',
+                    borderColor: '#0D9488',
+                    bgcolor: '#F0FDFA',
                   },
                 }}
               >
@@ -700,12 +700,12 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#10B981',
-                  borderColor: '#10B981',
+                  color: '#14B8A6',
+                  borderColor: '#14B8A6',
                   px: 2,
                   '&:hover': {
-                    borderColor: '#059669',
-                    bgcolor: '#F0FDF4',
+                    borderColor: '#0D9488',
+                    bgcolor: '#F0FDFA',
                   },
                 }}
               >
@@ -715,12 +715,12 @@ export default function PantryPage() {
 
             {analyzingPhoto && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                <CircularProgress size={20} sx={{ color: '#10B981' }} />
+                <CircularProgress size={20} sx={{ color: '#14B8A6' }} />
                 <Typography
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#059669',
+                    color: '#0D9488',
                     fontSize: '13px',
                   }}
                 >
@@ -860,10 +860,10 @@ export default function PantryPage() {
                               size="small"
                               onClick={() => handleEditClick(item)}
                               sx={{
-                                color: '#10B981',
+                                color: '#14B8A6',
                                 p: 0.5,
                                 '&:hover': {
-                                  bgcolor: '#ECFDF5',
+                                  bgcolor: '#F0FDFA',
                                 },
                               }}
                             >
@@ -946,7 +946,7 @@ export default function PantryPage() {
             variant="contained"
             disabled={!editedName.trim() || savingEdit}
           >
-            {savingEdit ? 'Saving & Recategorizing...' : 'Save & Recategorize'}
+            {savingEdit ? 'Saving...' : 'Save'}
           </Button>
         </DialogActions>
       </Dialog>

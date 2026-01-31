@@ -34,7 +34,7 @@ const PageLoader = () => (
       minHeight: '60vh',
     }}
   >
-    <CircularProgress size={60} sx={{ color: '#10B981' }} />
+    <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
   </Box>
 );
 

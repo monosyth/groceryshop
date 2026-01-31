@@ -69,7 +69,7 @@ export default function UploadPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#10B981',
+              color: '#14B8A6',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -92,10 +92,10 @@ export default function UploadPage() {
         {uploadSuccess && (
           <Box
             sx={{
-              bgcolor: '#ECFDF5',
+              bgcolor: '#F0FDFA',
               borderRadius: '12px',
-              border: '2px solid #10B981',
-              boxShadow: '3px 3px 0px #6EE7B7',
+              border: '2px solid #14B8A6',
+              boxShadow: '3px 3px 0px #5EEAD4',
               p: 4,
               mb: 3,
               textAlign: 'center',
@@ -107,7 +107,7 @@ export default function UploadPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#065F46',
+                color: '#0F766E',
                 mb: 2,
                 fontSize: '20px',
               }}
@@ -119,7 +119,7 @@ export default function UploadPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#065F46',
+                color: '#0F766E',
                 mb: 3,
               }}
             >
@@ -137,12 +137,12 @@ export default function UploadPage() {
                   py: 1,
                   borderRadius: '10px',
                   textTransform: 'none',
-                  bgcolor: '#10B981',
+                  bgcolor: '#14B8A6',
                   color: 'white',
-                  border: '2px solid #059669',
-                  boxShadow: '2px 2px 0px #059669',
+                  border: '2px solid #0D9488',
+                  boxShadow: '2px 2px 0px #0D9488',
                   '&:hover': {
-                    bgcolor: '#059669',
+                    bgcolor: '#0D9488',
                     transform: 'translateY(-1px)',
                   },
                   transition: 'all 0.2s ease',
@@ -162,10 +162,10 @@ export default function UploadPage() {
                   borderRadius: '10px',
                   textTransform: 'none',
                   bgcolor: 'white',
-                  color: '#10B981',
-                  border: '2px solid #10B981',
+                  color: '#14B8A6',
+                  border: '2px solid #14B8A6',
                   '&:hover': {
-                    bgcolor: '#F0FDF4',
+                    bgcolor: '#F0FDFA',
                     transform: 'translateY(-1px)',
                   },
                   transition: 'all 0.2s ease',
