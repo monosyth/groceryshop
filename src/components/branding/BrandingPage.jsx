@@ -1,4 +1,5 @@
 import { Container, Typography, Box, Grid, Card, CardContent, Chip, Paper, Button } from '@mui/material';
+import { CameraAlt, Upload, Add, Delete, Edit, Download } from '@mui/icons-material';
 import {
   teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown,
   white, cream, categories, cardThemes
@@ -808,6 +809,205 @@ export default function BrandingPage() {
                     Dashed divider (receipt style)
                   </Typography>
                 </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* Icon Buttons */}
+        <Typography
+          variant="h5"
+          sx={{
+            fontFamily: 'Outfit, sans-serif',
+            fontWeight: 700,
+            color: '#1F2937',
+            mb: 3,
+          }}
+        >
+          Icon Buttons
+        </Typography>
+
+        <Grid container spacing={3} sx={{ mb: 6 }}>
+          <Grid item xs={12}>
+            <Card
+              sx={{
+                bgcolor: 'white',
+                borderRadius: '16px',
+                border: '2px solid #E5E7EB',
+                boxShadow: '3px 3px 0px #E5E7EB',
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#6B7280',
+                    mb: 3,
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                  }}
+                >
+                  Outlined Icon Buttons - Hover to see obvious color change
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<CameraAlt />}
+                    sx={{
+                      color: teal.main,
+                      borderColor: teal.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: teal.dark,
+                        borderWidth: '2px',
+                        bgcolor: teal.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Photo
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Upload />}
+                    sx={{
+                      color: teal.main,
+                      borderColor: teal.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: teal.dark,
+                        borderWidth: '2px',
+                        bgcolor: teal.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Upload
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Add />}
+                    sx={{
+                      color: teal.main,
+                      borderColor: teal.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: teal.dark,
+                        borderWidth: '2px',
+                        bgcolor: teal.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Add Item
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Edit />}
+                    sx={{
+                      color: teal.main,
+                      borderColor: teal.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: teal.dark,
+                        borderWidth: '2px',
+                        bgcolor: teal.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Download />}
+                    sx={{
+                      color: teal.main,
+                      borderColor: teal.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: teal.dark,
+                        borderWidth: '2px',
+                        bgcolor: teal.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Download
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Delete />}
+                    sx={{
+                      color: red.main,
+                      borderColor: red.main,
+                      borderWidth: '2px',
+                      fontFamily: 'Outfit, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderColor: red.dark,
+                        borderWidth: '2px',
+                        bgcolor: red.dark,
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#6B7280',
+                    fontSize: '13px',
+                    mt: 2,
+                  }}
+                >
+                  Hover effect: Border and background change to dark color, text turns white for maximum contrast
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
