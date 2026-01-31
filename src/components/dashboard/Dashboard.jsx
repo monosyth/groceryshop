@@ -47,21 +47,25 @@ import { db } from '../../firebase';
 import { format } from 'date-fns';
 
 /**
- * Category colors for chips
+ * Category info with colors and emojis (matching receipt detail)
  */
-const categoryColors = {
-  grocery: 'default',
-  produce: 'success',
-  meat: 'error',
-  dairy: 'info',
-  bakery: 'warning',
-  frozen: 'primary',
-  beverages: 'secondary',
-  snacks: 'warning',
-  household: 'default',
-  'personal care': 'info',
-  health: 'success',
-  other: 'default',
+const getCategoryInfo = (category) => {
+  const categoryMap = {
+    produce: { emoji: '🥬', color: '#14B8A6', bg: '#CCFBF1' },
+    meat: { emoji: '🥩', color: '#EF4444', bg: '#FEE2E2' },
+    dairy: { emoji: '🥛', color: '#3B82F6', bg: '#DBEAFE' },
+    bakery: { emoji: '🍞', color: '#F59E0B', bg: '#FEF3C7' },
+    frozen: { emoji: '🧊', color: '#06B6D4', bg: '#CFFAFE' },
+    pantry: { emoji: '🥫', color: '#8B5CF6', bg: '#EDE9FE' },
+    beverages: { emoji: '🥤', color: '#EC4899', bg: '#FCE7F3' },
+    snacks: { emoji: '🍿', color: '#F97316', bg: '#FFEDD5' },
+    household: { emoji: '🧹', color: '#6B7280', bg: '#F3F4F6' },
+    'personal care': { emoji: '🧴', color: '#6B7280', bg: '#F3F4F6' },
+    health: { emoji: '💊', color: '#14B8A6', bg: '#99F6E4' },
+    grocery: { emoji: '🛒', color: '#14B8A6', bg: '#CCFBF1' },
+    other: { emoji: '📦', color: '#6B7280', bg: '#F3F4F6' },
+  };
+  return categoryMap[category?.toLowerCase()] || categoryMap.other;
 };
 
 export default function Dashboard() {
@@ -827,147 +831,210 @@ export default function Dashboard() {
             </Paper>
           )}
 
-          {/* Items Table */}
+          {/* Items List - Grouped by Category */}
           {filteredItems.length > 0 && (
-            <TableContainer
-              component={Paper}
+            <Paper
               elevation={0}
               sx={{
                 borderRadius: '16px',
-                border: '3px solid #E5E7EB',
-                overflow: 'hidden',
+                border: '3px solid #F59E0B',
+                boxShadow: '3px 3px 0px #FCD34D',
+                p: 2.5,
               }}
             >
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ bgcolor: '#FEF3C7' }}>
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      <Button
-                        size="small"
-                        onClick={() => handleSort('name')}
+              {(() => {
+                // Group items by category and sort
+                const categoryOrder = [
+                  'produce',
+                  'meat',
+                  'dairy',
+                  'bakery',
+                  'frozen',
+                  'pantry',
+                  'beverages',
+                  'snacks',
+                  'household',
+                  'personal care',
+                  'health',
+                  'other',
+                ];
+
+                // Sort items by category first
+                const sortedByCategory = [...filteredItems].sort((a, b) => {
+                  const categoryA = a.category?.toLowerCase() || 'other';
+                  const categoryB = b.category?.toLowerCase() || 'other';
+                  const indexA = categoryOrder.indexOf(categoryA);
+                  const indexB = categoryOrder.indexOf(categoryB);
+                  const orderA = indexA === -1 ? categoryOrder.length : indexA;
+                  const orderB = indexB === -1 ? categoryOrder.length : indexB;
+                  return orderA - orderB;
+                });
+
+                // Group by category
+                const groupedItems = {};
+                sortedByCategory.forEach((item) => {
+                  const category = item.category || 'other';
+                  if (!groupedItems[category]) {
+                    groupedItems[category] = [];
+                  }
+                  groupedItems[category].push(item);
+                });
+
+                return Object.entries(groupedItems).map(([category, categoryItems], categoryIndex) => {
+                  const categoryInfo = getCategoryInfo(category);
+                  return (
+                    <Box key={category}>
+                      {/* Category Header */}
+                      {categoryIndex > 0 && (
+                        <Divider
+                          sx={{
+                            my: 2,
+                            borderStyle: 'dashed',
+                            borderColor: '#E5E7EB',
+                          }}
+                        />
+                      )}
+                      <Box
                         sx={{
-                          color: 'inherit',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          minWidth: 'auto',
-                          p: 0,
-                          '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          mb: 1.5,
+                          bgcolor: categoryInfo.bg,
+                          px: 1.5,
+                          py: 0.75,
+                          borderRadius: '8px',
                         }}
-                        endIcon={getSortIcon('name')}
                       >
-                        Item
-                      </Button>
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      <Button
-                        size="small"
-                        onClick={() => handleSort('store')}
-                        sx={{
-                          color: 'inherit',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          minWidth: 'auto',
-                          p: 0,
-                          '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
-                        }}
-                        endIcon={getSortIcon('store')}
-                      >
-                        Store
-                      </Button>
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>
-                      Qty
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 600 }}>
-                      Unit Price
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 600 }}>
-                      <Button
-                        size="small"
-                        onClick={() => handleSort('amount')}
-                        sx={{
-                          color: 'inherit',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          minWidth: 'auto',
-                          p: 0,
-                          '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' },
-                        }}
-                        endIcon={getSortIcon('amount')}
-                      >
-                        Total
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredItems.map((item) => (
-                    <TableRow
-                      key={item.itemId}
-                      sx={{
-                        '&:last-child td': { border: 0 },
-                        '&:hover': { bgcolor: 'action.hover' },
-                      }}
-                    >
-                      <TableCell>
-                        <Box>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                              {item.name}
-                            </Typography>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleEditClick(item)}
-                              sx={{
-                                ml: 0.5,
-                                padding: 0.5,
-                                color: 'text.secondary',
-                                '&:hover': { color: 'primary.main' },
-                              }}
-                            >
-                              <EditIcon sx={{ fontSize: 16 }} />
-                            </IconButton>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: 700,
+                            fontSize: '13px',
+                            color: categoryInfo.color,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                          }}
+                        >
+                          {categoryInfo.emoji} {category}
+                        </Typography>
+                        <Chip
+                          label={`${categoryItems.length} item${categoryItems.length !== 1 ? 's' : ''}`}
+                          size="small"
+                          sx={{
+                            height: '20px',
+                            fontSize: '11px',
+                            fontFamily: 'Outfit, sans-serif',
+                            bgcolor: categoryInfo.color,
+                            color: '#fff',
+                            fontWeight: 600,
+                          }}
+                        />
+                      </Box>
+
+                      {/* Category Items */}
+                      {categoryItems.map((item) => (
+                        <Box
+                          key={item.itemId}
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            py: 1,
+                            px: 1,
+                            borderRadius: '8px',
+                            '&:hover': {
+                              bgcolor: '#F9FAFB',
+                            },
+                          }}
+                        >
+                          {/* Left: Item name and store */}
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontWeight: 600,
+                                  fontSize: '13px',
+                                  color: '#1F2937',
+                                }}
+                              >
+                                {item.quantity > 1 && (
+                                  <Box
+                                    component="span"
+                                    sx={{
+                                      color: '#6B7280',
+                                      fontSize: '12px',
+                                      mr: 0.5,
+                                    }}
+                                  >
+                                    {item.quantity}x
+                                  </Box>
+                                )}
+                                {item.name}
+                              </Typography>
+                              <IconButton
+                                size="small"
+                                onClick={() => handleEditClick(item)}
+                                sx={{
+                                  padding: 0.25,
+                                  color: 'text.secondary',
+                                  '&:hover': { color: '#14B8A6', bgcolor: '#F0FDFA' },
+                                }}
+                              >
+                                <EditIcon sx={{ fontSize: 14 }} />
+                              </IconButton>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontSize: '11px',
+                                  color: '#14B8A6',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {item.receiptStore}
+                              </Typography>
+                              {item.receiptDate && (
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    fontFamily: 'Outfit, sans-serif',
+                                    fontSize: '11px',
+                                    color: '#9CA3AF',
+                                  }}
+                                >
+                                  {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
+                                </Typography>
+                              )}
+                            </Box>
                           </Box>
-                          {item.receiptText && item.receiptText !== item.name && (
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
-                              Receipt: {item.receiptText}
-                            </Typography>
-                          )}
-                          <Chip
-                            label={item.category}
-                            size="small"
-                            color={categoryColors[item.category] || 'default'}
-                            sx={{ height: 20, fontSize: '0.7rem', textTransform: 'capitalize' }}
-                          />
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        <Box>
-                          <Typography variant="body2" fontWeight="600" color="primary.main">
-                            {item.receiptStore}
+
+                          {/* Right: Price */}
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontFamily: 'Outfit, sans-serif',
+                              fontWeight: 700,
+                              fontSize: '13px',
+                              color: '#1F2937',
+                              minWidth: '70px',
+                              textAlign: 'right',
+                            }}
+                          >
+                            ${(item.totalPrice || 0).toFixed(2)}
                           </Typography>
-                          {item.receiptLocation && (
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                              {item.receiptLocation}
-                            </Typography>
-                          )}
-                          {item.receiptDate && (
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                              {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
-                            </Typography>
-                          )}
                         </Box>
-                      </TableCell>
-                      <TableCell align="center">{item.quantity || 1}</TableCell>
-                      <TableCell align="right">${(item.unitPrice || 0).toFixed(2)}</TableCell>
-                      <TableCell align="right" sx={{ fontWeight: 600 }}>
-                        ${(item.totalPrice || 0).toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                      ))}
+                    </Box>
+                  );
+                });
+              })()}
+            </Paper>
           )}
         </>
       )}
