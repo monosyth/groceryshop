@@ -242,12 +242,7 @@ export default function MyRecipesPage() {
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    transition: 'all 0.2s ease',
                     cursor: 'pointer',
-                    '&:hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: '4px 4px 0px #E5E7EB',
-                    },
                   }}
                   onClick={() => setSelectedRecipe(recipe)}
                 >

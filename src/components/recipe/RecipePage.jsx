@@ -1012,11 +1012,6 @@ export default function RecipePage() {
                         borderRadius: '12px',
                         border: '2px solid #E5E7EB',
                         boxShadow: '3px 3px 0px #E5E7EB',
-                        transition: 'all 0.2s ease',
-                        '&:hover': {
-                          transform: 'translateY(-2px)',
-                          boxShadow: '4px 4px 0px #E5E7EB',
-                        },
                       }}
                     >
                       <CardContent sx={{ p: 3 }}>

@@ -734,26 +734,19 @@ export default function ShoppingListPage() {
                 {showAdvanced ? '−' : '+'}
               </Button>
               <Button
-                variant="contained"
+                variant="outlined"
                 startIcon={<Add />}
                 onClick={handleAddItem}
                 disabled={!newItemName.trim() || addingItem}
                 sx={{
-                  bgcolor: '#14B8A6',
-                  color: 'white',
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '13px',
                   textTransform: 'none',
-                  border: '2px solid #0D9488',
-                  boxShadow: '2px 2px 0px #0D9488',
-                  px: 3,
+                  color: '#14B8A6',
+                  borderColor: '#14B8A6',
+                  px: 2,
                   '&:hover': {
-                    bgcolor: '#0D9488',
-                  },
-                  '&:disabled': {
-                    bgcolor: '#5EEAD4',
-                    color: 'white',
+                    borderColor: '#0D9488',
+                    bgcolor: '#F0FDFA',
                   },
                 }}
               >

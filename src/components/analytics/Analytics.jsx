@@ -198,11 +198,6 @@ export default function AnalyticsPage() {
                   borderRadius: '12px',
                   border: `2px solid ${stat.colorScheme.border}`,
                   boxShadow: `3px 3px 0px ${stat.colorScheme.shadow}`,
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: `4px 4px 0px ${stat.colorScheme.shadow}`,
-                  },
                 }}
               >
                 <CardContent sx={{ p: 2.5 }}>

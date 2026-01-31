@@ -58,11 +58,6 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         borderRadius: '12px',
         border: `2px solid ${cardColor.border}`,
         boxShadow: `3px 3px 0px ${cardColor.shadow}`,
-        transition: 'all 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: `4px 4px 0px ${cardColor.shadow}`,
-        },
       }}
     >
       {/* Receipt Image */}

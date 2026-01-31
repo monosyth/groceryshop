@@ -129,12 +129,10 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
             border: dragActive ? '3px dashed #F59E0B' : '3px dashed #EC4899',
             boxShadow: dragActive ? '4px 4px 0px #FCD34D' : '4px 4px 0px #F9A8D4',
             cursor: 'pointer',
-            transition: 'all 0.2s ease',
             '&:hover': {
               bgcolor: '#FEF3C7',
               border: '3px dashed #F59E0B',
               boxShadow: '4px 4px 0px #FCD34D',
-              transform: 'translateY(-2px)',
             },
           }}
           onClick={handleButtonClick}
