@@ -165,6 +165,39 @@ export default function RecipePage() {
     );
   };
 
+  // Handle receipt quick-select (add all ingredients from a receipt)
+  const handleReceiptQuickSelect = (receiptId) => {
+    const receipt = receipts.find((r) => r.id === receiptId);
+    if (!receipt || !receipt.items) return;
+
+    const receiptIngredients = receipt.items
+      .map((item) => item.name?.toLowerCase())
+      .filter(Boolean);
+
+    // Check if all ingredients from this receipt are already selected
+    const allSelected = receiptIngredients.every((ing) => selectedIngredients.includes(ing));
+
+    if (allSelected) {
+      // Remove all ingredients from this receipt
+      setSelectedIngredients((prev) => prev.filter((ing) => !receiptIngredients.includes(ing)));
+    } else {
+      // Add all ingredients from this receipt
+      setSelectedIngredients((prev) => [...new Set([...prev, ...receiptIngredients])]);
+    }
+  };
+
+  // Check if all ingredients from a receipt are selected
+  const isReceiptSelected = (receiptId) => {
+    const receipt = receipts.find((r) => r.id === receiptId);
+    if (!receipt || !receipt.items) return false;
+
+    const receiptIngredients = receipt.items
+      .map((item) => item.name?.toLowerCase())
+      .filter(Boolean);
+
+    return receiptIngredients.length > 0 && receiptIngredients.every((ing) => selectedIngredients.includes(ing));
+  };
+
   // Handle select all ingredients
   const handleSelectAllIngredients = () => {
     if (selectedIngredients.length === allIngredients.length) {
@@ -563,6 +596,57 @@ export default function RecipePage() {
           </Card>
         ) : (
           <Box>
+            {/* Quick Select from Receipts */}
+            {receipts.length > 0 && (
+              <Card
+                sx={{
+                  bgcolor: '#DBEAFE',
+                  borderRadius: '12px',
+                  border: '2px solid #3B82F6',
+                  boxShadow: '3px 3px 0px #93C5FD',
+                  mb: 3,
+                  p: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 600,
+                    color: '#1E40AF',
+                    fontSize: '16px',
+                    mb: 1.5,
+                  }}
+                >
+                  🧾 Quick Select from Receipts
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {receipts.map((receipt) => (
+                    <Button
+                      key={receipt.id}
+                      variant={isReceiptSelected(receipt.id) ? 'contained' : 'outlined'}
+                      size="small"
+                      onClick={() => handleReceiptQuickSelect(receipt.id)}
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: '12px',
+                        textTransform: 'none',
+                        borderColor: '#3B82F6',
+                        color: isReceiptSelected(receipt.id) ? '#fff' : '#1E40AF',
+                        bgcolor: isReceiptSelected(receipt.id) ? '#3B82F6' : 'transparent',
+                        '&:hover': {
+                          bgcolor: isReceiptSelected(receipt.id) ? '#2563EB' : '#DBEAFE',
+                          borderColor: '#2563EB',
+                        },
+                      }}
+                    >
+                      {receipt.storeInfo?.name || 'Unknown Store'} ({receipt.items?.length || 0} items)
+                    </Button>
+                  ))}
+                </Box>
+              </Card>
+            )}
+
             {/* Top Section - Groceries, Pantry, and Recipe Import */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {/* Your Groceries */}
