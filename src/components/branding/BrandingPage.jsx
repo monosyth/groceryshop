@@ -706,7 +706,7 @@ export default function BrandingPage() {
                       borderColor: teal.main,
                       fontFamily: 'Outfit, sans-serif',
                       textTransform: 'none',
-                      '&:hover': { borderColor: teal.dark, bgcolor: teal.bg },
+                      '&:hover': { borderColor: teal.main, bgcolor: teal.bg },
                     }}
                   >
                     Outlined Button
@@ -717,10 +717,12 @@ export default function BrandingPage() {
                       fontFamily: 'Outfit, sans-serif',
                       textTransform: 'none',
                       color: teal.main,
-                      border: '1px solid #14B8A6',
+                      border: '1px solid',
+                      borderColor: teal.main,
                       borderRadius: '8px',
                       px: 2,
                       py: 0.75,
+                      '&:hover': { borderColor: teal.main, bgcolor: teal.bg },
                     }}
                   >
                     Small Button
@@ -867,10 +869,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: teal.dark,
+                        borderColor: teal.main,
                         borderWidth: '2px',
-                        bgcolor: teal.dark,
-                        color: 'white',
+                        bgcolor: teal.bg,
                       },
                     }}
                   >
@@ -891,10 +892,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: teal.dark,
+                        borderColor: teal.main,
                         borderWidth: '2px',
-                        bgcolor: teal.dark,
-                        color: 'white',
+                        bgcolor: teal.bg,
                       },
                     }}
                   >
@@ -915,10 +915,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: teal.dark,
+                        borderColor: teal.main,
                         borderWidth: '2px',
-                        bgcolor: teal.dark,
-                        color: 'white',
+                        bgcolor: teal.bg,
                       },
                     }}
                   >
@@ -939,10 +938,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: teal.dark,
+                        borderColor: teal.main,
                         borderWidth: '2px',
-                        bgcolor: teal.dark,
-                        color: 'white',
+                        bgcolor: teal.bg,
                       },
                     }}
                   >
@@ -963,10 +961,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: teal.dark,
+                        borderColor: teal.main,
                         borderWidth: '2px',
-                        bgcolor: teal.dark,
-                        color: 'white',
+                        bgcolor: teal.bg,
                       },
                     }}
                   >
@@ -987,10 +984,9 @@ export default function BrandingPage() {
                       py: 1.5,
                       borderRadius: '12px',
                       '&:hover': {
-                        borderColor: red.dark,
+                        borderColor: red.main,
                         borderWidth: '2px',
-                        bgcolor: red.dark,
-                        color: 'white',
+                        bgcolor: red.bg,
                       },
                     }}
                   >
@@ -1006,7 +1002,7 @@ export default function BrandingPage() {
                     mt: 2,
                   }}
                 >
-                  Hover effect: Border and background change to dark color, text turns white for maximum contrast
+                  Hover effect: Subtle light background appears while maintaining border color and text color
                 </Typography>
               </CardContent>
             </Card>
