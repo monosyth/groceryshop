@@ -82,13 +82,20 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
         <Box sx={{ mb: 2 }}>
           <Chip
             label={statusConfig.label}
-            color={statusConfig.color}
+            color={metadata?.analysisStatus === 'completed' ? undefined : statusConfig.color}
             size="small"
             sx={{
               fontWeight: 600,
               fontFamily: 'Outfit, sans-serif',
               borderRadius: '8px',
               fontSize: '12px',
+              ...(metadata?.analysisStatus === 'completed' && {
+                bgcolor: '#10B981',
+                color: 'white',
+                '& .MuiChip-icon': {
+                  color: 'white',
+                },
+              }),
             }}
           />
         </Box>
