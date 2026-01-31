@@ -7,8 +7,8 @@
 
 // Primary Brand Colors - Teal
 export const teal = {
-  dark: '#0A7A6E',    // Hover states, dark accents
-  main: '#0D9B8A',    // Primary brand color
+  dark: '#00897B',    // Hover states, dark accents
+  main: '#00A896',    // Primary brand color
   light: '#4DD4C0',   // Highlights, shadows
   bg: '#E6F9F5',      // Light backgrounds
 };
