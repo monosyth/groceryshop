@@ -43,7 +43,7 @@ import { parseRecipeFromText } from '../../services/recipeUrlService';
 export default function RecipePage() {
   const { currentUser } = useAuth();
   const [receipts, setReceipts] = useState([]);
-  const [selectedReceipts, setSelectedReceipts] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]); // Individual ingredient selection
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
@@ -134,13 +134,12 @@ export default function RecipePage() {
     return () => unsubscribe();
   }, [currentUser]);
 
-  // Get all unique ingredients from selected receipts
-  const selectedIngredients = useMemo(() => {
+  // Get all available ingredients from all receipts
+  const availableIngredients = useMemo(() => {
     const ingredients = new Set();
 
-    selectedReceipts.forEach((receiptId) => {
-      const receipt = receipts.find((r) => r.id === receiptId);
-      if (receipt && receipt.items) {
+    receipts.forEach((receipt) => {
+      if (receipt.items) {
         receipt.items.forEach((item) => {
           if (item.name) {
             ingredients.add(item.name.toLowerCase());
@@ -149,38 +148,38 @@ export default function RecipePage() {
       }
     });
 
-    return Array.from(ingredients);
-  }, [selectedReceipts, receipts]);
+    return Array.from(ingredients).sort();
+  }, [receipts]);
 
   // All ingredients including pantry
   const allIngredients = useMemo(() => {
-    return [...new Set([...selectedIngredients, ...pantryIngredients])];
-  }, [selectedIngredients, pantryIngredients]);
+    return [...new Set([...availableIngredients, ...pantryIngredients])].sort();
+  }, [availableIngredients, pantryIngredients]);
 
-  // Handle receipt selection
-  const handleReceiptToggle = (receiptId) => {
-    setSelectedReceipts((prev) =>
-      prev.includes(receiptId)
-        ? prev.filter((id) => id !== receiptId)
-        : [...prev, receiptId]
+  // Handle ingredient selection
+  const handleIngredientSelect = (ingredient) => {
+    setSelectedIngredients((prev) =>
+      prev.includes(ingredient)
+        ? prev.filter((ing) => ing !== ingredient)
+        : [...prev, ingredient]
     );
   };
 
-  // Handle select all
-  const handleSelectAll = () => {
-    if (selectedReceipts.length === receipts.length) {
-      setSelectedReceipts([]);
+  // Handle select all ingredients
+  const handleSelectAllIngredients = () => {
+    if (selectedIngredients.length === allIngredients.length) {
+      setSelectedIngredients([]);
     } else {
-      setSelectedReceipts(receipts.map((r) => r.id));
+      setSelectedIngredients([...allIngredients]);
     }
   };
 
   // Handle generate recipes
   const handleGenerateRecipes = async () => {
-    if (allIngredients.length === 0) {
+    if (selectedIngredients.length === 0) {
       setSnackbar({
         open: true,
-        message: 'Please select some receipts or add pantry items first',
+        message: 'Please select some ingredients first',
         severity: 'warning',
       });
       return;
@@ -188,7 +187,7 @@ export default function RecipePage() {
 
     setGenerating(true);
     try {
-      const generatedRecipes = await generateRecipesFromIngredients(allIngredients, {
+      const generatedRecipes = await generateRecipesFromIngredients(selectedIngredients, {
         includePartialMatches: true,
       });
 
@@ -588,11 +587,11 @@ export default function RecipePage() {
                           fontSize: '16px',
                         }}
                       >
-                        🛒 Your Groceries
+                        🛒 Available Ingredients ({allIngredients.length})
                       </Typography>
                       <Button
                         size="small"
-                        onClick={handleSelectAll}
+                        onClick={handleSelectAllIngredients}
                         sx={{
                           fontFamily: 'Outfit, sans-serif',
                           fontSize: '11px',
@@ -602,55 +601,48 @@ export default function RecipePage() {
                           px: 1,
                         }}
                       >
-                        {selectedReceipts.length === receipts.length ? 'Deselect All' : 'Select All'}
+                        {selectedIngredients.length === allIngredients.length ? 'Deselect All' : 'Select All'}
                       </Button>
                     </Box>
 
-                    <FormGroup>
-                      {receipts.map((receipt) => (
-                        <FormControlLabel
-                          key={receipt.id}
-                          control={
-                            <Checkbox
-                              checked={selectedReceipts.includes(receipt.id)}
-                              onChange={() => handleReceiptToggle(receipt.id)}
+                    <Box sx={{ maxHeight: '300px', overflowY: 'auto', pr: 1 }}>
+                      {allIngredients.length === 0 ? (
+                        <Typography
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            color: '#059669',
+                            fontSize: '13px',
+                            fontStyle: 'italic',
+                            textAlign: 'center',
+                            py: 2,
+                          }}
+                        >
+                          No ingredients available. Upload receipts or add pantry items.
+                        </Typography>
+                      ) : (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+                          {allIngredients.map((ingredient, idx) => (
+                            <Chip
+                              key={idx}
+                              label={ingredient}
+                              onClick={() => handleIngredientSelect(ingredient)}
                               sx={{
-                                color: '#10B981',
-                                '&.Mui-checked': { color: '#10B981' },
-                                py: 0.5,
+                                bgcolor: selectedIngredients.includes(ingredient) ? '#10B981' : '#ECFDF5',
+                                color: selectedIngredients.includes(ingredient) ? '#fff' : '#059669',
+                                border: '1px solid #10B981',
+                                fontFamily: 'Outfit, sans-serif',
+                                fontSize: '12px',
+                                fontWeight: selectedIngredients.includes(ingredient) ? 600 : 400,
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  bgcolor: selectedIngredients.includes(ingredient) ? '#059669' : '#D1FAE5',
+                                },
                               }}
                             />
-                          }
-                          label={
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  fontFamily: 'Outfit, sans-serif',
-                                  fontWeight: 500,
-                                  color: '#059669',
-                                  fontSize: '13px',
-                                }}
-                              >
-                                {receipt.storeInfo?.name || 'Unknown Store'}
-                              </Typography>
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  fontFamily: 'Outfit, sans-serif',
-                                  color: '#059669',
-                                  opacity: 0.7,
-                                  fontSize: '11px',
-                                }}
-                              >
-                                {receipt.items?.length || 0} items
-                              </Typography>
-                            </Box>
-                          }
-                          sx={{ mb: 0.5 }}
-                        />
-                      ))}
-                    </FormGroup>
+                          ))}
+                        </Box>
+                      )}
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
@@ -1243,7 +1235,7 @@ export default function RecipePage() {
                       color: '#92400E',
                     }}
                   >
-                    Select your groceries and tap "Generate Recipe Ideas" to get started
+                    Select ingredients from your groceries and tap "Generate Recipe Ideas" to get started
                   </Typography>
                 </Card>
               ) : (
