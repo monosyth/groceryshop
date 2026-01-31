@@ -22,6 +22,8 @@ import {
   Store,
   CheckCircle,
   Restaurant,
+  ExpandMore,
+  ExpandLess,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -45,6 +47,7 @@ export default function ShoppingListPage() {
   const [newItemName, setNewItemName] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const [expandedStore, setExpandedStore] = useState(null);
 
   // Fetch shopping list items
   useEffect(() => {
@@ -227,6 +230,28 @@ export default function ShoppingListPage() {
     return suggestions;
   };
 
+  // Get items available at a specific store
+  const getItemsForStore = (storeName) => {
+    const uncheckedItems = shoppingList.filter((item) => !item.checked);
+    const matchingItems = [];
+
+    uncheckedItems.forEach((listItem) => {
+      const hasMatch = receipts.some((receipt) => {
+        if (receipt.storeName !== storeName) return false;
+        return receipt.items.some((receiptItem) =>
+          receiptItem.name?.toLowerCase().includes(listItem.name.toLowerCase()) ||
+          listItem.name.toLowerCase().includes(receiptItem.name?.toLowerCase())
+        );
+      });
+
+      if (hasMatch) {
+        matchingItems.push(listItem);
+      }
+    });
+
+    return matchingItems;
+  };
+
   const uncheckedItems = shoppingList.filter((item) => !item.checked);
   const checkedItems = shoppingList.filter((item) => item.checked);
   const fromRecipes = uncheckedItems.filter((item) => item.fromRecipe);
@@ -364,46 +389,99 @@ export default function ShoppingListPage() {
                 >
                   🏪 Where to Shop
                 </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
-                  {suggestions.map((suggestion, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        bgcolor: 'white',
-                        border: '1px solid #6EE7B7',
-                        borderRadius: '8px',
-                        px: 1.5,
-                        py: 1,
-                      }}
-                    >
-                      <Store sx={{ fontSize: 18, color: '#059669' }} />
-                      <Typography
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          color: '#059669',
-                          fontSize: '13px',
-                        }}
-                      >
-                        {suggestion.store}
-                      </Typography>
-                      <Chip
-                        label={`${suggestion.count} item${suggestion.count !== 1 ? 's' : ''}`}
-                        size="small"
-                        sx={{
-                          bgcolor: '#6EE7B7',
-                          color: '#059669',
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          fontSize: '11px',
-                          height: '22px',
-                        }}
-                      />
-                    </Box>
-                  ))}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  {suggestions.map((suggestion, index) => {
+                    const isExpanded = expandedStore === suggestion.store;
+                    const storeItems = isExpanded ? getItemsForStore(suggestion.store) : [];
+
+                    return (
+                      <Box key={index}>
+                        <Box
+                          onClick={() => setExpandedStore(isExpanded ? null : suggestion.store)}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 1,
+                            bgcolor: 'white',
+                            border: '2px solid #6EE7B7',
+                            borderRadius: '8px',
+                            px: 1.5,
+                            py: 1,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            '&:hover': {
+                              bgcolor: '#F0FDF4',
+                              borderColor: '#10B981',
+                            },
+                          }}
+                        >
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Store sx={{ fontSize: 18, color: '#059669' }} />
+                            <Typography
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                fontWeight: 600,
+                                color: '#059669',
+                                fontSize: '13px',
+                              }}
+                            >
+                              {suggestion.store}
+                            </Typography>
+                            <Chip
+                              label={`${suggestion.count} item${suggestion.count !== 1 ? 's' : ''}`}
+                              size="small"
+                              sx={{
+                                bgcolor: '#6EE7B7',
+                                color: '#059669',
+                                fontFamily: 'Outfit, sans-serif',
+                                fontWeight: 600,
+                                fontSize: '11px',
+                                height: '22px',
+                              }}
+                            />
+                          </Box>
+                          {isExpanded ? (
+                            <ExpandLess sx={{ fontSize: 20, color: '#059669' }} />
+                          ) : (
+                            <ExpandMore sx={{ fontSize: 20, color: '#059669' }} />
+                          )}
+                        </Box>
+
+                        {isExpanded && storeItems.length > 0 && (
+                          <Box
+                            sx={{
+                              mt: 1,
+                              ml: 2,
+                              pl: 2,
+                              borderLeft: '3px solid #6EE7B7',
+                            }}
+                          >
+                            {storeItems.map((item) => (
+                              <Box
+                                key={item.id}
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  py: 0.75,
+                                }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Outfit, sans-serif',
+                                    fontSize: '13px',
+                                    color: '#374151',
+                                  }}
+                                >
+                                  • {item.name}
+                                </Typography>
+                              </Box>
+                            ))}
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
                 </Box>
               </CardContent>
             </Card>
