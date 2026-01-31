@@ -488,7 +488,7 @@ export default function RecipePage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#15803D' }} />
+            <CircularProgress size={60} sx={{ color: '#10B981' }} />
           </Box>
         </Container>
       </Box>
@@ -505,7 +505,7 @@ export default function RecipePage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#15803D',
+              color: '#10B981',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -1062,7 +1062,7 @@ export default function RecipePage() {
                             sx={{
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 700,
-                              color: '#15803D',
+                              color: '#10B981',
                               fontSize: { xs: '16px', sm: '18px' },
                               flex: 1,
                               pr: 1,
@@ -1279,14 +1279,14 @@ export default function RecipePage() {
                             fontWeight: 600,
                             fontSize: '13px',
                             textTransform: 'none',
-                            color: '#15803D',
-                            borderColor: '#15803D',
-                            border: '2px solid #15803D',
+                            color: '#10B981',
+                            borderColor: '#10B981',
+                            border: '2px solid #10B981',
                             py: 1,
                             '&:hover': {
                               bgcolor: '#F0FDF4',
-                              borderColor: '#166534',
-                              border: '2px solid #166534',
+                              borderColor: '#059669',
+                              border: '2px solid #059669',
                             },
                           }}
                         >

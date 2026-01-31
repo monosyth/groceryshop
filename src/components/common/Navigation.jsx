@@ -149,7 +149,7 @@ export default function Navigation() {
               onClick={handleDrawerToggle}
               sx={{
                 mr: 2,
-                color: '#15803D',
+                color: '#10B981',
               }}
             >
               <MenuIcon />
@@ -192,7 +192,7 @@ export default function Navigation() {
               sx={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: '#15803D',
+                color: '#10B981',
                 fontFamily: 'Outfit, sans-serif',
                 letterSpacing: '-0.02em',
               }}
@@ -219,14 +219,14 @@ export default function Navigation() {
                       py: 0.5,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: isActive ? 'white' : '#15803D',
-                      bgcolor: isActive ? '#15803D' : 'transparent',
+                      color: isActive ? 'white' : '#10B981',
+                      bgcolor: isActive ? '#10B981' : 'transparent',
                       border: '1px solid transparent',
                       minWidth: 'auto',
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? '#166534' : 'rgba(21, 128, 61, 0.08)',
-                        border: isActive ? '1px solid #166534' : '1px solid rgba(21, 128, 61, 0.2)',
+                        bgcolor: isActive ? '#059669' : 'rgba(16, 185, 129, 0.08)',
+                        border: isActive ? '1px solid #059669' : '1px solid rgba(16, 185, 129, 0.2)',
                       },
                     }}
                   >
@@ -270,7 +270,7 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    border: '2px solid #15803D',
+                    border: '2px solid #10B981',
                   }}
                 />
               ) : (
@@ -300,7 +300,7 @@ export default function Navigation() {
               sx: {
                 mt: 1,
                 borderRadius: '10px',
-                border: '2px solid #15803D',
+                border: '2px solid #10B981',
                 boxShadow: '2px 2px 0px rgba(21, 128, 61, 0.3)',
               },
             }}

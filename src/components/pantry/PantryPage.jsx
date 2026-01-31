@@ -253,7 +253,7 @@ export default function PantryPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#15803D' }} />
+            <CircularProgress size={60} sx={{ color: '#10B981' }} />
           </Box>
         </Container>
       </Box>
@@ -270,7 +270,7 @@ export default function PantryPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#15803D',
+              color: '#10B981',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -280,7 +280,7 @@ export default function PantryPage() {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              color: '#166534',
+              color: '#059669',
               fontSize: '16px',
             }}
           >

@@ -69,7 +69,7 @@ export default function UploadPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#15803D',
+              color: '#10B981',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}

@@ -552,7 +552,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#15803D',
+                color: '#10B981',
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -674,15 +674,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 0 ? 'white' : '#15803D',
-                bgcolor: activeTab === 0 ? '#15803D' : 'white',
+                color: activeTab === 0 ? 'white' : '#10B981',
+                bgcolor: activeTab === 0 ? '#10B981' : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 0 ? '#15803D' : '#E5E7EB',
+                borderColor: activeTab === 0 ? '#10B981' : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 0 ? '#166534' : '#F9FAFB',
-                  borderColor: activeTab === 0 ? '#166534' : '#D1D5DB',
+                  bgcolor: activeTab === 0 ? '#059669' : '#F9FAFB',
+                  borderColor: activeTab === 0 ? '#059669' : '#D1D5DB',
                 },
               }}
             >
@@ -698,15 +698,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 1 ? 'white' : '#15803D',
-                bgcolor: activeTab === 1 ? '#15803D' : 'white',
+                color: activeTab === 1 ? 'white' : '#10B981',
+                bgcolor: activeTab === 1 ? '#10B981' : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 1 ? '#15803D' : '#E5E7EB',
+                borderColor: activeTab === 1 ? '#10B981' : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 1 ? '#166534' : '#F9FAFB',
-                  borderColor: activeTab === 1 ? '#166534' : '#D1D5DB',
+                  bgcolor: activeTab === 1 ? '#059669' : '#F9FAFB',
+                  borderColor: activeTab === 1 ? '#059669' : '#D1D5DB',
                 },
               }}
             >
@@ -759,7 +759,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 800,
-                color: '#15803D',
+                color: '#10B981',
               }}
             >
               No Receipts Yet!
@@ -803,7 +803,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#15803D',
+                  color: '#10B981',
                 }}
               >
                 No Receipts Found
@@ -863,7 +863,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#15803D',
+                  color: '#10B981',
                 }}
               >
                 No Items Found

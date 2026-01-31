@@ -115,7 +115,7 @@ export default function AnalyticsPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#15803D' }} />
+            <CircularProgress size={60} sx={{ color: '#10B981' }} />
           </Box>
         </Container>
       </Box>
@@ -132,7 +132,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#15803D',
+                color: '#10B981',
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -198,7 +198,7 @@ export default function AnalyticsPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#15803D',
+              color: '#10B981',
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}

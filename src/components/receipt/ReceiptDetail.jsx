@@ -187,7 +187,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#15803D',
+              color: '#10B981',
               fontSize: '24px',
             }}
           >
@@ -320,7 +320,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                 mb: 2,
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#15803D',
+                color: '#10B981',
                 fontSize: '18px',
               }}
             >

@@ -180,7 +180,7 @@ export default function LandingPage() {
                 sx={{
                   fontSize: '28px',
                   fontWeight: 900,
-                  color: '#15803D',
+                  color: '#10B981',
                   letterSpacing: '-0.02em',
                 }}
               >
@@ -193,7 +193,7 @@ export default function LandingPage() {
               startIcon={<GoogleIcon />}
               sx={{
                 bgcolor: '#FFFFFF',
-                color: '#15803D',
+                color: '#10B981',
                 fontWeight: 700,
                 px: 3,
                 py: 1.2,
@@ -201,7 +201,7 @@ export default function LandingPage() {
                 fontSize: '15px',
                 textTransform: 'none',
                 boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-                border: '2px solid #15803D',
+                border: '2px solid #10B981',
                 '&:hover': {
                   bgcolor: '#F0FDF4',
                   transform: 'scale(1.05)',
@@ -238,7 +238,7 @@ export default function LandingPage() {
               fontSize: { xs: '48px', sm: '60px', md: '72px' },
               fontWeight: 900,
               lineHeight: 1.1,
-              color: '#15803D',
+              color: '#10B981',
               letterSpacing: '-0.03em',
               textShadow: '4px 4px 0px rgba(0,0,0,0.1)',
               mb: 2,
@@ -279,7 +279,7 @@ export default function LandingPage() {
             disabled={loading}
             startIcon={<GoogleIcon />}
             sx={{
-              bgcolor: '#15803D',
+              bgcolor: '#10B981',
               color: 'white',
               fontWeight: 800,
               px: 5,
@@ -288,9 +288,9 @@ export default function LandingPage() {
               fontSize: '20px',
               textTransform: 'none',
               boxShadow: '0 8px 25px rgba(21, 128, 61, 0.4)',
-              border: '3px solid #166534',
+              border: '3px solid #059669',
               '&:hover': {
-                bgcolor: '#166534',
+                bgcolor: '#059669',
                 transform: 'scale(1.08) rotate(-1deg)',
                 boxShadow: '0 12px 35px rgba(21, 128, 61, 0.5)',
               },
@@ -416,8 +416,8 @@ export default function LandingPage() {
             borderRadius: '32px',
             p: { xs: 4, md: 6 },
             textAlign: 'center',
-            border: '6px solid #15803D',
-            boxShadow: '12px 12px 0px #15803D',
+            border: '6px solid #10B981',
+            boxShadow: '12px 12px 0px #10B981',
             transform: 'rotate(-1deg)',
           }}
         >
@@ -425,7 +425,7 @@ export default function LandingPage() {
             sx={{
               fontSize: { xs: '32px', md: '42px' },
               fontWeight: 900,
-              color: '#15803D',
+              color: '#10B981',
               mb: 2,
               lineHeight: 1.1,
             }}
@@ -435,7 +435,7 @@ export default function LandingPage() {
           <Typography
             sx={{
               fontSize: '18px',
-              color: '#166534',
+              color: '#059669',
               mb: 3,
               fontWeight: 500,
             }}
