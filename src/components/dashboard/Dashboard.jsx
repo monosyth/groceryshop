@@ -24,6 +24,7 @@ import {
   DialogActions,
   Button,
   TextField,
+  Divider,
 } from '@mui/material';
 import {
   Receipt as ReceiptIcon,
