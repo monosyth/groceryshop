@@ -21,6 +21,7 @@ import {
   ShoppingCart,
   Store,
   CheckCircle,
+  Restaurant,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import {
