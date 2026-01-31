@@ -29,6 +29,7 @@ import {
   Restaurant,
   List as ListIcon,
   MenuBook,
+  Kitchen,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -66,6 +67,7 @@ export default function Navigation() {
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: <Dashboard />, emoji: '🏠' },
     { label: 'Upload', path: '/upload', icon: <Upload />, emoji: '📸' },
+    { label: 'Pantry', path: '/pantry', icon: <Kitchen />, emoji: '🥫' },
     { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
     { label: 'My Recipes', path: '/my-recipes', icon: <MenuBook />, emoji: '📖' },
     { label: 'Shopping List', path: '/shopping-list', icon: <ListIcon />, emoji: '🛒' },

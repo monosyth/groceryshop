@@ -21,6 +21,7 @@ import Analytics from './components/analytics/Analytics';
 import RecipePage from './components/recipe/RecipePage';
 import MyRecipesPage from './components/recipe/MyRecipesPage';
 import ShoppingListPage from './components/shopping/ShoppingListPage';
+import PantryPage from './components/pantry/PantryPage';
 
 function App() {
   return (
@@ -79,6 +80,16 @@ function App() {
                 <ProtectedRoute>
                   <MainLayout>
                     <ShoppingListPage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pantry"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <PantryPage />
                   </MainLayout>
                 </ProtectedRoute>
               }
