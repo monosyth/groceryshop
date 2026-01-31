@@ -410,15 +410,15 @@ export default function PantryPage() {
           }}
         >
           <CardContent sx={{ p: 2.5 }}>
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
               <TextField
-                fullWidth
                 placeholder="Add item to pantry..."
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddItem()}
                 disabled={addingItem}
                 sx={{
+                  flex: '1 1 250px',
                   '& .MuiOutlinedInput-root': {
                     bgcolor: '#fff',
                     fontFamily: 'Outfit, sans-serif',
@@ -442,92 +442,43 @@ export default function PantryPage() {
               >
                 Add
               </Button>
-            </Box>
-          </CardContent>
-        </Card>
-
-        {/* Photo Upload Section */}
-        <Card
-          sx={{
-            bgcolor: '#FFEDD5',
-            borderRadius: '12px',
-            border: '2px solid #F97316',
-            boxShadow: '3px 3px 0px #FCD34D',
-            mb: 3,
-          }}
-        >
-          <CardContent sx={{ p: 2.5 }}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 600,
-                color: '#EA580C',
-                fontSize: '16px',
-                mb: 1.5,
-              }}
-            >
-              📸 Add Items from Photo
-            </Typography>
-
-            <Typography
-              variant="body2"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                color: '#EA580C',
-                mb: 1.5,
-                fontSize: '13px',
-              }}
-            >
-              Take a photo of your pantry or ingredients to automatically add them
-            </Typography>
-
-            <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
-                variant="contained"
-                startIcon={<CameraAlt />}
+                variant="outlined"
+                startIcon={analyzingPhoto ? <CircularProgress size={16} /> : <CameraAlt />}
                 onClick={() => cameraInputRef.current?.click()}
                 disabled={analyzingPhoto}
                 sx={{
-                  flex: 1,
-                  bgcolor: '#F97316',
-                  color: 'white',
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '14px',
                   textTransform: 'none',
-                  border: '2px solid #EA580C',
-                  boxShadow: '2px 2px 0px #EA580C',
-                  py: 1.25,
+                  color: '#F97316',
+                  borderColor: '#F97316',
+                  px: 2,
                   '&:hover': {
-                    bgcolor: '#EA580C',
+                    borderColor: '#EA580C',
+                    bgcolor: '#FFF7ED',
                   },
                 }}
               >
-                {analyzingPhoto ? 'Analyzing...' : 'Take Photo'}
+                📸 Photo
               </Button>
               <Button
-                variant="contained"
-                startIcon={<Upload />}
+                variant="outlined"
+                startIcon={analyzingPhoto ? <CircularProgress size={16} /> : <Upload />}
                 onClick={() => fileInputRef.current?.click()}
                 disabled={analyzingPhoto}
                 sx={{
-                  flex: 1,
-                  bgcolor: '#F97316',
-                  color: 'white',
                   fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '14px',
                   textTransform: 'none',
-                  border: '2px solid #EA580C',
-                  boxShadow: '2px 2px 0px #EA580C',
-                  py: 1.25,
+                  color: '#F97316',
+                  borderColor: '#F97316',
+                  px: 2,
                   '&:hover': {
-                    bgcolor: '#EA580C',
+                    borderColor: '#EA580C',
+                    bgcolor: '#FFF7ED',
                   },
                 }}
               >
-                {analyzingPhoto ? 'Analyzing...' : 'Upload Photo'}
+                📁 Upload
               </Button>
             </Box>
 
