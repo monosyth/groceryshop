@@ -77,15 +77,25 @@ export default function ShoppingListPage() {
   // Filter receipts with store info for store suggestions
   const receipts = allReceipts.filter((receipt) => receipt.storeInfo?.name);
 
-  // Generate item suggestions from receipts and shopping list history
+  // Generate item suggestions from receipts and shopping list history with store info
   const itemSuggestions = useMemo(() => {
-    const uniqueItems = new Set();
+    const itemMap = new Map(); // Use map to track items and their stores
 
-    // Add items from receipts
+    // Add items from receipts with store info
     allReceipts.forEach((receipt) => {
+      const storeName = receipt.storeInfo?.name;
       receipt.items?.forEach((item) => {
         if (item.name) {
-          uniqueItems.add(item.name.toLowerCase());
+          const itemKey = item.name.toLowerCase();
+          if (!itemMap.has(itemKey)) {
+            itemMap.set(itemKey, {
+              name: item.name,
+              stores: new Set(),
+            });
+          }
+          if (storeName) {
+            itemMap.get(itemKey).stores.add(storeName);
+          }
         }
       });
     });
@@ -93,12 +103,24 @@ export default function ShoppingListPage() {
     // Add items from shopping list history
     shoppingList.forEach((item) => {
       if (item.name) {
-        uniqueItems.add(item.name.toLowerCase());
+        const itemKey = item.name.toLowerCase();
+        if (!itemMap.has(itemKey)) {
+          itemMap.set(itemKey, {
+            name: item.name,
+            stores: new Set(),
+          });
+        }
       }
     });
 
-    // Convert to array and sort alphabetically
-    return Array.from(uniqueItems).sort();
+    // Convert to array with store info and sort alphabetically
+    return Array.from(itemMap.values())
+      .map((item) => ({
+        name: item.name,
+        stores: Array.from(item.stores),
+        suggestedStore: item.stores.size > 0 ? Array.from(item.stores)[0] : null,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [allReceipts, shoppingList]);
 
   // Fetch shopping list items
@@ -584,7 +606,7 @@ export default function ShoppingListPage() {
                 </ToggleButton>
                 <ToggleButton value="location">
                   <LocationOn sx={{ fontSize: 16, mr: 0.5 }} />
-                  Aisle
+                  Category
                 </ToggleButton>
               </ToggleButtonGroup>
             )}
@@ -611,11 +633,65 @@ export default function ShoppingListPage() {
                 options={itemSuggestions}
                 value={newItemName}
                 onChange={(event, newValue) => {
-                  setNewItemName(newValue || '');
+                  // Handle both string and object values
+                  if (typeof newValue === 'string') {
+                    setNewItemName(newValue);
+                  } else if (newValue && newValue.name) {
+                    setNewItemName(newValue.name);
+                  } else {
+                    setNewItemName('');
+                  }
                 }}
                 onInputChange={(event, newValue) => {
                   setNewItemName(newValue);
                 }}
+                filterOptions={(options, state) => {
+                  // Only show suggestions if user has typed at least 1 character
+                  if (!state.inputValue || state.inputValue.length === 0) {
+                    return [];
+                  }
+                  // Filter options based on input
+                  return options.filter((option) =>
+                    option.name.toLowerCase().includes(state.inputValue.toLowerCase())
+                  );
+                }}
+                getOptionLabel={(option) => {
+                  // Handle both string and object options
+                  if (typeof option === 'string') return option;
+                  return option.name || '';
+                }}
+                renderOption={(props, option) => (
+                  <Box component="li" {...props} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: '13px',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {option.name}
+                    </Typography>
+                    {option.suggestedStore && (
+                      <Chip
+                        label={option.suggestedStore}
+                        size="small"
+                        icon={<Store sx={{ fontSize: 12 }} />}
+                        sx={{
+                          height: '18px',
+                          fontSize: '10px',
+                          fontFamily: 'Outfit, sans-serif',
+                          bgcolor: '#DBEAFE',
+                          color: '#1E40AF',
+                          fontWeight: 500,
+                          '& .MuiChip-icon': {
+                            color: '#1E40AF',
+                            ml: 0.5,
+                          },
+                        }}
+                      />
+                    )}
+                  </Box>
+                )}
                 disabled={addingItem}
                 renderInput={(params) => (
                   <TextField
