@@ -118,21 +118,12 @@ const theme = createTheme({
         },
         contained: {
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-          '&:hover': {
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-            transform: 'translateY(-2px)',
-          },
           '&:active': {
-            transform: 'translateY(0px)',
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
           },
         },
         outlined: {
           borderWidth: 2,
-          '&:hover': {
-            borderWidth: 2,
-            transform: 'translateY(-2px)',
-          },
         },
         sizeSmall: {
           padding: '6px 16px',
@@ -149,11 +140,6 @@ const theme = createTheme({
         root: {
           borderRadius: 16,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          '&:hover': {
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
-            transform: 'translateY(-4px)',
-          },
         },
       },
     },
@@ -215,9 +201,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           transition: 'all 0.2s ease',
-          '&:hover': {
-            transform: 'scale(1.1)',
-          },
         },
       },
     },
@@ -225,10 +208,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-          '&:hover': {
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-            transform: 'scale(1.05)',
-          },
         },
       },
     },
