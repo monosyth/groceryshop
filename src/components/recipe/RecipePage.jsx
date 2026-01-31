@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -23,8 +23,6 @@ import {
   TextField,
 } from '@mui/material';
 import {
-  CameraAlt,
-  Upload,
   Restaurant,
   Close,
   CheckCircle,
@@ -37,9 +35,8 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { generateRecipesFromIngredients, analyzePantryPhoto } from '../../services/geminiService';
+import { generateRecipesFromIngredients } from '../../services/geminiService';
 import { parseRecipeFromText } from '../../services/recipeUrlService';
-import { addPhotoItemsToPantry } from '../../services/pantryService';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
@@ -49,18 +46,12 @@ export default function RecipePage() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
-  const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-  const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({}); // Track checked ingredients per recipe
   const [recipeText, setRecipeText] = useState('');
   const [importingRecipe, setImportingRecipe] = useState(false);
   const [importedRecipe, setImportedRecipe] = useState(null);
   const [importedRecipeIngredients, setImportedRecipeIngredients] = useState([]);
-
-  const fileInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
 
   // Helper function to sort ingredients by priority
   // Basic staples (water, salt, pepper, oil, etc.) go to the bottom
@@ -270,74 +261,6 @@ export default function RecipePage() {
     } finally {
       setGenerating(false);
     }
-  };
-
-  // Handle photo upload/camera
-  const handlePhotoSelect = async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setAnalyzingPhoto(true);
-    setSelectedPhoto(URL.createObjectURL(file));
-
-    try {
-      // Convert to base64
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target.result.split(',')[1];
-
-        try {
-          const ingredients = await analyzePantryPhoto(base64);
-
-          // Add ingredients to pantry collection
-          if (ingredients.length > 0) {
-            try {
-              const addedCount = await addPhotoItemsToPantry(currentUser.uid, ingredients);
-              setSnackbar({
-                open: true,
-                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''} and added ${addedCount} to pantry!`,
-                severity: 'success',
-              });
-            } catch (pantryError) {
-              console.error('Error adding to pantry:', pantryError);
-              setSnackbar({
-                open: true,
-                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''}, but couldn't add to pantry`,
-                severity: 'warning',
-              });
-            }
-          }
-
-          setPhotoDialogOpen(false);
-        } catch (error) {
-          console.error('Error analyzing photo:', error);
-          setSnackbar({
-            open: true,
-            message: error.message.includes('API')
-              ? 'Please add your Gemini API key to use this feature'
-              : 'Failed to analyze photo. Please try again.',
-            severity: 'error',
-          });
-        } finally {
-          setAnalyzingPhoto(false);
-          setSelectedPhoto(null);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
-      console.error('Error reading file:', error);
-      setAnalyzingPhoto(false);
-      setSnackbar({
-        open: true,
-        message: 'Failed to read image file',
-        severity: 'error',
-      });
-    }
-  };
-
-  // Handle remove pantry ingredient
-  const handleRemovePantryIngredient = (ingredient) => {
-    setPantryIngredients((prev) => prev.filter((ing) => ing !== ingredient));
   };
 
   // Handle ingredient selection
@@ -682,17 +605,22 @@ export default function RecipePage() {
                         },
                       }}
                     >
-                      {receipt.storeInfo?.name || 'Unknown Store'} ({receipt.items?.length || 0} items)
+                      {receipt.storeInfo?.name || 'Unknown Store'} ({receipt.items?.length || 0} items) -{' '}
+                      {receipt.createdAt?.toDate()
+                        ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(
+                            receipt.createdAt.toDate()
+                          )
+                        : 'Unknown date'}
                     </Button>
                   ))}
                 </Box>
               </Card>
             )}
 
-            {/* Top Section - Groceries, Pantry, and Recipe Import */}
+            {/* Top Section - Groceries and Recipe Import */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {/* Your Groceries */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <Card
                   sx={{
                     bgcolor: '#ECFDF5',
@@ -773,164 +701,8 @@ export default function RecipePage() {
                 </Card>
               </Grid>
 
-              {/* Add Pantry Items */}
-              <Grid item xs={12} md={4}>
-                <Card
-                  sx={{
-                    bgcolor: '#FFEDD5',
-                    borderRadius: '12px',
-                    border: '2px solid #F97316',
-                    boxShadow: '3px 3px 0px #FCD34D',
-                    height: '100%',
-                  }}
-                >
-                  <CardContent sx={{ p: 2.5 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#EA580C',
-                        fontSize: '16px',
-                        mb: 1.5,
-                      }}
-                    >
-                      📸 Add Pantry Items
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        color: '#EA580C',
-                        mb: 1.5,
-                        fontSize: '12px',
-                      }}
-                    >
-                      Take a photo of your pantry or ingredients to add them
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', gap: 1.5, mb: analyzingPhoto || pantryIngredients.length > 0 ? 1.5 : 0 }}>
-                      <Button
-                        variant="contained"
-                        startIcon={<CameraAlt />}
-                        onClick={() => cameraInputRef.current?.click()}
-                        disabled={analyzingPhoto}
-                        sx={{
-                          flex: 1,
-                          bgcolor: '#F97316',
-                          color: 'white',
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          fontSize: '13px',
-                          textTransform: 'none',
-                          border: '2px solid #EA580C',
-                          boxShadow: '2px 2px 0px #EA580C',
-                          py: 1,
-                          '&:hover': {
-                            bgcolor: '#EA580C',
-                          },
-                        }}
-                      >
-                        Camera
-                      </Button>
-                      <Button
-                        variant="contained"
-                        startIcon={<Upload />}
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={analyzingPhoto}
-                        sx={{
-                          flex: 1,
-                          bgcolor: '#F97316',
-                          color: 'white',
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          fontSize: '13px',
-                          textTransform: 'none',
-                          border: '2px solid #EA580C',
-                          boxShadow: '2px 2px 0px #EA580C',
-                          py: 1,
-                          '&:hover': {
-                            bgcolor: '#EA580C',
-                          },
-                        }}
-                      >
-                        Upload
-                      </Button>
-                    </Box>
-
-                    <input
-                      ref={cameraInputRef}
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      style={{ display: 'none' }}
-                      onChange={handlePhotoSelect}
-                    />
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      onChange={handlePhotoSelect}
-                    />
-
-                    {analyzingPhoto && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CircularProgress size={18} sx={{ color: '#F97316' }} />
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            color: '#EA580C',
-                            fontSize: '11px',
-                          }}
-                        >
-                          Analyzing photo...
-                        </Typography>
-                      </Box>
-                    )}
-
-                    {/* Pantry Ingredients Chips */}
-                    {pantryIngredients.length > 0 && (
-                      <Box>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            color: '#EA580C',
-                            fontWeight: 600,
-                            mb: 0.75,
-                            display: 'block',
-                            fontSize: '11px',
-                          }}
-                        >
-                          From photos:
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {pantryIngredients.map((ingredient, index) => (
-                            <Chip
-                              key={index}
-                              label={ingredient}
-                              onDelete={() => handleRemovePantryIngredient(ingredient)}
-                              size="small"
-                              sx={{
-                                bgcolor: 'white',
-                                border: '1px solid #FDBA74',
-                                fontFamily: 'Outfit, sans-serif',
-                                fontSize: '11px',
-                              }}
-                            />
-                          ))}
-                        </Box>
-                      </Box>
-                    )}
-                  </CardContent>
-                </Card>
-              </Grid>
-
               {/* Import Recipe from URL */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <Card
                   sx={{
                     bgcolor: '#EDE9FE',

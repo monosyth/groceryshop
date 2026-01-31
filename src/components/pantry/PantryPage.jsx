@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Container,
   Typography,
@@ -25,6 +25,7 @@ import {
   Receipt as ReceiptIcon,
   CameraAlt,
   Edit as EditIcon,
+  Upload,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -38,6 +39,8 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { analyzePantryPhoto } from '../../services/geminiService';
+import { addPhotoItemsToPantry } from '../../services/pantryService';
 
 export default function PantryPage() {
   const { currentUser } = useAuth();
@@ -45,7 +48,11 @@ export default function PantryPage() {
   const [loading, setLoading] = useState(true);
   const [newItemName, setNewItemName] = useState('');
   const [addingItem, setAddingItem] = useState(false);
+  const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   // Fetch pantry items
   useEffect(() => {
@@ -116,6 +123,71 @@ export default function PantryPage() {
       });
     } finally {
       setAddingItem(false);
+    }
+  };
+
+  // Handle photo upload/camera
+  const handlePhotoSelect = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setAnalyzingPhoto(true);
+
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target.result.split(',')[1];
+
+        try {
+          const ingredients = await analyzePantryPhoto(base64);
+
+          // Add ingredients to pantry collection
+          if (ingredients.length > 0) {
+            try {
+              const addedCount = await addPhotoItemsToPantry(currentUser.uid, ingredients);
+              setSnackbar({
+                open: true,
+                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''} and added ${addedCount} to pantry!`,
+                severity: 'success',
+              });
+            } catch (pantryError) {
+              console.error('Error adding to pantry:', pantryError);
+              setSnackbar({
+                open: true,
+                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''}, but couldn't add to pantry`,
+                severity: 'warning',
+              });
+            }
+          } else {
+            setSnackbar({
+              open: true,
+              message: 'No ingredients found in photo',
+              severity: 'info',
+            });
+          }
+        } catch (error) {
+          console.error('Error analyzing photo:', error);
+          setSnackbar({
+            open: true,
+            message: error.message.includes('API')
+              ? 'Please add your Gemini API key to use this feature'
+              : 'Failed to analyze photo. Please try again.',
+            severity: 'error',
+          });
+        } finally {
+          setAnalyzingPhoto(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error reading file:', error);
+      setAnalyzingPhoto(false);
+      setSnackbar({
+        open: true,
+        message: 'Failed to read image file',
+        severity: 'error',
+      });
     }
   };
 
@@ -263,6 +335,125 @@ export default function PantryPage() {
           </CardContent>
         </Card>
 
+        {/* Photo Upload Section */}
+        <Card
+          sx={{
+            bgcolor: '#FFEDD5',
+            borderRadius: '12px',
+            border: '2px solid #F97316',
+            boxShadow: '3px 3px 0px #FCD34D',
+            mb: 3,
+          }}
+        >
+          <CardContent sx={{ p: 2.5 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 600,
+                color: '#EA580C',
+                fontSize: '16px',
+                mb: 1.5,
+              }}
+            >
+              📸 Add Items from Photo
+            </Typography>
+
+            <Typography
+              variant="body2"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                color: '#EA580C',
+                mb: 1.5,
+                fontSize: '13px',
+              }}
+            >
+              Take a photo of your pantry or ingredients to automatically add them
+            </Typography>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button
+                variant="contained"
+                startIcon={<CameraAlt />}
+                onClick={() => cameraInputRef.current?.click()}
+                disabled={analyzingPhoto}
+                sx={{
+                  flex: 1,
+                  bgcolor: '#F97316',
+                  color: 'white',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  textTransform: 'none',
+                  border: '2px solid #EA580C',
+                  boxShadow: '2px 2px 0px #EA580C',
+                  py: 1.25,
+                  '&:hover': {
+                    bgcolor: '#EA580C',
+                  },
+                }}
+              >
+                {analyzingPhoto ? 'Analyzing...' : 'Take Photo'}
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<Upload />}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={analyzingPhoto}
+                sx={{
+                  flex: 1,
+                  bgcolor: '#F97316',
+                  color: 'white',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  textTransform: 'none',
+                  border: '2px solid #EA580C',
+                  boxShadow: '2px 2px 0px #EA580C',
+                  py: 1.25,
+                  '&:hover': {
+                    bgcolor: '#EA580C',
+                  },
+                }}
+              >
+                {analyzingPhoto ? 'Analyzing...' : 'Upload Photo'}
+              </Button>
+            </Box>
+
+            {analyzingPhoto && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+                <CircularProgress size={20} sx={{ color: '#F97316' }} />
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#EA580C',
+                    fontSize: '13px',
+                  }}
+                >
+                  Analyzing photo...
+                </Typography>
+              </Box>
+            )}
+
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              style={{ display: 'none' }}
+              onChange={handlePhotoSelect}
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handlePhotoSelect}
+            />
+          </CardContent>
+        </Card>
+
         {/* Pantry Items */}
         {pantryItems.length === 0 ? (
           <Card
@@ -296,7 +487,7 @@ export default function PantryPage() {
                 color: '#92400E',
               }}
             >
-              Add items manually above, or upload receipts and scan pantry photos to build your inventory!
+              Add items manually, take a pantry photo, or upload receipts to build your inventory!
             </Typography>
           </Card>
         ) : (
