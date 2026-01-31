@@ -26,6 +26,7 @@ import {
   CameraAlt,
   Edit as EditIcon,
   Upload,
+  Undo,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -52,6 +53,19 @@ export default function PantryPage() {
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const [recategorizing, setRecategorizing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+
+  // Edit functionality
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  // Delete confirmation
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  // Undo system (stores last 30 operations)
+  const [undoStack, setUndoStack] = useState([]);
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -211,10 +225,30 @@ export default function PantryPage() {
     }
   };
 
-  // Delete pantry item
-  const handleDeleteItem = async (itemId) => {
+  // Open delete confirmation dialog
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setDeleteConfirmOpen(true);
+  };
+
+  // Confirmed delete - adds to undo stack
+  const handleConfirmedDelete = async () => {
+    if (!itemToDelete) return;
+
     try {
-      await deleteDoc(doc(db, 'pantry', itemId));
+      // Add to undo stack before deleting
+      const operation = {
+        type: 'delete',
+        item: { ...itemToDelete },
+        timestamp: Date.now(),
+      };
+
+      setUndoStack((prev) => {
+        const newStack = [operation, ...prev];
+        return newStack.slice(0, 30); // Keep only last 30 operations
+      });
+
+      await deleteDoc(doc(db, 'pantry', itemToDelete.id));
       setSnackbar({
         open: true,
         message: 'Item removed from pantry',
@@ -227,7 +261,119 @@ export default function PantryPage() {
         message: 'Failed to delete item',
         severity: 'error',
       });
+    } finally {
+      setDeleteConfirmOpen(false);
+      setItemToDelete(null);
     }
+  };
+
+  // Handle edit item click
+  const handleEditClick = (item) => {
+    setEditingItemId(item.id);
+    setEditedName(item.name);
+    setEditDialogOpen(true);
+  };
+
+  // Handle save edited name with AI recategorization
+  const handleSaveEdit = async () => {
+    if (!editingItemId || !editedName.trim()) return;
+
+    setSavingEdit(true);
+    try {
+      // Find the original item for undo
+      const originalItem = pantryItems.find((item) => item.id === editingItemId);
+
+      // Recategorize with AI using the new name
+      const newCategory = await categorizeShoppingItem(editedName.trim());
+
+      await updateDoc(doc(db, 'pantry', editingItemId), {
+        name: editedName.trim(),
+        category: newCategory,
+      });
+
+      // Add to undo stack
+      const operation = {
+        type: 'edit',
+        itemId: editingItemId,
+        oldData: {
+          name: originalItem.name,
+          category: originalItem.category,
+        },
+        timestamp: Date.now(),
+      };
+
+      setUndoStack((prev) => {
+        const newStack = [operation, ...prev];
+        return newStack.slice(0, 30);
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Item updated and recategorized successfully',
+        severity: 'success',
+      });
+
+      setEditDialogOpen(false);
+      setEditingItemId(null);
+      setEditedName('');
+    } catch (error) {
+      console.error('Error updating item:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to update item',
+        severity: 'error',
+      });
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
+  // Handle undo
+  const handleUndo = async () => {
+    if (undoStack.length === 0) return;
+
+    const [lastOperation, ...restStack] = undoStack;
+
+    try {
+      if (lastOperation.type === 'delete') {
+        // Restore deleted item
+        const { item } = lastOperation;
+        const { id, ...itemData } = item;
+        await addDoc(collection(db, 'pantry'), itemData);
+
+        setSnackbar({
+          open: true,
+          message: `Restored: ${item.name}`,
+          severity: 'success',
+        });
+      } else if (lastOperation.type === 'edit') {
+        // Revert edit
+        await updateDoc(doc(db, 'pantry', lastOperation.itemId), lastOperation.oldData);
+
+        setSnackbar({
+          open: true,
+          message: 'Edit undone',
+          severity: 'success',
+        });
+      }
+
+      // Remove the operation from stack
+      setUndoStack(restStack);
+    } catch (error) {
+      console.error('Error undoing operation:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to undo',
+        severity: 'error',
+      });
+    }
+  };
+
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    setEditDialogOpen(false);
+    setEditingItemId(null);
+    setEditedName('');
   };
 
   // Handle recategorize items
@@ -419,34 +565,59 @@ export default function PantryPage() {
             >
               🥫 My Pantry
             </Typography>
-            {pantryItems.length > 0 && (
-              <Button
-                size="small"
-                onClick={handleRecategorize}
-                disabled={recategorizing}
-                startIcon={recategorizing ? <CircularProgress size={16} /> : null}
-                sx={{
-                  fontFamily: 'Outfit, sans-serif',
-                  fontSize: '12px',
-                  textTransform: 'none',
-                  color: '#10B981',
-                  border: '1px solid #10B981',
-                  borderRadius: '8px',
-                  px: 2,
-                  py: 0.75,
-                  '&:hover': {
-                    bgcolor: '#F0FDF4',
-                    border: '1px solid #059669',
-                  },
-                  '&:disabled': {
-                    color: '#9CA3AF',
-                    border: '1px solid #D1D5DB',
-                  },
-                }}
-              >
-                {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
-              </Button>
-            )}
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              {undoStack.length > 0 && (
+                <Button
+                  size="small"
+                  onClick={handleUndo}
+                  startIcon={<Undo />}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '12px',
+                    textTransform: 'none',
+                    color: '#F59E0B',
+                    border: '1px solid #F59E0B',
+                    borderRadius: '8px',
+                    px: 2,
+                    py: 0.75,
+                    '&:hover': {
+                      bgcolor: '#FFFBEB',
+                      border: '1px solid #D97706',
+                    },
+                  }}
+                >
+                  Undo ({undoStack.length})
+                </Button>
+              )}
+              {pantryItems.length > 0 && (
+                <Button
+                  size="small"
+                  onClick={handleRecategorize}
+                  disabled={recategorizing}
+                  startIcon={recategorizing ? <CircularProgress size={16} /> : null}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '12px',
+                    textTransform: 'none',
+                    color: '#10B981',
+                    border: '1px solid #10B981',
+                    borderRadius: '8px',
+                    px: 2,
+                    py: 0.75,
+                    '&:hover': {
+                      bgcolor: '#F0FDF4',
+                      border: '1px solid #059669',
+                    },
+                    '&:disabled': {
+                      color: '#9CA3AF',
+                      border: '1px solid #D1D5DB',
+                    },
+                  }}
+                >
+                  {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
+                </Button>
+              )}
+            </Box>
           </Box>
           <Typography
             sx={{
@@ -687,7 +858,20 @@ export default function PantryPage() {
                             </Box>
                             <IconButton
                               size="small"
-                              onClick={() => handleDeleteItem(item.id)}
+                              onClick={() => handleEditClick(item)}
+                              sx={{
+                                color: '#10B981',
+                                p: 0.5,
+                                '&:hover': {
+                                  bgcolor: '#ECFDF5',
+                                },
+                              }}
+                            >
+                              <EditIcon sx={{ fontSize: 16 }} />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDeleteClick(item)}
                               sx={{
                                 color: '#EF4444',
                                 p: 0.5,
@@ -709,6 +893,63 @@ export default function PantryPage() {
           </Grid>
         )}
       </Container>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Delete Item?</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete{' '}
+            <strong>{itemToDelete?.name}</strong>? You can undo this action.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmedDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Item Dialog */}
+      <Dialog open={editDialogOpen} onClose={handleCancelEdit} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Item Name</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 1 }}>
+            <TextField
+              autoFocus
+              fullWidth
+              label="Item Name"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && !savingEdit) {
+                  handleSaveEdit();
+                }
+              }}
+              helperText="Update the item name - will automatically recategorize with AI"
+              disabled={savingEdit}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelEdit} disabled={savingEdit}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSaveEdit}
+            variant="contained"
+            disabled={!editedName.trim() || savingEdit}
+          >
+            {savingEdit ? 'Saving & Recategorizing...' : 'Save & Recategorize'}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar
