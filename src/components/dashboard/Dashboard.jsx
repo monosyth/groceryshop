@@ -46,28 +46,7 @@ import SearchBar from '../search/SearchBar';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { format } from 'date-fns';
-
-/**
- * Category info with colors and emojis (matching receipt detail)
- */
-const getCategoryInfo = (category) => {
-  const categoryMap = {
-    produce: { emoji: '🥬', color: '#14B8A6', bg: '#CCFBF1' },
-    meat: { emoji: '🥩', color: '#EF4444', bg: '#FEE2E2' },
-    dairy: { emoji: '🥛', color: '#3B82F6', bg: '#DBEAFE' },
-    bakery: { emoji: '🍞', color: '#F59E0B', bg: '#FEF3C7' },
-    frozen: { emoji: '🧊', color: '#06B6D4', bg: '#CFFAFE' },
-    pantry: { emoji: '🥫', color: '#8B5CF6', bg: '#EDE9FE' },
-    beverages: { emoji: '🥤', color: '#EC4899', bg: '#FCE7F3' },
-    snacks: { emoji: '🍿', color: '#F97316', bg: '#FFEDD5' },
-    household: { emoji: '🧹', color: '#6B7280', bg: '#F3F4F6' },
-    'personal care': { emoji: '🧴', color: '#6B7280', bg: '#F3F4F6' },
-    health: { emoji: '💊', color: '#14B8A6', bg: '#99F6E4' },
-    grocery: { emoji: '🛒', color: '#14B8A6', bg: '#CCFBF1' },
-    other: { emoji: '📦', color: '#6B7280', bg: '#F3F4F6' },
-  };
-  return categoryMap[category?.toLowerCase()] || categoryMap.other;
-};
+import { getCategoryInfo, teal, blue, darkGray, brown, cream } from '../../theme/colors';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -520,7 +499,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -536,12 +515,12 @@ export default function Dashboard() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     textTransform: 'none',
-                    color: '#14B8A6',
-                    borderColor: '#14B8A6',
+                    color: teal.main,
+                    borderColor: teal.main,
                     px: 2,
                     '&:hover': {
-                      borderColor: '#0D9488',
-                      bgcolor: '#F0FDFA',
+                      borderColor: teal.dark,
+                      bgcolor: teal.bg,
                     },
                   }}
                 >
@@ -555,12 +534,12 @@ export default function Dashboard() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     textTransform: 'none',
-                    color: '#14B8A6',
-                    borderColor: '#14B8A6',
+                    color: teal.main,
+                    borderColor: teal.main,
                     px: 2,
                     '&:hover': {
-                      borderColor: '#0D9488',
-                      bgcolor: '#F0FDFA',
+                      borderColor: teal.dark,
+                      bgcolor: teal.bg,
                     },
                   }}
                 >
@@ -571,7 +550,7 @@ export default function Dashboard() {
           </Box>
           <Typography
             variant="body1"
-            sx={{ fontFamily: 'Outfit, sans-serif', color: '#78350F', fontWeight: 400 }}
+            sx={{ fontFamily: 'Outfit, sans-serif', color: brown.main, fontWeight: 400 }}
           >
             {activeTab === 0
               ? receipts.length > 0
@@ -581,12 +560,12 @@ export default function Dashboard() {
           </Typography>
           {uploading && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-              <CircularProgress size={20} sx={{ color: '#14B8A6' }} />
+              <CircularProgress size={20} sx={{ color: teal.main }} />
               <Typography
                 variant="body2"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  color: '#0D9488',
+                  color: teal.dark,
                   fontSize: '13px',
                 }}
               >
@@ -626,15 +605,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 0 ? 'white' : '#14B8A6',
-                bgcolor: activeTab === 0 ? '#14B8A6' : 'white',
+                color: activeTab === 0 ? 'white' : teal.main,
+                bgcolor: activeTab === 0 ? teal.main : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 0 ? '#14B8A6' : '#E5E7EB',
+                borderColor: activeTab === 0 ? teal.main : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 0 ? '#0D9488' : '#F9FAFB',
-                  borderColor: activeTab === 0 ? '#0D9488' : '#D1D5DB',
+                  bgcolor: activeTab === 0 ? teal.dark : '#F9FAFB',
+                  borderColor: activeTab === 0 ? teal.dark : '#D1D5DB',
                 },
               }}
             >
@@ -650,15 +629,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 1 ? 'white' : '#14B8A6',
-                bgcolor: activeTab === 1 ? '#14B8A6' : 'white',
+                color: activeTab === 1 ? 'white' : teal.main,
+                bgcolor: activeTab === 1 ? teal.main : 'white',
                 border: '1px solid',
-                borderColor: activeTab === 1 ? '#14B8A6' : '#E5E7EB',
+                borderColor: activeTab === 1 ? teal.main : '#E5E7EB',
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 1 ? '#0D9488' : '#F9FAFB',
-                  borderColor: activeTab === 1 ? '#0D9488' : '#D1D5DB',
+                  bgcolor: activeTab === 1 ? teal.dark : '#F9FAFB',
+                  borderColor: activeTab === 1 ? teal.dark : '#D1D5DB',
                 },
               }}
             >
@@ -711,7 +690,7 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 800,
-                color: '#14B8A6',
+                color: teal.main,
               }}
             >
               No Receipts Yet!
@@ -720,7 +699,7 @@ export default function Dashboard() {
               variant="body1"
               sx={{
                 fontFamily: 'Outfit, sans-serif',
-                color: '#78350F',
+                color: brown.main,
                 maxWidth: 400,
               }}
             >
@@ -755,7 +734,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#14B8A6',
+                  color: teal.main,
                 }}
               >
                 No Receipts Found
@@ -764,7 +743,7 @@ export default function Dashboard() {
                 variant="body1"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  color: '#78350F',
+                  color: brown.main,
                 }}
               >
                 Try adjusting your search or filters
@@ -815,7 +794,7 @@ export default function Dashboard() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 800,
-                  color: '#14B8A6',
+                  color: teal.main,
                 }}
               >
                 No Items Found
@@ -824,7 +803,7 @@ export default function Dashboard() {
                 variant="body1"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  color: '#78350F',
+                  color: brown.main,
                 }}
               >
                 Try adjusting your search or filters
@@ -982,7 +961,7 @@ export default function Dashboard() {
                                 sx={{
                                   padding: 0.25,
                                   color: 'text.secondary',
-                                  '&:hover': { color: '#14B8A6', bgcolor: '#F0FDFA' },
+                                  '&:hover': { color: teal.main, bgcolor: teal.bg },
                                 }}
                               >
                                 <EditIcon sx={{ fontSize: 14 }} />
@@ -994,7 +973,7 @@ export default function Dashboard() {
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
                                   fontSize: '11px',
-                                  color: '#14B8A6',
+                                  color: teal.main,
                                   fontWeight: 600,
                                 }}
                               >

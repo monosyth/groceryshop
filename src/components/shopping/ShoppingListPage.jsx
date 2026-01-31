@@ -44,6 +44,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, brown, cream } from '../../theme/colors';
 
 export default function ShoppingListPage() {
   const { currentUser } = useAuth();
@@ -62,7 +63,7 @@ export default function ShoppingListPage() {
 
   // Categories for shopping items
   const categories = [
-    { value: 'produce', label: '🥬 Produce', emoji: '🥬', color: '#14B8A6' },
+    { value: 'produce', label: '🥬 Produce', emoji: '🥬', color: teal.main },
     { value: 'meat', label: '🥩 Meat & Seafood', emoji: '🥩', color: '#EF4444' },
     { value: 'dairy', label: '🥛 Dairy & Eggs', emoji: '🥛', color: '#3B82F6' },
     { value: 'bakery', label: '🍞 Bakery', emoji: '🍞', color: '#F59E0B' },
@@ -469,7 +470,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
                 mb: 1,
               }}
@@ -515,7 +516,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -531,13 +532,13 @@ export default function ShoppingListPage() {
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '12px',
                   textTransform: 'none',
-                  color: '#14B8A6',
+                  color: teal.main,
                   border: '1px solid #14B8A6',
                   borderRadius: '8px',
                   px: 2,
                   py: 0.75,
                   '&:hover': {
-                    bgcolor: '#F0FDFA',
+                    bgcolor: teal.bg,
                     border: '1px solid #0D9488',
                   },
                   '&:disabled': {
@@ -583,11 +584,11 @@ export default function ShoppingListPage() {
                     border: '1px solid #D1D5DB',
                     color: '#6B7280',
                     '&.Mui-selected': {
-                      bgcolor: '#14B8A6',
+                      bgcolor: teal.main,
                       color: 'white',
                       border: '1px solid #14B8A6',
                       '&:hover': {
-                        bgcolor: '#0D9488',
+                        bgcolor: teal.dark,
                       },
                     },
                     '&:hover': {
@@ -616,7 +617,7 @@ export default function ShoppingListPage() {
         {/* Add Item */}
         <Card
           sx={{
-            bgcolor: '#F0FDFA',
+            bgcolor: teal.bg,
             borderRadius: '12px',
             border: '2px solid #14B8A6',
             boxShadow: '3px 3px 0px #5EEAD4',
@@ -704,9 +705,9 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: 'white',
-                        '& fieldset': { borderColor: '#5EEAD4' },
-                        '&:hover fieldset': { borderColor: '#14B8A6' },
-                        '&.Mui-focused fieldset': { borderColor: '#14B8A6' },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
+                        '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
                   />
@@ -720,14 +721,14 @@ export default function ShoppingListPage() {
                   fontWeight: 600,
                   fontSize: '13px',
                   textTransform: 'none',
-                  color: '#14B8A6',
-                  borderColor: '#14B8A6',
+                  color: teal.main,
+                  borderColor: teal.main,
                   bgcolor: 'white',
                   minWidth: '40px',
                   px: 2,
                   '&:hover': {
-                    borderColor: '#0D9488',
-                    bgcolor: '#F0FDFA',
+                    borderColor: teal.dark,
+                    bgcolor: teal.bg,
                   },
                 }}
               >
@@ -741,12 +742,12 @@ export default function ShoppingListPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#14B8A6',
-                  borderColor: '#14B8A6',
+                  color: teal.main,
+                  borderColor: teal.main,
                   px: 2,
                   '&:hover': {
-                    borderColor: '#0D9488',
-                    bgcolor: '#F0FDFA',
+                    borderColor: teal.dark,
+                    bgcolor: teal.bg,
                   },
                 }}
               >
@@ -769,9 +770,9 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: 'white',
-                        '& fieldset': { borderColor: '#5EEAD4' },
-                        '&:hover fieldset': { borderColor: '#14B8A6' },
-                        '&.Mui-focused fieldset': { borderColor: '#14B8A6' },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
+                        '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
                   />
@@ -789,9 +790,9 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: 'white',
-                        '& fieldset': { borderColor: '#5EEAD4' },
-                        '&:hover fieldset': { borderColor: '#14B8A6' },
-                        '&.Mui-focused fieldset': { borderColor: '#14B8A6' },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
+                        '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
                   >
@@ -813,9 +814,9 @@ export default function ShoppingListPage() {
                     '& .MuiOutlinedInput-root': {
                       fontFamily: 'Outfit, sans-serif',
                       bgcolor: 'white',
-                      '& fieldset': { borderColor: '#5EEAD4' },
-                      '&:hover fieldset': { borderColor: '#14B8A6' },
-                      '&.Mui-focused fieldset': { borderColor: '#14B8A6' },
+                      '& fieldset': { borderColor: teal.light },
+                      '&:hover fieldset': { borderColor: teal.main },
+                      '&.Mui-focused fieldset': { borderColor: teal.main },
                     },
                   }}
                 />
@@ -908,8 +909,8 @@ export default function ShoppingListPage() {
                           checked={item.checked}
                           onChange={() => handleToggleChecked(item.id, item.checked)}
                           sx={{
-                            color: '#14B8A6',
-                            '&.Mui-checked': { color: '#14B8A6' },
+                            color: teal.main,
+                            '&.Mui-checked': { color: teal.main },
                             py: 0.5,
                             mt: -0.5,
                           }}
@@ -1051,13 +1052,13 @@ export default function ShoppingListPage() {
               >
                 <CardContent sx={{ p: 2.5 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                    <ShoppingCart sx={{ fontSize: 18, color: '#14B8A6' }} />
+                    <ShoppingCart sx={{ fontSize: 18, color: teal.main }} />
                     <Typography
                       variant="h6"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#14B8A6',
+                        color: teal.main,
                         fontSize: '15px',
                       }}
                     >
@@ -1082,8 +1083,8 @@ export default function ShoppingListPage() {
                           checked={item.checked}
                           onChange={() => handleToggleChecked(item.id, item.checked)}
                           sx={{
-                            color: '#14B8A6',
-                            '&.Mui-checked': { color: '#14B8A6' },
+                            color: teal.main,
+                            '&.Mui-checked': { color: teal.main },
                             py: 0.5,
                             mt: -0.5,
                           }}
@@ -1261,8 +1262,8 @@ export default function ShoppingListPage() {
                                 checked={item.checked}
                                 onChange={() => handleToggleChecked(item.id, item.checked)}
                                 sx={{
-                                  color: '#14B8A6',
-                                  '&.Mui-checked': { color: '#14B8A6' },
+                                  color: teal.main,
+                                  '&.Mui-checked': { color: teal.main },
                                   py: 0.5,
                                   mt: -0.5,
                                 }}
@@ -1317,7 +1318,7 @@ export default function ShoppingListPage() {
                                       variant="caption"
                                       sx={{
                                         fontFamily: 'Outfit, sans-serif',
-                                        color: '#14B8A6',
+                                        color: teal.main,
                                         fontSize: '11px',
                                         fontWeight: 600,
                                       }}
@@ -1427,8 +1428,8 @@ export default function ShoppingListPage() {
                                   checked={item.checked}
                                   onChange={() => handleToggleChecked(item.id, item.checked)}
                                   sx={{
-                                    color: '#14B8A6',
-                                    '&.Mui-checked': { color: '#14B8A6' },
+                                    color: teal.main,
+                                    '&.Mui-checked': { color: teal.main },
                                     py: 0.5,
                                     mt: -0.5,
                                   }}
@@ -1466,7 +1467,7 @@ export default function ShoppingListPage() {
                                         variant="caption"
                                         sx={{
                                           fontFamily: 'Outfit, sans-serif',
-                                          color: '#14B8A6',
+                                          color: teal.main,
                                           fontSize: '11px',
                                           fontWeight: 600,
                                         }}
@@ -1545,7 +1546,7 @@ export default function ShoppingListPage() {
                   <CardContent sx={{ p: 2.5 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CheckCircle sx={{ fontSize: 18, color: '#14B8A6' }} />
+                        <CheckCircle sx={{ fontSize: 18, color: teal.main }} />
                         <Typography
                           variant="h6"
                           sx={{
@@ -1589,8 +1590,8 @@ export default function ShoppingListPage() {
                             checked={item.checked}
                             onChange={() => handleToggleChecked(item.id, item.checked)}
                             sx={{
-                              color: '#14B8A6',
-                              '&.Mui-checked': { color: '#14B8A6' },
+                              color: teal.main,
+                              '&.Mui-checked': { color: teal.main },
                               py: 0.5,
                               mt: -0.5,
                             }}

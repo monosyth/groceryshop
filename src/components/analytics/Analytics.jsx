@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, getCategoryInfo } from '../../theme/colors';
 import {
   Container,
   Typography,
@@ -38,7 +39,7 @@ import { formatCurrency } from '../../utils/formatters';
 const cardColors = [
   { bg: '#FFEDD5', border: '#F97316', shadow: '#FCD34D' }, // Orange
   { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
-  { bg: '#F0FDFA', border: '#14B8A6', shadow: '#5EEAD4' }, // Green
+  { bg: teal.bg, border: teal.main, shadow: teal.light }, // Green
   { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
 ];
 
@@ -85,7 +86,7 @@ export default function AnalyticsPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
+            <CircularProgress size={60} sx={{ color: teal.main }} />
           </Box>
         </Container>
       </Box>
@@ -102,7 +103,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -113,7 +114,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#78350F',
+                color: brown.main,
               }}
             >
               Track your grocery spending trends and insights
@@ -135,7 +136,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#78350F',
+                color: brown.main,
                 mb: 1,
                 fontSize: '20px',
               }}
@@ -168,7 +169,7 @@ export default function AnalyticsPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#14B8A6',
+              color: teal.main,
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -180,7 +181,7 @@ export default function AnalyticsPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 400,
-              color: '#78350F',
+              color: brown.main,
             }}
           >
             Insights from {stats.receiptCount} receipt{stats.receiptCount === 1 ? '' : 's'}
@@ -370,7 +371,7 @@ export default function AnalyticsPage() {
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  bgcolor: '#F0FDFA',
+                  bgcolor: teal.bg,
                   borderRadius: '12px',
                   border: '2px solid #14B8A6',
                   boxShadow: '3px 3px 0px #5EEAD4',
@@ -385,7 +386,7 @@ export default function AnalyticsPage() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#0D9488',
+                      color: teal.dark,
                       fontSize: '18px',
                     }}
                   >

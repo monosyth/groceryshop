@@ -23,6 +23,7 @@ const RecipePage = lazy(() => import('./components/recipe/RecipePage'));
 const MyRecipesPage = lazy(() => import('./components/recipe/MyRecipesPage'));
 const ShoppingListPage = lazy(() => import('./components/shopping/ShoppingListPage'));
 const PantryPage = lazy(() => import('./components/pantry/PantryPage'));
+const BrandingPage = lazy(() => import('./components/branding/BrandingPage'));
 
 // Loading component
 const PageLoader = () => (
@@ -129,6 +130,18 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<PageLoader />}>
                       <Analytics />
+                    </Suspense>
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/branding"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <Suspense fallback={<PageLoader />}>
+                      <BrandingPage />
                     </Suspense>
                   </MainLayout>
                 </ProtectedRoute>

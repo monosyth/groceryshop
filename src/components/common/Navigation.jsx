@@ -31,6 +31,7 @@ import {
   Kitchen,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
+import { teal, cream } from '../../theme/colors';
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -149,7 +150,7 @@ export default function Navigation() {
               onClick={handleDrawerToggle}
               sx={{
                 mr: 2,
-                color: '#14B8A6',
+                color: teal.main,
               }}
             >
               <MenuIcon />
@@ -192,7 +193,7 @@ export default function Navigation() {
               sx={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontFamily: 'Outfit, sans-serif',
                 letterSpacing: '-0.02em',
               }}
@@ -219,13 +220,13 @@ export default function Navigation() {
                       py: 0.5,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: isActive ? 'white' : '#14B8A6',
-                      bgcolor: isActive ? '#14B8A6' : 'transparent',
+                      color: isActive ? 'white' : teal.main,
+                      bgcolor: isActive ? teal.main : 'transparent',
                       border: '1px solid transparent',
                       minWidth: 'auto',
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? '#0D9488' : 'rgba(16, 185, 129, 0.08)',
+                        bgcolor: isActive ? teal.dark : 'rgba(16, 185, 129, 0.08)',
                         border: isActive ? '1px solid #0D9488' : '1px solid rgba(16, 185, 129, 0.2)',
                       },
                     }}

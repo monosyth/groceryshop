@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, getCategoryInfo } from '../../theme/colors';
 import {
   Box,
   TextField,
@@ -137,7 +138,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               borderColor: '#D1D5DB',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#14B8A6',
+              borderColor: teal.main,
               borderWidth: '1px',
             },
           },
@@ -160,15 +161,15 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 borderRadius: '8px',
                 px: 0.5,
                 height: '32px',
-                bgcolor: dateRange === range.value ? '#14B8A6' : 'white',
+                bgcolor: dateRange === range.value ? teal.main : 'white',
                 color: dateRange === range.value ? 'white' : '#374151',
                 border: '1px solid',
-                borderColor: dateRange === range.value ? '#14B8A6' : '#E5E7EB',
+                borderColor: dateRange === range.value ? teal.main : '#E5E7EB',
                 transition: 'all 0.15s ease',
                 cursor: 'pointer',
                 '&:hover': {
-                  bgcolor: dateRange === range.value ? '#0D9488' : '#F9FAFB',
-                  borderColor: dateRange === range.value ? '#0D9488' : '#D1D5DB',
+                  bgcolor: dateRange === range.value ? teal.dark : '#F9FAFB',
+                  borderColor: dateRange === range.value ? teal.dark : '#D1D5DB',
                 },
               }}
             />
@@ -183,7 +184,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               fontFamily: 'Outfit, sans-serif',
               fontSize: '14px',
               '&.Mui-focused': {
-                color: '#14B8A6',
+                color: teal.main,
               },
             }}
           >
@@ -208,7 +209,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 borderColor: '#D1D5DB',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#14B8A6',
+                borderColor: teal.main,
                 borderWidth: '1px',
               },
             }}
@@ -246,7 +247,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 fontFamily: 'Outfit, sans-serif',
                 fontSize: '14px',
                 '&.Mui-focused': {
-                  color: '#14B8A6',
+                  color: teal.main,
                 },
               }}
             >
@@ -271,7 +272,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                   borderColor: '#D1D5DB',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#14B8A6',
+                  borderColor: teal.main,
                   borderWidth: '1px',
                 },
               }}

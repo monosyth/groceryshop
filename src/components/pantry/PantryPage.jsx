@@ -43,6 +43,7 @@ import {
 import { db } from '../../firebase';
 import { analyzePantryPhoto, categorizeShoppingItem } from '../../services/geminiService';
 import { addPhotoItemsToPantry } from '../../services/pantryService';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream } from '../../theme/colors';
 
 export default function PantryPage() {
   const { currentUser } = useAuth();
@@ -72,16 +73,16 @@ export default function PantryPage() {
 
   // Categories for pantry items (same as shopping list)
   const categories = [
-    { value: 'produce', label: '🥬 Produce', color: '#14B8A6' },
-    { value: 'meat', label: '🥩 Meat & Seafood', color: '#EF4444' },
-    { value: 'dairy', label: '🥛 Dairy & Eggs', color: '#3B82F6' },
-    { value: 'bakery', label: '🍞 Bakery', color: '#F59E0B' },
-    { value: 'frozen', label: '🧊 Frozen', color: '#06B6D4' },
-    { value: 'pantry', label: '🥫 Pantry', color: '#8B5CF6' },
-    { value: 'beverages', label: '🥤 Beverages', color: '#EC4899' },
-    { value: 'snacks', label: '🍿 Snacks', color: '#F97316' },
-    { value: 'household', label: '🧹 Household', color: '#6B7280' },
-    { value: 'other', label: '📦 Other', color: '#9CA3AF' },
+    { value: 'produce', label: '🥬 Produce', color: teal.main },
+    { value: 'meat', label: '🥩 Meat & Seafood', color: red.main },
+    { value: 'dairy', label: '🥛 Dairy & Eggs', color: blue.main },
+    { value: 'bakery', label: '🍞 Bakery', color: amber.main },
+    { value: 'frozen', label: '🧊 Frozen', color: cyan.main },
+    { value: 'pantry', label: '🥫 Pantry', color: purple.main },
+    { value: 'beverages', label: '🥤 Beverages', color: pink.main },
+    { value: 'snacks', label: '🍿 Snacks', color: orange.main },
+    { value: 'household', label: '🧹 Household', color: gray.main },
+    { value: 'other', label: '📦 Other', color: darkGray.light },
   ];
 
   // Fetch pantry items
@@ -475,11 +476,11 @@ export default function PantryPage() {
               width: 28,
               height: 28,
               borderRadius: '6px',
-              bgcolor: '#DBEAFE',
+              bgcolor: blue.bg,
               border: '1.5px solid #3B82F6',
             }}
           >
-            <ReceiptIcon sx={{ fontSize: 16, color: '#1E40AF' }} />
+            <ReceiptIcon sx={{ fontSize: 16, color: blue.dark }} />
           </Box>
         );
       case 'photo':
@@ -492,7 +493,7 @@ export default function PantryPage() {
               width: 28,
               height: 28,
               borderRadius: '6px',
-              bgcolor: '#FEE2E2',
+              bgcolor: red.bg,
               border: '1.5px solid #EF4444',
             }}
           >
@@ -541,7 +542,7 @@ export default function PantryPage() {
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
+            <CircularProgress size={60} sx={{ color: teal.main }} />
           </Box>
         </Container>
       </Box>
@@ -559,7 +560,7 @@ export default function PantryPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 700,
-                color: '#14B8A6',
+                color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
@@ -575,7 +576,7 @@ export default function PantryPage() {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '12px',
                     textTransform: 'none',
-                    color: '#F59E0B',
+                    color: amber.main,
                     border: '1px solid #F59E0B',
                     borderRadius: '8px',
                     px: 2,
@@ -599,13 +600,13 @@ export default function PantryPage() {
                     fontFamily: 'Outfit, sans-serif',
                     fontSize: '12px',
                     textTransform: 'none',
-                    color: '#14B8A6',
+                    color: teal.main,
                     border: '1px solid #14B8A6',
                     borderRadius: '8px',
                     px: 2,
                     py: 0.75,
                     '&:hover': {
-                      bgcolor: '#F0FDFA',
+                      bgcolor: teal.bg,
                       border: '1px solid #0D9488',
                     },
                     '&:disabled': {
@@ -622,7 +623,7 @@ export default function PantryPage() {
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
-              color: '#0D9488',
+              color: teal.dark,
               fontSize: '16px',
             }}
           >
@@ -633,7 +634,7 @@ export default function PantryPage() {
         {/* Add Item Section */}
         <Card
           sx={{
-            bgcolor: '#F0FDFA',
+            bgcolor: teal.bg,
             borderRadius: '12px',
             border: '2px solid #14B8A6',
             boxShadow: '3px 3px 0px #5EEAD4',
@@ -662,12 +663,12 @@ export default function PantryPage() {
                 onClick={handleAddItem}
                 disabled={addingItem}
                 sx={{
-                  bgcolor: '#14B8A6',
+                  bgcolor: teal.main,
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
                   px: 3,
                   '&:hover': {
-                    bgcolor: '#0D9488',
+                    bgcolor: teal.dark,
                   },
                 }}
               >
@@ -681,12 +682,12 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#14B8A6',
-                  borderColor: '#14B8A6',
+                  color: teal.main,
+                  borderColor: teal.main,
                   px: 2,
                   '&:hover': {
-                    borderColor: '#0D9488',
-                    bgcolor: '#F0FDFA',
+                    borderColor: teal.dark,
+                    bgcolor: teal.bg,
                   },
                 }}
               >
@@ -700,12 +701,12 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#14B8A6',
-                  borderColor: '#14B8A6',
+                  color: teal.main,
+                  borderColor: teal.main,
                   px: 2,
                   '&:hover': {
-                    borderColor: '#0D9488',
-                    bgcolor: '#F0FDFA',
+                    borderColor: teal.dark,
+                    bgcolor: teal.bg,
                   },
                 }}
               >
@@ -715,12 +716,12 @@ export default function PantryPage() {
 
             {analyzingPhoto && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                <CircularProgress size={20} sx={{ color: '#14B8A6' }} />
+                <CircularProgress size={20} sx={{ color: teal.main }} />
                 <Typography
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#0D9488',
+                    color: teal.dark,
                     fontSize: '13px',
                   }}
                 >
@@ -751,7 +752,7 @@ export default function PantryPage() {
         {pantryItems.length === 0 ? (
           <Card
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '16px',
               border: '2px solid #F59E0B',
               boxShadow: '3px 3px 0px #FCD34D',
@@ -765,7 +766,7 @@ export default function PantryPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#78350F',
+                color: brown.main,
                 mb: 1,
                 fontSize: '20px',
               }}
@@ -777,20 +778,20 @@ export default function PantryPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#92400E',
+                color: brown.dark,
               }}
             >
               Add items manually, take a pantry photo, or upload receipts to build your inventory!
             </Typography>
           </Card>
         ) : (
-          <Grid container spacing={2}>
+          <Grid container spacing={2.5}>
             {sortedCategories.map((categoryValue) => {
               const categoryInfo = categories.find((c) => c.value === categoryValue);
               const items = groupedItems[categoryValue];
 
               return (
-                <Grid item xs={12} md={6} key={categoryValue}>
+                <Grid item xs={12} sm={6} md={6} lg={4} key={categoryValue}>
                   <Card
                     sx={{
                       bgcolor: '#fff',
@@ -860,10 +861,10 @@ export default function PantryPage() {
                               size="small"
                               onClick={() => handleEditClick(item)}
                               sx={{
-                                color: '#14B8A6',
+                                color: teal.main,
                                 p: 0.5,
                                 '&:hover': {
-                                  bgcolor: '#F0FDFA',
+                                  bgcolor: teal.bg,
                                 },
                               }}
                             >
@@ -873,10 +874,10 @@ export default function PantryPage() {
                               size="small"
                               onClick={() => handleDeleteClick(item)}
                               sx={{
-                                color: '#EF4444',
+                                color: red.main,
                                 p: 0.5,
                                 '&:hover': {
-                                  bgcolor: '#FEE2E2',
+                                  bgcolor: red.bg,
                                 },
                               }}
                             >
