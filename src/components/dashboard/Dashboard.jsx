@@ -36,12 +36,13 @@ import {
   Upload as UploadIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import { useReceipts } from '../../context/ReceiptContext';
 import { getUserReceipts, retryReceiptAnalysis, createReceipt } from '../../services/receiptService';
 import { addReceiptItemsToPantry } from '../../services/pantryService';
 import ReceiptCard, { ReceiptCardSkeleton } from '../receipt/ReceiptCard';
 import ReceiptDetail from '../receipt/ReceiptDetail';
 import SearchBar from '../search/SearchBar';
-import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { format } from 'date-fns';
 
@@ -65,8 +66,7 @@ const categoryColors = {
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
-  const [receipts, setReceipts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { receipts, loading } = useReceipts();
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
 
@@ -95,88 +95,51 @@ export default function Dashboard() {
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
-  // Fetch receipts with real-time updates
+  // Track which receipts have been processed for pantry auto-add
+  const processedReceiptsRef = useRef(new Set());
+
+  // Auto-add items to pantry for newly analyzed receipts
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || !receipts.length) return;
 
-    // Query receipts for current user
-    const q = query(
-      collection(db, 'receipts'),
-      where('userId', '==', currentUser.uid)
-    );
+    receipts.forEach(async (receipt) => {
+      // Check if receipt was just analyzed and hasn't been processed yet
+      if (
+        receipt.items &&
+        receipt.items.length > 0 &&
+        receipt.metadata?.analysisStatus === 'completed' &&
+        !receipt.metadata?.addedToPantry &&
+        !processedReceiptsRef.current.has(receipt.id)
+      ) {
+        processedReceiptsRef.current.add(receipt.id);
 
-    // Subscribe to real-time updates
-    const unsubscribe = onSnapshot(
-      q,
-      async (snapshot) => {
-        const receiptData = [];
-        snapshot.forEach((doc) => {
-          receiptData.push({
-            id: doc.id,
-            ...doc.data(),
+        try {
+          const addedCount = await addReceiptItemsToPantry(
+            currentUser.uid,
+            receipt.id,
+            receipt.items,
+            receipt.storeInfo?.name
+          );
+
+          // Mark receipt as processed
+          await updateDoc(doc(db, 'receipts', receipt.id), {
+            'metadata.addedToPantry': true,
+            'metadata.pantryItemsAdded': addedCount,
           });
-        });
 
-        // Sort by creation date (newest first)
-        receiptData.sort((a, b) => {
-          const dateA = a.createdAt?.toDate() || new Date(0);
-          const dateB = b.createdAt?.toDate() || new Date(0);
-          return dateB - dateA;
-        });
-
-        // Auto-add items to pantry for newly analyzed receipts
-        snapshot.docChanges().forEach(async (change) => {
-          if (change.type === 'modified') {
-            const receipt = change.doc.data();
-            const receiptId = change.doc.id;
-
-            // Check if receipt was just analyzed (has items and analysis is completed)
-            if (
-              receipt.items &&
-              receipt.items.length > 0 &&
-              receipt.metadata?.analysisStatus === 'completed' &&
-              !receipt.metadata?.addedToPantry
-            ) {
-              try {
-                const addedCount = await addReceiptItemsToPantry(
-                  currentUser.uid,
-                  receiptId,
-                  receipt.items,
-                  receipt.storeInfo?.name
-                );
-
-                // Mark receipt as processed
-                await updateDoc(doc(db, 'receipts', receiptId), {
-                  'metadata.addedToPantry': true,
-                  'metadata.pantryItemsAdded': addedCount,
-                });
-
-                if (addedCount > 0) {
-                  setSnackbar({
-                    open: true,
-                    message: `Added ${addedCount} item${addedCount !== 1 ? 's' : ''} to pantry!`,
-                    severity: 'success',
-                  });
-                }
-              } catch (error) {
-                console.error('Error adding items to pantry:', error);
-              }
-            }
+          if (addedCount > 0) {
+            setSnackbar({
+              open: true,
+              message: `Added ${addedCount} item${addedCount !== 1 ? 's' : ''} to pantry!`,
+              severity: 'success',
+            });
           }
-        });
-
-        setReceipts(receiptData);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching receipts:', error);
-        setLoading(false);
+        } catch (error) {
+          console.error('Error adding items to pantry:', error);
+        }
       }
-    );
-
-    // Cleanup subscription
-    return () => unsubscribe();
-  }, [currentUser]);
+    });
+  }, [receipts, currentUser]);
 
   // Handle receipt card click
   const handleReceiptClick = (receipt) => {

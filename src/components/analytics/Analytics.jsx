@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -10,8 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { useReceipts } from '../../context/ReceiptContext';
 import {
   LineChart,
   Line,
@@ -45,36 +44,7 @@ const cardColors = [
 
 export default function AnalyticsPage() {
   const { currentUser } = useAuth();
-  const [receipts, setReceipts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch receipts
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const q = query(collection(db, 'receipts'), where('userId', '==', currentUser.uid));
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const receiptData = [];
-        snapshot.forEach((doc) => {
-          receiptData.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        });
-        setReceipts(receiptData);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching receipts:', error);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [currentUser]);
+  const { receipts, loading } = useReceipts();
 
   // Calculate analytics
   const stats = useMemo(() => calculateSummaryStats(receipts), [receipts]);

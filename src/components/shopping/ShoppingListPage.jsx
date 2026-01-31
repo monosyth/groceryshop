@@ -26,6 +26,8 @@ import {
   ExpandLess,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import { useReceipts } from '../../context/ReceiptContext';
+import { SkeletonList, ShoppingListItemSkeleton } from '../common/Skeletons';
 import {
   collection,
   query,
@@ -41,13 +43,16 @@ import { db } from '../../firebase';
 
 export default function ShoppingListPage() {
   const { currentUser } = useAuth();
+  const { receipts: allReceipts } = useReceipts();
   const [shoppingList, setShoppingList] = useState([]);
-  const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newItemName, setNewItemName] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [expandedStore, setExpandedStore] = useState(null);
+
+  // Filter receipts with store info for store suggestions
+  const receipts = allReceipts.filter((receipt) => receipt.storeInfo?.name);
 
   // Fetch shopping list items
   useEffect(() => {
@@ -82,33 +87,6 @@ export default function ShoppingListPage() {
         setLoading(false);
       }
     );
-
-    return () => unsubscribe();
-  }, [currentUser]);
-
-  // Fetch receipts for store suggestions
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const q = query(
-      collection(db, 'receipts'),
-      where('userId', '==', currentUser.uid)
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const receiptData = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.storeInfo?.name) {
-          receiptData.push({
-            id: doc.id,
-            storeName: data.storeInfo.name,
-            items: data.items || [],
-          });
-        }
-      });
-      setReceipts(receiptData);
-    });
 
     return () => unsubscribe();
   }, [currentUser]);
@@ -212,13 +190,14 @@ export default function ShoppingListPage() {
 
     uncheckedItems.forEach((listItem) => {
       receipts.forEach((receipt) => {
-        const hasItem = receipt.items.some((receiptItem) =>
+        const hasItem = receipt.items?.some((receiptItem) =>
           receiptItem.name?.toLowerCase().includes(listItem.name.toLowerCase()) ||
           listItem.name.toLowerCase().includes(receiptItem.name?.toLowerCase())
         );
 
-        if (hasItem) {
-          storeCounts[receipt.storeName] = (storeCounts[receipt.storeName] || 0) + 1;
+        if (hasItem && receipt.storeInfo?.name) {
+          const storeName = receipt.storeInfo.name;
+          storeCounts[storeName] = (storeCounts[storeName] || 0) + 1;
         }
       });
     });
@@ -237,8 +216,8 @@ export default function ShoppingListPage() {
 
     uncheckedItems.forEach((listItem) => {
       const hasMatch = receipts.some((receipt) => {
-        if (receipt.storeName !== storeName) return false;
-        return receipt.items.some((receiptItem) =>
+        if (receipt.storeInfo?.name !== storeName) return false;
+        return receipt.items?.some((receiptItem) =>
           receiptItem.name?.toLowerCase().includes(listItem.name.toLowerCase()) ||
           listItem.name.toLowerCase().includes(receiptItem.name?.toLowerCase())
         );
@@ -261,9 +240,42 @@ export default function ShoppingListPage() {
     return (
       <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#10B981' }} />
+          <Box sx={{ pt: 4, pb: 3 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: '#10B981',
+                fontSize: { xs: '28px', md: '34px' },
+                mb: 1,
+              }}
+            >
+              🛒 Shopping List
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 400,
+                color: '#78350F',
+              }}
+            >
+              Loading your shopping list...
+            </Typography>
           </Box>
+          <Card
+            sx={{
+              bgcolor: 'white',
+              borderRadius: '12px',
+              border: '2px solid #E5E7EB',
+              boxShadow: '3px 3px 0px #E5E7EB',
+            }}
+          >
+            <CardContent sx={{ p: 2.5 }}>
+              <SkeletonList count={8} component={ShoppingListItemSkeleton} />
+            </CardContent>
+          </Card>
         </Container>
       </Box>
     );

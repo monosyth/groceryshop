@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, CircularProgress, Box } from '@mui/material';
+import { lazy, Suspense } from 'react';
 import theme from './theme';
 import { AuthProvider } from './context/AuthContext';
+import { ReceiptProvider } from './context/ReceiptContext';
 
 // Auth components
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -10,25 +12,40 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 // Layout
 import MainLayout from './components/layout/MainLayout';
 
-// Landing
+// Landing (not lazy loaded as it's the entry point)
 import LandingPage from './components/landing/LandingPage';
 
-// Pages
-import Dashboard from './components/dashboard/Dashboard';
-import SearchPage from './components/search/SearchPage';
-import Analytics from './components/analytics/Analytics';
-import RecipePage from './components/recipe/RecipePage';
-import MyRecipesPage from './components/recipe/MyRecipesPage';
-import ShoppingListPage from './components/shopping/ShoppingListPage';
-import PantryPage from './components/pantry/PantryPage';
+// Lazy load pages for code splitting
+const Dashboard = lazy(() => import('./components/dashboard/Dashboard'));
+const SearchPage = lazy(() => import('./components/search/SearchPage'));
+const Analytics = lazy(() => import('./components/analytics/Analytics'));
+const RecipePage = lazy(() => import('./components/recipe/RecipePage'));
+const MyRecipesPage = lazy(() => import('./components/recipe/MyRecipesPage'));
+const ShoppingListPage = lazy(() => import('./components/shopping/ShoppingListPage'));
+const PantryPage = lazy(() => import('./components/pantry/PantryPage'));
+
+// Loading component
+const PageLoader = () => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '60vh',
+    }}
+  >
+    <CircularProgress size={60} sx={{ color: '#10B981' }} />
+  </Box>
+);
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <Router>
-          <Routes>
+        <ReceiptProvider>
+          <Router>
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
 
@@ -38,7 +55,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <Dashboard />
+                    <Suspense fallback={<PageLoader />}>
+                      <Dashboard />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -48,7 +67,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <RecipePage />
+                    <Suspense fallback={<PageLoader />}>
+                      <RecipePage />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -58,7 +79,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <MyRecipesPage />
+                    <Suspense fallback={<PageLoader />}>
+                      <MyRecipesPage />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -68,7 +91,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <ShoppingListPage />
+                    <Suspense fallback={<PageLoader />}>
+                      <ShoppingListPage />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -78,7 +103,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <PantryPage />
+                    <Suspense fallback={<PageLoader />}>
+                      <PantryPage />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -88,7 +115,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <SearchPage />
+                    <Suspense fallback={<PageLoader />}>
+                      <SearchPage />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -98,7 +127,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <Analytics />
+                    <Suspense fallback={<PageLoader />}>
+                      <Analytics />
+                    </Suspense>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -108,6 +139,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
+        </ReceiptProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -33,6 +33,7 @@ import {
   Save,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import { useReceipts } from '../../context/ReceiptContext';
 import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients } from '../../services/geminiService';
@@ -40,11 +41,13 @@ import { parseRecipeFromText } from '../../services/recipeUrlService';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
-  const [receipts, setReceipts] = useState([]);
+  const { getAnalyzedReceipts, loading: receiptsLoading } = useReceipts();
+  const receipts = getAnalyzedReceipts();
   const [pantryItems, setPantryItems] = useState([]); // From Firestore pantry collection
+  const [pantryLoading, setPantryLoading] = useState(true);
   const [selectedIngredients, setSelectedIngredients] = useState([]); // Individual ingredient selection
   const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const loading = receiptsLoading || pantryLoading;
   const [generating, setGenerating] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [checkedIngredients, setCheckedIngredients] = useState({}); // Track checked ingredients per recipe
@@ -83,52 +86,12 @@ export default function RecipePage() {
     return [...priority, ...basic];
   };
 
-  // Fetch receipts
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const q = query(
-      collection(db, 'receipts'),
-      where('userId', '==', currentUser.uid)
-    );
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const receiptData = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          // Only include successfully analyzed receipts
-          if (data.metadata?.analysisStatus === 'completed' && data.items && data.items.length > 0) {
-            receiptData.push({
-              id: doc.id,
-              ...data,
-            });
-          }
-        });
-
-        // Sort by date (newest first)
-        receiptData.sort((a, b) => {
-          const dateA = a.createdAt?.toDate() || new Date(0);
-          const dateB = b.createdAt?.toDate() || new Date(0);
-          return dateB - dateA;
-        });
-
-        setReceipts(receiptData);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching receipts:', error);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [currentUser]);
-
   // Fetch pantry items
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      setPantryLoading(false);
+      return;
+    }
 
     const q = query(collection(db, 'pantry'), where('userId', '==', currentUser.uid));
 
@@ -143,9 +106,11 @@ export default function RecipePage() {
           });
         });
         setPantryItems(items);
+        setPantryLoading(false);
       },
       (error) => {
         console.error('Error fetching pantry:', error);
+        setPantryLoading(false);
       }
     );
 

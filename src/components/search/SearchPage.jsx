@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -36,9 +36,10 @@ import {
   ArrowUpward,
   ArrowDownward,
 } from '@mui/icons-material';
-import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
+import { useReceipts } from '../../context/ReceiptContext';
 import SearchBar from './SearchBar';
 import { format } from 'date-fns';
 
@@ -62,8 +63,7 @@ const categoryColors = {
 
 export default function SearchPage() {
   const { currentUser } = useAuth();
-  const [receipts, setReceipts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { receipts, loading } = useReceipts();
   const [searchText, setSearchText] = useState('');
   const [filters, setFilters] = useState({ dateRange: 'all', category: 'all' });
   const [sortBy, setSortBy] = useState('name-asc');
@@ -73,37 +73,6 @@ export default function SearchPage() {
   const [editingItem, setEditingItem] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-
-  // Load receipts from Firestore
-  useEffect(() => {
-    if (!currentUser) {
-      setLoading(false);
-      return;
-    }
-
-    const receiptsQuery = query(
-      collection(db, 'receipts'),
-      where('userId', '==', currentUser.uid)
-    );
-
-    const unsubscribe = onSnapshot(
-      receiptsQuery,
-      (snapshot) => {
-        const receiptsList = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setReceipts(receiptsList);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error loading receipts:', error);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [currentUser]);
 
   // Flatten all items from all receipts with receipt context
   const allItems = useMemo(() => {
