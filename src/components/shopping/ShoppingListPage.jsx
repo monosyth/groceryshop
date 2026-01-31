@@ -14,6 +14,9 @@ import {
   Divider,
   Alert,
   Snackbar,
+  Select,
+  MenuItem,
+  FormControl,
 } from '@mui/material';
 import {
   Delete,
@@ -54,8 +57,8 @@ export default function ShoppingListPage() {
   const [addingItem, setAddingItem] = useState(false);
   const [recategorizing, setRecategorizing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-  const [expandedStore, setExpandedStore] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [sortBy, setSortBy] = useState('default'); // 'default', 'store', 'location'
 
   // Categories for shopping items
   const categories = [
@@ -353,10 +356,62 @@ export default function ShoppingListPage() {
     return matchingItems;
   };
 
+  // Get suggested store for a single item
+  const getSuggestedStore = (itemName) => {
+    const storeCounts = {};
+
+    receipts.forEach((receipt) => {
+      const hasItem = receipt.items?.some((receiptItem) =>
+        receiptItem.name?.toLowerCase().includes(itemName.toLowerCase()) ||
+        itemName.toLowerCase().includes(receiptItem.name?.toLowerCase())
+      );
+
+      if (hasItem && receipt.storeInfo?.name) {
+        const storeName = receipt.storeInfo.name;
+        storeCounts[storeName] = (storeCounts[storeName] || 0) + 1;
+      }
+    });
+
+    // Return the store with the most occurrences
+    const stores = Object.entries(storeCounts);
+    if (stores.length === 0) return null;
+
+    stores.sort((a, b) => b[1] - a[1]);
+    return stores[0][0];
+  };
+
   const uncheckedItems = shoppingList.filter((item) => !item.checked);
   const checkedItems = shoppingList.filter((item) => item.checked);
-  const fromRecipes = uncheckedItems.filter((item) => item.fromRecipe);
-  const manualItems = uncheckedItems.filter((item) => item.manual);
+
+  // Sort/group items based on sortBy state
+  let fromRecipes = [];
+  let manualItems = [];
+  let groupedByStore = {};
+  let groupedByLocation = {};
+
+  if (sortBy === 'store') {
+    // Group by store
+    uncheckedItems.forEach((item) => {
+      const store = getSuggestedStore(item.name) || 'Unknown Store';
+      if (!groupedByStore[store]) {
+        groupedByStore[store] = [];
+      }
+      groupedByStore[store].push(item);
+    });
+  } else if (sortBy === 'location') {
+    // Group by category (grocery store location)
+    uncheckedItems.forEach((item) => {
+      const category = item.category || 'other';
+      if (!groupedByLocation[category]) {
+        groupedByLocation[category] = [];
+      }
+      groupedByLocation[category].push(item);
+    });
+  } else {
+    // Default view (by source)
+    fromRecipes = uncheckedItems.filter((item) => item.fromRecipe);
+    manualItems = uncheckedItems.filter((item) => item.manual);
+  }
 
   if (loading) {
     return (
@@ -449,18 +504,52 @@ export default function ShoppingListPage() {
               </Button>
             )}
           </Box>
-          <Typography
-            variant="body1"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 400,
-              color: '#78350F',
-            }}
-          >
-            {uncheckedItems.length > 0
-              ? `${uncheckedItems.length} item${uncheckedItems.length !== 1 ? 's' : ''} to buy`
-              : 'Your shopping list is empty'}
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 400,
+                color: '#78350F',
+              }}
+            >
+              {uncheckedItems.length > 0
+                ? `${uncheckedItems.length} item${uncheckedItems.length !== 1 ? 's' : ''} to buy`
+                : 'Your shopping list is empty'}
+            </Typography>
+            {uncheckedItems.length > 0 && (
+              <FormControl size="small">
+                <Select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '12px',
+                    bgcolor: 'white',
+                    border: '1px solid #D1D5DB',
+                    borderRadius: '8px',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      border: 'none',
+                    },
+                    '& .MuiSelect-select': {
+                      py: 0.75,
+                      px: 1.5,
+                    },
+                  }}
+                >
+                  <MenuItem value="default" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
+                    Default View
+                  </MenuItem>
+                  <MenuItem value="store" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
+                    📍 Sort by Store
+                  </MenuItem>
+                  <MenuItem value="location" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
+                    🏪 Sort by Aisle
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          </Box>
         </Box>
 
         {/* Add Item */}
@@ -615,132 +704,6 @@ export default function ShoppingListPage() {
           </CardContent>
         </Card>
 
-        {/* Store Suggestions */}
-        {uncheckedItems.length > 0 && (() => {
-          const suggestions = getStoreSuggestions();
-          if (suggestions.length === 0) return null;
-
-          return (
-            <Card
-              sx={{
-                bgcolor: '#F0FDF4',
-                borderRadius: '12px',
-                border: '2px solid #10B981',
-                boxShadow: '3px 3px 0px #6EE7B7',
-                mb: 3,
-              }}
-            >
-              <CardContent sx={{ p: 2.5 }}>
-                <Typography
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    fontWeight: 600,
-                    color: '#059669',
-                    fontSize: '14px',
-                    mb: 2,
-                  }}
-                >
-                  🏪 Where to Shop
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                  {suggestions.map((suggestion, index) => {
-                    const isExpanded = expandedStore === suggestion.store;
-                    const storeItems = isExpanded ? getItemsForStore(suggestion.store) : [];
-
-                    return (
-                      <Box key={index}>
-                        <Box
-                          onClick={() => setExpandedStore(isExpanded ? null : suggestion.store)}
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            gap: 1,
-                            bgcolor: 'white',
-                            border: '2px solid #6EE7B7',
-                            borderRadius: '8px',
-                            px: 1.5,
-                            py: 1,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            '&:hover': {
-                              bgcolor: '#F0FDF4',
-                              borderColor: '#10B981',
-                            },
-                          }}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Store sx={{ fontSize: 18, color: '#059669' }} />
-                            <Typography
-                              sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                fontWeight: 600,
-                                color: '#059669',
-                                fontSize: '13px',
-                              }}
-                            >
-                              {suggestion.store}
-                            </Typography>
-                            <Chip
-                              label={`${suggestion.count} item${suggestion.count !== 1 ? 's' : ''}`}
-                              size="small"
-                              sx={{
-                                bgcolor: '#6EE7B7',
-                                color: '#059669',
-                                fontFamily: 'Outfit, sans-serif',
-                                fontWeight: 600,
-                                fontSize: '11px',
-                                height: '22px',
-                              }}
-                            />
-                          </Box>
-                          {isExpanded ? (
-                            <ExpandLess sx={{ fontSize: 20, color: '#059669' }} />
-                          ) : (
-                            <ExpandMore sx={{ fontSize: 20, color: '#059669' }} />
-                          )}
-                        </Box>
-
-                        {isExpanded && storeItems.length > 0 && (
-                          <Box
-                            sx={{
-                              mt: 1,
-                              ml: 2,
-                              pl: 2,
-                              borderLeft: '3px solid #6EE7B7',
-                            }}
-                          >
-                            {storeItems.map((item) => (
-                              <Box
-                                key={item.id}
-                                sx={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  py: 0.75,
-                                }}
-                              >
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'Outfit, sans-serif',
-                                    fontSize: '13px',
-                                    color: '#374151',
-                                  }}
-                                >
-                                  • {item.name}
-                                </Typography>
-                              </Box>
-                            ))}
-                          </Box>
-                        )}
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </CardContent>
-            </Card>
-          );
-        })()}
-
         {shoppingList.length === 0 ? (
           <Card
             sx={{
@@ -886,6 +849,27 @@ export default function ShoppingListPage() {
                                 ~${item.estimatedPrice.toFixed(2)}
                               </Typography>
                             )}
+                            {(() => {
+                              const suggestedStore = getSuggestedStore(item.name);
+                              return suggestedStore ? (
+                                <Chip
+                                  label={suggestedStore}
+                                  icon={<Store sx={{ fontSize: 14 }} />}
+                                  size="small"
+                                  sx={{
+                                    height: '20px',
+                                    fontSize: '10px',
+                                    fontFamily: 'Outfit, sans-serif',
+                                    bgcolor: '#DBEAFE',
+                                    color: '#1E40AF',
+                                    fontWeight: 500,
+                                    '& .MuiChip-icon': {
+                                      color: '#1E40AF',
+                                    },
+                                  }}
+                                />
+                              ) : null;
+                            })()}
                           </Box>
                           {item.notes && (
                             <Typography
@@ -1039,6 +1023,27 @@ export default function ShoppingListPage() {
                                 ~${item.estimatedPrice.toFixed(2)}
                               </Typography>
                             )}
+                            {(() => {
+                              const suggestedStore = getSuggestedStore(item.name);
+                              return suggestedStore ? (
+                                <Chip
+                                  label={suggestedStore}
+                                  icon={<Store sx={{ fontSize: 14 }} />}
+                                  size="small"
+                                  sx={{
+                                    height: '20px',
+                                    fontSize: '10px',
+                                    fontFamily: 'Outfit, sans-serif',
+                                    bgcolor: '#DBEAFE',
+                                    color: '#1E40AF',
+                                    fontWeight: 500,
+                                    '& .MuiChip-icon': {
+                                      color: '#1E40AF',
+                                    },
+                                  }}
+                                />
+                              ) : null;
+                            })()}
                           </Box>
                           {item.notes && (
                             <Typography
