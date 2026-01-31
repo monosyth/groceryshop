@@ -15,7 +15,6 @@ import LandingPage from './components/landing/LandingPage';
 
 // Pages
 import Dashboard from './components/dashboard/Dashboard';
-import UploadPage from './components/receipt/UploadPage';
 import SearchPage from './components/search/SearchPage';
 import Analytics from './components/analytics/Analytics';
 import RecipePage from './components/recipe/RecipePage';
@@ -40,16 +39,6 @@ function App() {
                 <ProtectedRoute>
                   <MainLayout>
                     <Dashboard />
-                  </MainLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/upload"
-              element={
-                <ProtectedRoute>
-                  <MainLayout>
-                    <UploadPage />
                   </MainLayout>
                 </ProtectedRoute>
               }

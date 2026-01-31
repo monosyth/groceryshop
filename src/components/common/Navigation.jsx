@@ -21,7 +21,6 @@ import {
 import {
   ShoppingCart,
   Dashboard,
-  Upload,
   BarChart,
   AccountCircle,
   Logout,
@@ -66,7 +65,6 @@ export default function Navigation() {
 
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: <Dashboard />, emoji: '🏠' },
-    { label: 'Upload', path: '/upload', icon: <Upload />, emoji: '📸' },
     { label: 'Pantry', path: '/pantry', icon: <Kitchen />, emoji: '🥫' },
     { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
     { label: 'My Recipes', path: '/my-recipes', icon: <MenuBook />, emoji: '📖' },
@@ -92,7 +90,7 @@ export default function Navigation() {
           GrozeryShop
         </Typography>
       </Box>
-      <List>
+      <List sx={{ py: 1 }}>
         {navItems.map((item) => (
           <ListItem
             button
@@ -101,20 +99,29 @@ export default function Navigation() {
             to={item.path}
             selected={location.pathname === item.path}
             sx={{
+              py: 1.25,
+              px: 2,
+              mx: 1,
+              mb: 0.5,
+              borderRadius: '8px',
               '&.Mui-selected': {
-                bgcolor: 'rgba(16, 185, 129, 0.1)',
-                borderLeft: '4px solid #10B981',
+                bgcolor: 'rgba(16, 185, 129, 0.12)',
+                borderLeft: '3px solid #10B981',
+              },
+              '&:hover': {
+                bgcolor: 'rgba(16, 185, 129, 0.08)',
               },
             }}
           >
-            <ListItemIcon>
-              <Box sx={{ fontSize: '24px' }}>{item.emoji}</Box>
+            <ListItemIcon sx={{ minWidth: '36px' }}>
+              <Box sx={{ fontSize: '20px' }}>{item.emoji}</Box>
             </ListItemIcon>
             <ListItemText
               primary={item.label}
               primaryTypographyProps={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
+                fontSize: '14px',
               }}
             />
           </ListItem>
@@ -131,6 +138,7 @@ export default function Navigation() {
         sx={{
           background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
           borderBottom: '2px solid #F59E0B',
+          borderRadius: 0,
         }}
       >
         <Toolbar sx={{ minHeight: '64px !important' }}>
@@ -195,7 +203,7 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <Box sx={{ display: 'flex', gap: 2, flexGrow: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, flexGrow: 1 }}>
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
@@ -206,23 +214,23 @@ export default function Navigation() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      fontSize: '14px',
-                      px: 2.5,
-                      py: 1,
-                      borderRadius: '10px',
+                      fontSize: '13px',
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: '8px',
                       textTransform: 'none',
                       color: isActive ? 'white' : '#15803D',
                       bgcolor: isActive ? '#15803D' : 'transparent',
-                      border: isActive ? '2px solid #166534' : '2px solid transparent',
-                      boxShadow: isActive ? '2px 2px 0px #166534' : 'none',
-                      transition: 'all 0.2s ease',
+                      border: '1px solid transparent',
+                      minWidth: 'auto',
+                      transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? '#166534' : 'rgba(21, 128, 61, 0.1)',
-                        transform: 'translateY(-1px)',
+                        bgcolor: isActive ? '#166534' : 'rgba(21, 128, 61, 0.08)',
+                        border: isActive ? '1px solid #166534' : '1px solid rgba(21, 128, 61, 0.2)',
                       },
                     }}
                   >
-                    <Box component="span" sx={{ fontSize: '16px', mr: 0.75 }}>
+                    <Box component="span" sx={{ fontSize: '15px', mr: 0.5 }}>
                       {item.emoji}
                     </Box>
                     {item.label}
