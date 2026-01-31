@@ -561,6 +561,94 @@ export default function RecipePage() {
           </Card>
         ) : (
           <Box>
+            {/* Paste Recipe Section */}
+            <Card
+              sx={{
+                bgcolor: '#EDE9FE',
+                borderRadius: '12px',
+                border: '2px solid #7C3AED',
+                boxShadow: '3px 3px 0px #C4B5FD',
+                mb: 3,
+              }}
+            >
+              <CardContent sx={{ p: 2.5 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 600,
+                    color: '#5B21B6',
+                    fontSize: '16px',
+                    mb: 1.5,
+                  }}
+                >
+                  📝 Paste Recipe
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#5B21B6',
+                    mb: 1.5,
+                    fontSize: '13px',
+                  }}
+                >
+                  Copy a recipe from any website and paste it here
+                </Typography>
+
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={2}
+                    placeholder="Paste recipe ingredients and instructions here..."
+                    value={recipeText}
+                    onChange={(e) => setRecipeText(e.target.value)}
+                    disabled={importingRecipe}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: '13px',
+                        bgcolor: 'white',
+                        '& fieldset': { borderColor: '#C4B5FD' },
+                        '&:hover fieldset': { borderColor: '#7C3AED' },
+                        '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
+                      },
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    startIcon={<Restaurant />}
+                    onClick={handleImportRecipe}
+                    disabled={!recipeText.trim() || importingRecipe}
+                    sx={{
+                      bgcolor: '#7C3AED',
+                      color: 'white',
+                      fontFamily: 'Outfit, sans-serif',
+                      fontWeight: 600,
+                      fontSize: '13px',
+                      textTransform: 'none',
+                      border: '2px solid #5B21B6',
+                      boxShadow: '2px 2px 0px #5B21B6',
+                      py: 1.5,
+                      px: 3,
+                      whiteSpace: 'nowrap',
+                      '&:hover': {
+                        bgcolor: '#6D28D9',
+                      },
+                      '&:disabled': {
+                        bgcolor: '#C4B5FD',
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    {importingRecipe ? 'Extracting...' : 'Extract Recipe'}
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+
             {/* Quick Select from Receipts */}
             {receipts.length > 0 && (
               <Card
@@ -617,10 +705,10 @@ export default function RecipePage() {
               </Card>
             )}
 
-            {/* Top Section - Groceries and Recipe Import */}
+            {/* Available Ingredients Section */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {/* Your Groceries */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Card
                   sx={{
                     bgcolor: '#ECFDF5',
@@ -697,110 +785,37 @@ export default function RecipePage() {
                         </Box>
                       )}
                     </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
 
-              {/* Import Recipe from URL */}
-              <Grid item xs={12} md={6}>
-                <Card
-                  sx={{
-                    bgcolor: '#EDE9FE',
-                    borderRadius: '12px',
-                    border: '2px solid #7C3AED',
-                    boxShadow: '3px 3px 0px #C4B5FD',
-                    height: '100%',
-                  }}
-                >
-                  <CardContent sx={{ p: 2.5 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#5B21B6',
-                        fontSize: '16px',
-                        mb: 1.5,
-                      }}
-                    >
-                      📝 Paste Recipe
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        color: '#5B21B6',
-                        mb: 1.5,
-                        fontSize: '12px',
-                      }}
-                    >
-                      Copy a recipe from any website and paste it here
-                    </Typography>
-
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={3}
-                      placeholder="Paste recipe ingredients and instructions here..."
-                      value={recipeText}
-                      onChange={(e) => setRecipeText(e.target.value)}
-                      disabled={importingRecipe}
-                      sx={{
-                        mb: 1,
-                        '& .MuiOutlinedInput-root': {
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '12px',
-                          bgcolor: 'white',
-                          '& fieldset': { borderColor: '#C4B5FD' },
-                          '&:hover fieldset': { borderColor: '#7C3AED' },
-                          '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
-                        },
-                      }}
-                    />
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      startIcon={<Restaurant />}
-                      onClick={handleImportRecipe}
-                      disabled={!recipeText.trim() || importingRecipe}
-                      sx={{
-                        bgcolor: '#7C3AED',
-                        color: 'white',
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        fontSize: '13px',
-                        textTransform: 'none',
-                        border: '2px solid #5B21B6',
-                        boxShadow: '2px 2px 0px #5B21B6',
-                        py: 1,
-                        '&:hover': {
-                          bgcolor: '#6D28D9',
-                        },
-                        '&:disabled': {
-                          bgcolor: '#C4B5FD',
+                    {/* Generate Recipe Button */}
+                    <Box sx={{ mt: 2 }}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        startIcon={generating ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <Restaurant />}
+                        onClick={handleGenerateRecipes}
+                        disabled={generating || selectedIngredients.length === 0}
+                        sx={{
+                          bgcolor: '#10B981',
                           color: 'white',
-                        },
-                      }}
-                    >
-                      Extract Recipe
-                    </Button>
-
-                    {importingRecipe && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CircularProgress size={18} sx={{ color: '#7C3AED' }} />
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            color: '#5B21B6',
-                            fontSize: '11px',
-                          }}
-                        >
-                          Importing recipe...
-                        </Typography>
-                      </Box>
-                    )}
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          py: 1.25,
+                          textTransform: 'none',
+                          border: '2px solid #059669',
+                          boxShadow: '2px 2px 0px #059669',
+                          '&:hover': {
+                            bgcolor: '#059669',
+                          },
+                          '&:disabled': {
+                            bgcolor: '#6EE7B7',
+                            color: 'white',
+                          },
+                        }}
+                      >
+                        {generating ? 'Generating Recipes...' : 'Generate Recipe Ideas'}
+                      </Button>
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
@@ -1013,130 +1028,11 @@ export default function RecipePage() {
               </Card>
             )}
 
-            {/* Available Ingredients and Generate Button */}
-            {allIngredients.length > 0 && (
-              <Card
-                sx={{
-                  bgcolor: '#FCE7F3',
-                  borderRadius: '12px',
-                  border: '2px solid #EC4899',
-                  boxShadow: '3px 3px 0px #F9A8D4',
-                  mb: 3,
-                }}
-              >
-                <CardContent sx={{ p: 2.5 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 600,
-                      color: '#BE185D',
-                      fontSize: '16px',
-                      mb: 1.5,
-                    }}
-                  >
-                    🥘 Available Ingredients ({allIngredients.length})
-                  </Typography>
-
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                    {allIngredients.slice(0, 20).map((ingredient, index) => (
-                      <Chip
-                        key={index}
-                        label={ingredient}
-                        size="small"
-                        sx={{
-                          bgcolor: 'white',
-                          border: '1px solid #F9A8D4',
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '11px',
-                        }}
-                      />
-                    ))}
-                    {allIngredients.length > 20 && (
-                      <Chip
-                        label={`+${allIngredients.length - 20} more`}
-                        size="small"
-                        sx={{
-                          bgcolor: 'white',
-                          border: '1px solid #F9A8D4',
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '11px',
-                        }}
-                      />
-                    )}
-                  </Box>
-
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    startIcon={generating ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <Restaurant />}
-                    onClick={handleGenerateRecipes}
-                    disabled={generating}
-                    sx={{
-                      bgcolor: '#EC4899',
-                      color: 'white',
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      py: 1.5,
-                      textTransform: 'none',
-                      border: '2px solid #BE185D',
-                      boxShadow: '3px 3px 0px #BE185D',
-                      '&:hover': {
-                        bgcolor: '#DB2777',
-                      },
-                      '&:disabled': {
-                        bgcolor: '#F9A8D4',
-                        color: 'white',
-                      },
-                    }}
-                  >
-                    {generating ? 'Generating Recipes...' : 'Generate Recipe Ideas'}
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-
             {/* Recipe Results */}
             <Grid container spacing={3}>
               <Grid item xs={12}>
 
-              {recipes.length === 0 ? (
-                <Card
-                  sx={{
-                    bgcolor: '#FEF3C7',
-                    borderRadius: '16px',
-                    border: '2px solid #F59E0B',
-                    boxShadow: '3px 3px 0px #FCD34D',
-                    p: 5,
-                    textAlign: 'center',
-                  }}
-                >
-                  <Box sx={{ fontSize: '64px', mb: 2 }}>👨‍🍳</Box>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 600,
-                      color: '#78350F',
-                      mb: 1,
-                      fontSize: '20px',
-                    }}
-                  >
-                    Ready to Cook?
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 400,
-                      color: '#92400E',
-                    }}
-                  >
-                    Select ingredients from your groceries and tap "Generate Recipe Ideas" to get started
-                  </Typography>
-                </Card>
-              ) : (
+              {recipes.length > 0 && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
                   {recipes.map((recipe, index) => (
                     <Card
