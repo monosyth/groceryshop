@@ -316,17 +316,77 @@ export default function PantryPage() {
     }
   };
 
-  // Get source icon
+  // Get source icon with distinct colors
   const getSourceIcon = (source) => {
     switch (source) {
       case 'receipt':
-        return <ReceiptIcon sx={{ fontSize: 16 }} />;
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              borderRadius: '6px',
+              bgcolor: '#DBEAFE',
+              border: '1.5px solid #3B82F6',
+            }}
+          >
+            <ReceiptIcon sx={{ fontSize: 16, color: '#1E40AF' }} />
+          </Box>
+        );
       case 'photo':
-        return <CameraAlt sx={{ fontSize: 16 }} />;
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              borderRadius: '6px',
+              bgcolor: '#FEE2E2',
+              border: '1.5px solid #EF4444',
+            }}
+          >
+            <CameraAlt sx={{ fontSize: 16, color: '#991B1B' }} />
+          </Box>
+        );
       case 'manual':
-        return <EditIcon sx={{ fontSize: 16 }} />;
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              borderRadius: '6px',
+              bgcolor: '#DCFCE7',
+              border: '1.5px solid #10B981',
+            }}
+          >
+            <EditIcon sx={{ fontSize: 16, color: '#065F46' }} />
+          </Box>
+        );
       default:
-        return <Kitchen sx={{ fontSize: 16 }} />;
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              borderRadius: '6px',
+              bgcolor: '#F3F4F6',
+              border: '1.5px solid #9CA3AF',
+            }}
+          >
+            <Kitchen sx={{ fontSize: 16, color: '#4B5563' }} />
+          </Box>
+        );
     }
   };
 
@@ -612,20 +672,7 @@ export default function PantryPage() {
                             }}
                           >
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
-                              <Box
-                                sx={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  width: 24,
-                                  height: 24,
-                                  borderRadius: '6px',
-                                  bgcolor: '#E5E7EB',
-                                  color: '#6B7280',
-                                }}
-                              >
-                                {getSourceIcon(item.source)}
-                              </Box>
+                              {getSourceIcon(item.source)}
                               <Typography
                                 variant="body2"
                                 sx={{
