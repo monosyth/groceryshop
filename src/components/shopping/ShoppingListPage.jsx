@@ -792,8 +792,11 @@ export default function ShoppingListPage() {
           </Card>
         ) : (
           <>
-            {/* From Recipes */}
-            {fromRecipes.length > 0 && (
+            {/* Conditional Rendering based on sortBy */}
+            {sortBy === 'default' && (
+              <>
+                {/* From Recipes */}
+                {fromRecipes.length > 0 && (
               <Card
                 sx={{
                   bgcolor: 'white',
@@ -1124,6 +1127,337 @@ export default function ShoppingListPage() {
                   ))}
                 </CardContent>
               </Card>
+            )}
+              </>
+            )}
+
+            {/* Store View */}
+            {sortBy === 'store' && (
+              <>
+                {Object.entries(groupedByStore)
+                  .sort(([storeA], [storeB]) => storeA.localeCompare(storeB))
+                  .map(([store, items]) => (
+                    <Card
+                      key={store}
+                      sx={{
+                        bgcolor: 'white',
+                        borderRadius: '12px',
+                        border: '2px solid #E5E7EB',
+                        boxShadow: '3px 3px 0px #E5E7EB',
+                        mb: 2,
+                      }}
+                    >
+                      <CardContent sx={{ p: 2.5 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                          <Store sx={{ fontSize: 18, color: '#3B82F6' }} />
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontFamily: 'Outfit, sans-serif',
+                              fontWeight: 600,
+                              color: '#1E40AF',
+                              fontSize: '15px',
+                            }}
+                          >
+                            {store}
+                          </Typography>
+                          <Chip
+                            label={`${items.length} item${items.length !== 1 ? 's' : ''}`}
+                            size="small"
+                            sx={{
+                              height: '20px',
+                              fontSize: '11px',
+                              fontFamily: 'Outfit, sans-serif',
+                              bgcolor: '#DBEAFE',
+                              color: '#1E40AF',
+                              fontWeight: 500,
+                            }}
+                          />
+                        </Box>
+
+                        {items.map((item) => (
+                          <Box
+                            key={item.id}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              py: 0.75,
+                              borderBottom: '1px solid #F3F4F6',
+                              '&:last-child': { borderBottom: 'none' },
+                            }}
+                          >
+                            <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
+                              <Checkbox
+                                checked={item.checked}
+                                onChange={() => handleToggleChecked(item.id, item.checked)}
+                                sx={{
+                                  color: '#10B981',
+                                  '&.Mui-checked': { color: '#10B981' },
+                                  py: 0.5,
+                                  mt: -0.5,
+                                }}
+                              />
+                              <Box sx={{ flex: 1 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      fontFamily: 'Outfit, sans-serif',
+                                      color: '#1F2937',
+                                      fontSize: '13px',
+                                      fontWeight: 500,
+                                      textDecoration: item.checked ? 'line-through' : 'none',
+                                    }}
+                                  >
+                                    {item.name}
+                                  </Typography>
+                                  {item.quantity && (
+                                    <Chip
+                                      label={item.quantity}
+                                      size="small"
+                                      sx={{
+                                        height: '20px',
+                                        fontSize: '11px',
+                                        fontFamily: 'Outfit, sans-serif',
+                                        bgcolor: '#FEF3C7',
+                                        color: '#92400E',
+                                        fontWeight: 500,
+                                      }}
+                                    />
+                                  )}
+                                  {item.category && item.category !== 'other' && (() => {
+                                    const categoryInfo = categories.find((c) => c.value === item.category);
+                                    return categoryInfo ? (
+                                      <Chip
+                                        label={`${categoryInfo.emoji} ${categoryInfo.label}`}
+                                        size="small"
+                                        sx={{
+                                          height: '20px',
+                                          fontSize: '10px',
+                                          fontFamily: 'Outfit, sans-serif',
+                                          bgcolor: categoryInfo.color,
+                                          color: '#fff',
+                                          fontWeight: 500,
+                                        }}
+                                      />
+                                    ) : null;
+                                  })()}
+                                  {item.estimatedPrice && (
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        fontFamily: 'Outfit, sans-serif',
+                                        color: '#10B981',
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      ~${item.estimatedPrice.toFixed(2)}
+                                    </Typography>
+                                  )}
+                                </Box>
+                                {item.notes && (
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      fontFamily: 'Outfit, sans-serif',
+                                      color: '#6B7280',
+                                      fontSize: '11px',
+                                      fontStyle: 'italic',
+                                      display: 'block',
+                                      mt: 0.25,
+                                    }}
+                                  >
+                                    Note: {item.notes}
+                                  </Typography>
+                                )}
+                              </Box>
+                            </Box>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDeleteItem(item.id)}
+                              sx={{ color: '#EF4444' }}
+                            >
+                              <Delete sx={{ fontSize: 18 }} />
+                            </IconButton>
+                          </Box>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  ))}
+              </>
+            )}
+
+            {/* Location/Aisle View */}
+            {sortBy === 'location' && (
+              <>
+                {Object.entries(groupedByLocation)
+                  .sort(([catA], [catB]) => {
+                    const orderA = categories.findIndex((c) => c.value === catA);
+                    const orderB = categories.findIndex((c) => c.value === catB);
+                    return orderA - orderB;
+                  })
+                  .map(([category, items]) => {
+                    const categoryInfo = categories.find((c) => c.value === category);
+                    if (!categoryInfo) return null;
+
+                    return (
+                      <Card
+                        key={category}
+                        sx={{
+                          bgcolor: 'white',
+                          borderRadius: '12px',
+                          border: '2px solid #E5E7EB',
+                          boxShadow: '3px 3px 0px #E5E7EB',
+                          mb: 2,
+                        }}
+                      >
+                        <CardContent sx={{ p: 2.5 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                            <Box sx={{ fontSize: '18px' }}>{categoryInfo.emoji}</Box>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                fontWeight: 600,
+                                color: '#1F2937',
+                                fontSize: '15px',
+                              }}
+                            >
+                              {categoryInfo.label}
+                            </Typography>
+                            <Chip
+                              label={`${items.length} item${items.length !== 1 ? 's' : ''}`}
+                              size="small"
+                              sx={{
+                                height: '20px',
+                                fontSize: '11px',
+                                fontFamily: 'Outfit, sans-serif',
+                                bgcolor: categoryInfo.color,
+                                color: '#fff',
+                                fontWeight: 500,
+                              }}
+                            />
+                          </Box>
+
+                          {items.map((item) => (
+                            <Box
+                              key={item.id}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                py: 0.75,
+                                borderBottom: '1px solid #F3F4F6',
+                                '&:last-child': { borderBottom: 'none' },
+                              }}
+                            >
+                              <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
+                                <Checkbox
+                                  checked={item.checked}
+                                  onChange={() => handleToggleChecked(item.id, item.checked)}
+                                  sx={{
+                                    color: '#10B981',
+                                    '&.Mui-checked': { color: '#10B981' },
+                                    py: 0.5,
+                                    mt: -0.5,
+                                  }}
+                                />
+                                <Box sx={{ flex: 1 }}>
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        fontFamily: 'Outfit, sans-serif',
+                                        color: '#1F2937',
+                                        fontSize: '13px',
+                                        fontWeight: 500,
+                                        textDecoration: item.checked ? 'line-through' : 'none',
+                                      }}
+                                    >
+                                      {item.name}
+                                    </Typography>
+                                    {item.quantity && (
+                                      <Chip
+                                        label={item.quantity}
+                                        size="small"
+                                        sx={{
+                                          height: '20px',
+                                          fontSize: '11px',
+                                          fontFamily: 'Outfit, sans-serif',
+                                          bgcolor: '#FEF3C7',
+                                          color: '#92400E',
+                                          fontWeight: 500,
+                                        }}
+                                      />
+                                    )}
+                                    {item.estimatedPrice && (
+                                      <Typography
+                                        variant="caption"
+                                        sx={{
+                                          fontFamily: 'Outfit, sans-serif',
+                                          color: '#10B981',
+                                          fontSize: '11px',
+                                          fontWeight: 600,
+                                        }}
+                                      >
+                                        ~${item.estimatedPrice.toFixed(2)}
+                                      </Typography>
+                                    )}
+                                    {(() => {
+                                      const suggestedStore = getSuggestedStore(item.name);
+                                      return suggestedStore ? (
+                                        <Chip
+                                          label={suggestedStore}
+                                          icon={<Store sx={{ fontSize: 14 }} />}
+                                          size="small"
+                                          sx={{
+                                            height: '20px',
+                                            fontSize: '10px',
+                                            fontFamily: 'Outfit, sans-serif',
+                                            bgcolor: '#DBEAFE',
+                                            color: '#1E40AF',
+                                            fontWeight: 500,
+                                            '& .MuiChip-icon': {
+                                              color: '#1E40AF',
+                                            },
+                                          }}
+                                        />
+                                      ) : null;
+                                    })()}
+                                  </Box>
+                                  {item.notes && (
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        fontFamily: 'Outfit, sans-serif',
+                                        color: '#6B7280',
+                                        fontSize: '11px',
+                                        fontStyle: 'italic',
+                                        display: 'block',
+                                        mt: 0.25,
+                                      }}
+                                    >
+                                      Note: {item.notes}
+                                    </Typography>
+                                  )}
+                                </Box>
+                              </Box>
+                              <IconButton
+                                size="small"
+                                onClick={() => handleDeleteItem(item.id)}
+                                sx={{ color: '#EF4444' }}
+                              >
+                                <Delete sx={{ fontSize: 18 }} />
+                              </IconButton>
+                            </Box>
+                          ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+              </>
             )}
 
             {/* Completed Items */}
