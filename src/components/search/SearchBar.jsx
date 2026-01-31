@@ -101,7 +101,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <Search color="action" />
+              <Search sx={{ color: '#9CA3AF', fontSize: 20 }} />
             </InputAdornment>
           ),
           endAdornment: searchText && (
@@ -111,12 +111,13 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 onClick={handleClearSearch}
                 edge="end"
                 sx={{
+                  color: '#9CA3AF',
                   '&:hover': {
-                    backgroundColor: 'action.hover',
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
                   },
                 }}
               >
-                <Clear />
+                <Clear sx={{ fontSize: 18 }} />
               </IconButton>
             </InputAdornment>
           ),
@@ -124,7 +125,21 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
         sx={{
           mb: 2,
           '& .MuiOutlinedInput-root': {
-            borderRadius: 3,
+            fontFamily: 'Outfit, sans-serif',
+            fontSize: '14px',
+            borderRadius: '8px',
+            bgcolor: 'white',
+            '& fieldset': {
+              borderColor: '#E5E7EB',
+              borderWidth: '1px',
+            },
+            '&:hover fieldset': {
+              borderColor: '#D1D5DB',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#10B981',
+              borderWidth: '1px',
+            },
           },
         }}
       />
@@ -138,11 +153,23 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               key={range.value}
               label={range.label}
               onClick={() => handleDateRangeChange(range.value)}
-              color={dateRange === range.value ? 'primary' : 'default'}
-              variant={dateRange === range.value ? 'filled' : 'outlined'}
               sx={{
-                borderRadius: 2,
-                fontWeight: dateRange === range.value ? 600 : 400,
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                borderRadius: '8px',
+                px: 0.5,
+                height: '32px',
+                bgcolor: dateRange === range.value ? '#10B981' : 'white',
+                color: dateRange === range.value ? 'white' : '#374151',
+                border: '1px solid',
+                borderColor: dateRange === range.value ? '#10B981' : '#E5E7EB',
+                transition: 'all 0.15s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                  bgcolor: dateRange === range.value ? '#059669' : '#F9FAFB',
+                  borderColor: dateRange === range.value ? '#059669' : '#D1D5DB',
+                },
               }}
             />
           ))}
@@ -150,8 +177,17 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
 
         {/* Category Filter */}
         <FormControl sx={{ minWidth: 180 }}>
-          <InputLabel id="category-filter-label">
-            <FilterList sx={{ fontSize: 18, mr: 0.5, verticalAlign: 'middle' }} />
+          <InputLabel
+            id="category-filter-label"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontSize: '14px',
+              '&.Mui-focused': {
+                color: '#10B981',
+              },
+            }}
+          >
+            <FilterList sx={{ fontSize: 16, mr: 0.5, verticalAlign: 'middle' }} />
             Category
           </InputLabel>
           <Select
@@ -159,10 +195,42 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
             value={category}
             onChange={handleCategoryChange}
             label="Category"
-            sx={{ borderRadius: 2 }}
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontSize: '14px',
+              borderRadius: '8px',
+              bgcolor: 'white',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#E5E7EB',
+                borderWidth: '1px',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#D1D5DB',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#10B981',
+                borderWidth: '1px',
+              },
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  borderRadius: '8px',
+                  mt: 0.5,
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                },
+              },
+            }}
           >
             {categories.map((cat) => (
-              <MenuItem key={cat.value} value={cat.value}>
+              <MenuItem
+                key={cat.value}
+                value={cat.value}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: '14px',
+                }}
+              >
                 {cat.label}
               </MenuItem>
             ))}
@@ -172,8 +240,17 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
         {/* Sort Dropdown */}
         {!hideSortDropdown && (
           <FormControl sx={{ minWidth: 180 }}>
-            <InputLabel id="sort-by-label">
-              <Sort sx={{ fontSize: 18, mr: 0.5, verticalAlign: 'middle' }} />
+            <InputLabel
+              id="sort-by-label"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '14px',
+                '&.Mui-focused': {
+                  color: '#10B981',
+                },
+              }}
+            >
+              <Sort sx={{ fontSize: 16, mr: 0.5, verticalAlign: 'middle' }} />
               Sort By
             </InputLabel>
             <Select
@@ -181,10 +258,42 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               value={sortBy}
               onChange={handleSortChange}
               label="Sort By"
-              sx={{ borderRadius: 2 }}
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '14px',
+                borderRadius: '8px',
+                bgcolor: 'white',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#E5E7EB',
+                  borderWidth: '1px',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#D1D5DB',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#10B981',
+                  borderWidth: '1px',
+                },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '8px',
+                    mt: 0.5,
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                  },
+                },
+              }}
             >
               {sortOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '14px',
+                  }}
+                >
                   {option.label}
                 </MenuItem>
               ))}

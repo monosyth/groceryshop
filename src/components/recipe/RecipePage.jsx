@@ -561,149 +561,154 @@ export default function RecipePage() {
           </Card>
         ) : (
           <Box>
-            {/* Paste Recipe Section */}
-            <Card
-              sx={{
-                bgcolor: '#EDE9FE',
-                borderRadius: '12px',
-                border: '2px solid #7C3AED',
-                boxShadow: '3px 3px 0px #C4B5FD',
-                mb: 3,
-              }}
-            >
-              <CardContent sx={{ p: 2.5 }}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    fontWeight: 600,
-                    color: '#5B21B6',
-                    fontSize: '16px',
-                    mb: 1.5,
-                  }}
-                >
-                  📝 Paste Recipe
-                </Typography>
-
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    color: '#5B21B6',
-                    mb: 1.5,
-                    fontSize: '13px',
-                  }}
-                >
-                  Copy a recipe from any website and paste it here
-                </Typography>
-
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={2}
-                    placeholder="Paste recipe ingredients and instructions here..."
-                    value={recipeText}
-                    onChange={(e) => setRecipeText(e.target.value)}
-                    disabled={importingRecipe}
+            {/* Top Section - Quick Select and Paste Recipe */}
+            <Grid container spacing={2} sx={{ mb: 3 }}>
+              {/* Quick Select from Receipts */}
+              {receipts.length > 0 && (
+                <Grid item xs={12} md={6}>
+                  <Card
                     sx={{
-                      '& .MuiOutlinedInput-root': {
-                        fontFamily: 'Outfit, sans-serif',
-                        fontSize: '13px',
-                        bgcolor: 'white',
-                        '& fieldset': { borderColor: '#C4B5FD' },
-                        '&:hover fieldset': { borderColor: '#7C3AED' },
-                        '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
-                      },
-                    }}
-                  />
-                  <Button
-                    variant="contained"
-                    startIcon={<Restaurant />}
-                    onClick={handleImportRecipe}
-                    disabled={!recipeText.trim() || importingRecipe}
-                    sx={{
-                      bgcolor: '#7C3AED',
-                      color: 'white',
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 600,
-                      fontSize: '13px',
-                      textTransform: 'none',
-                      border: '2px solid #5B21B6',
-                      boxShadow: '2px 2px 0px #5B21B6',
-                      py: 1.5,
-                      px: 3,
-                      whiteSpace: 'nowrap',
-                      '&:hover': {
-                        bgcolor: '#6D28D9',
-                      },
-                      '&:disabled': {
-                        bgcolor: '#C4B5FD',
-                        color: 'white',
-                      },
+                      bgcolor: '#DBEAFE',
+                      borderRadius: '12px',
+                      border: '2px solid #3B82F6',
+                      boxShadow: '3px 3px 0px #93C5FD',
+                      p: 2,
+                      height: '100%',
                     }}
                   >
-                    {importingRecipe ? 'Extracting...' : 'Extract Recipe'}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-
-            {/* Quick Select from Receipts */}
-            {receipts.length > 0 && (
-              <Card
-                sx={{
-                  bgcolor: '#DBEAFE',
-                  borderRadius: '12px',
-                  border: '2px solid #3B82F6',
-                  boxShadow: '3px 3px 0px #93C5FD',
-                  mb: 3,
-                  p: 2,
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    fontWeight: 600,
-                    color: '#1E40AF',
-                    fontSize: '16px',
-                    mb: 1.5,
-                  }}
-                >
-                  🧾 Quick Select from Receipts
-                </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {receipts.map((receipt) => (
-                    <Button
-                      key={receipt.id}
-                      variant={isReceiptSelected(receipt.id) ? 'contained' : 'outlined'}
-                      size="small"
-                      onClick={() => handleReceiptQuickSelect(receipt.id)}
+                    <Typography
+                      variant="h6"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#1E40AF',
+                        fontSize: '16px',
+                        mb: 1.5,
+                      }}
+                    >
+                      🧾 Quick Select from Receipts
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                      {receipts.map((receipt) => (
+                        <Button
+                          key={receipt.id}
+                          variant={isReceiptSelected(receipt.id) ? 'contained' : 'outlined'}
+                          size="small"
+                          onClick={() => handleReceiptQuickSelect(receipt.id)}
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            fontSize: '12px',
+                            textTransform: 'none',
+                            borderColor: '#3B82F6',
+                            color: isReceiptSelected(receipt.id) ? '#fff' : '#1E40AF',
+                            bgcolor: isReceiptSelected(receipt.id) ? '#3B82F6' : 'transparent',
+                            '&:hover': {
+                              bgcolor: isReceiptSelected(receipt.id) ? '#2563EB' : '#DBEAFE',
+                              borderColor: '#2563EB',
+                            },
+                          }}
+                        >
+                          {receipt.storeInfo?.name || 'Unknown Store'} ({receipt.items?.length || 0} items) -{' '}
+                          {receipt.createdAt?.toDate()
+                            ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(
+                                receipt.createdAt.toDate()
+                              )
+                            : 'Unknown date'}
+                        </Button>
+                      ))}
+                    </Box>
+                  </Card>
+                </Grid>
+              )}
+
+              {/* Paste Recipe Section */}
+              <Grid item xs={12} md={receipts.length > 0 ? 6 : 12}>
+                <Card
+                  sx={{
+                    bgcolor: '#EDE9FE',
+                    borderRadius: '12px',
+                    border: '2px solid #7C3AED',
+                    boxShadow: '3px 3px 0px #C4B5FD',
+                    height: '100%',
+                  }}
+                >
+                  <CardContent sx={{ p: 2.5 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        color: '#5B21B6',
+                        fontSize: '16px',
+                        mb: 1.5,
+                      }}
+                    >
+                      📝 Paste Recipe
+                    </Typography>
+
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        color: '#5B21B6',
+                        mb: 1.5,
+                        fontSize: '13px',
+                      }}
+                    >
+                      Copy a recipe from any website and paste it here
+                    </Typography>
+
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      placeholder="Paste recipe ingredients and instructions here..."
+                      value={recipeText}
+                      onChange={(e) => setRecipeText(e.target.value)}
+                      disabled={importingRecipe}
+                      sx={{
+                        mb: 1.5,
+                        '& .MuiOutlinedInput-root': {
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '13px',
+                          bgcolor: 'white',
+                          '& fieldset': { borderColor: '#C4B5FD' },
+                          '&:hover fieldset': { borderColor: '#7C3AED' },
+                          '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
+                        },
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<Restaurant />}
+                      onClick={handleImportRecipe}
+                      disabled={!recipeText.trim() || importingRecipe}
+                      sx={{
+                        bgcolor: '#7C3AED',
+                        color: 'white',
+                        fontFamily: 'Outfit, sans-serif',
+                        fontWeight: 600,
+                        fontSize: '13px',
                         textTransform: 'none',
-                        borderColor: '#3B82F6',
-                        color: isReceiptSelected(receipt.id) ? '#fff' : '#1E40AF',
-                        bgcolor: isReceiptSelected(receipt.id) ? '#3B82F6' : 'transparent',
+                        border: '2px solid #5B21B6',
+                        boxShadow: '2px 2px 0px #5B21B6',
+                        py: 1.25,
                         '&:hover': {
-                          bgcolor: isReceiptSelected(receipt.id) ? '#2563EB' : '#DBEAFE',
-                          borderColor: '#2563EB',
+                          bgcolor: '#6D28D9',
+                        },
+                        '&:disabled': {
+                          bgcolor: '#C4B5FD',
+                          color: 'white',
                         },
                       }}
                     >
-                      {receipt.storeInfo?.name || 'Unknown Store'} ({receipt.items?.length || 0} items) -{' '}
-                      {receipt.createdAt?.toDate()
-                        ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(
-                            receipt.createdAt.toDate()
-                          )
-                        : 'Unknown date'}
+                      {importingRecipe ? 'Extracting...' : 'Extract Recipe'}
                     </Button>
-                  ))}
-                </Box>
-              </Card>
-            )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
 
             {/* Available Ingredients Section */}
             <Grid container spacing={2} sx={{ mb: 3 }}>

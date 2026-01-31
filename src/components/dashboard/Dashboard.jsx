@@ -663,25 +663,26 @@ export default function Dashboard() {
 
         {/* Tabs */}
         {!loading && receipts.length > 0 && (
-          <Box sx={{ mb: 3, display: 'flex', gap: 1.5 }}>
+          <Box sx={{ mb: 3, display: 'flex', gap: 1 }}>
             <Button
               onClick={(e) => handleTabChange(e, 0)}
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                fontSize: '14px',
-                px: 2.5,
-                py: 1,
-                borderRadius: '10px',
+                fontSize: '13px',
+                px: 2,
+                py: 0.75,
+                borderRadius: '8px',
                 textTransform: 'none',
                 color: activeTab === 0 ? 'white' : '#15803D',
                 bgcolor: activeTab === 0 ? '#15803D' : 'white',
-                border: activeTab === 0 ? '2px solid #166534' : '2px solid #E5E7EB',
-                boxShadow: activeTab === 0 ? '2px 2px 0px #166534' : 'none',
-                transition: 'all 0.2s ease',
+                border: '1px solid',
+                borderColor: activeTab === 0 ? '#15803D' : '#E5E7EB',
+                minWidth: 'auto',
+                transition: 'all 0.15s ease',
                 '&:hover': {
-                  transform: 'translateY(-1px)',
                   bgcolor: activeTab === 0 ? '#166534' : '#F9FAFB',
+                  borderColor: activeTab === 0 ? '#166534' : '#D1D5DB',
                 },
               }}
             >
@@ -692,19 +693,20 @@ export default function Dashboard() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                fontSize: '14px',
-                px: 2.5,
-                py: 1,
-                borderRadius: '10px',
+                fontSize: '13px',
+                px: 2,
+                py: 0.75,
+                borderRadius: '8px',
                 textTransform: 'none',
                 color: activeTab === 1 ? 'white' : '#15803D',
                 bgcolor: activeTab === 1 ? '#15803D' : 'white',
-                border: activeTab === 1 ? '2px solid #166534' : '2px solid #E5E7EB',
-                boxShadow: activeTab === 1 ? '2px 2px 0px #166534' : 'none',
-                transition: 'all 0.2s ease',
+                border: '1px solid',
+                borderColor: activeTab === 1 ? '#15803D' : '#E5E7EB',
+                minWidth: 'auto',
+                transition: 'all 0.15s ease',
                 '&:hover': {
-                  transform: 'translateY(-1px)',
                   bgcolor: activeTab === 1 ? '#166534' : '#F9FAFB',
+                  borderColor: activeTab === 1 ? '#166534' : '#D1D5DB',
                 },
               }}
             >
