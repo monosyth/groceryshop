@@ -14,17 +14,12 @@ import {
   Divider,
   Alert,
   Snackbar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import {
   Delete,
   Add,
   ShoppingCart,
   Store,
-  Restaurant,
   CheckCircle,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
@@ -49,8 +44,6 @@ export default function ShoppingListPage() {
   const [newItemName, setNewItemName] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-  const [storeDialogOpen, setStoreDialogOpen] = useState(false);
-  const [suggestedStores, setSuggestedStores] = useState([]);
 
   // Fetch shopping list items
   useEffect(() => {
@@ -233,12 +226,6 @@ export default function ShoppingListPage() {
     return suggestions;
   };
 
-  const handleShowStores = () => {
-    const suggestions = getStoreSuggestions();
-    setSuggestedStores(suggestions);
-    setStoreDialogOpen(true);
-  };
-
   const uncheckedItems = shoppingList.filter((item) => !item.checked);
   const checkedItems = shoppingList.filter((item) => item.checked);
   const fromRecipes = uncheckedItems.filter((item) => item.fromRecipe);
@@ -349,32 +336,78 @@ export default function ShoppingListPage() {
           </CardContent>
         </Card>
 
-        {/* Store Suggestions Button */}
-        {uncheckedItems.length > 0 && (
-          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="outlined"
-              startIcon={<Store />}
-              onClick={handleShowStores}
+        {/* Store Suggestions */}
+        {uncheckedItems.length > 0 && (() => {
+          const suggestions = getStoreSuggestions();
+          if (suggestions.length === 0) return null;
+
+          return (
+            <Card
               sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 600,
-                fontSize: '13px',
-                textTransform: 'none',
-                color: '#7C3AED',
-                borderColor: '#7C3AED',
-                border: '2px solid #7C3AED',
-                '&:hover': {
-                  bgcolor: '#F5F3FF',
-                  borderColor: '#6D28D9',
-                  border: '2px solid #6D28D9',
-                },
+                bgcolor: '#F0FDF4',
+                borderRadius: '12px',
+                border: '2px solid #10B981',
+                boxShadow: '3px 3px 0px #6EE7B7',
+                mb: 3,
               }}
             >
-              Where to Shop
-            </Button>
-          </Box>
-        )}
+              <CardContent sx={{ p: 2.5 }}>
+                <Typography
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 600,
+                    color: '#059669',
+                    fontSize: '14px',
+                    mb: 2,
+                  }}
+                >
+                  🏪 Where to Shop
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                  {suggestions.map((suggestion, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        bgcolor: 'white',
+                        border: '1px solid #6EE7B7',
+                        borderRadius: '8px',
+                        px: 1.5,
+                        py: 1,
+                      }}
+                    >
+                      <Store sx={{ fontSize: 18, color: '#059669' }} />
+                      <Typography
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          color: '#059669',
+                          fontSize: '13px',
+                        }}
+                      >
+                        {suggestion.store}
+                      </Typography>
+                      <Chip
+                        label={`${suggestion.count} item${suggestion.count !== 1 ? 's' : ''}`}
+                        size="small"
+                        sx={{
+                          bgcolor: '#6EE7B7',
+                          color: '#059669',
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          fontSize: '11px',
+                          height: '22px',
+                        }}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
+          );
+        })()}
 
         {shoppingList.length === 0 ? (
           <Card
@@ -667,105 +700,6 @@ export default function ShoppingListPage() {
             )}
           </>
         )}
-
-        {/* Store Suggestions Dialog */}
-        <Dialog
-          open={storeDialogOpen}
-          onClose={() => setStoreDialogOpen(false)}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: '#10B981',
-            }}
-          >
-            🏪 Where to Shop
-          </DialogTitle>
-          <DialogContent>
-            {suggestedStores.length === 0 ? (
-              <Typography
-                sx={{
-                  fontFamily: 'Outfit, sans-serif',
-                  color: '#6B7280',
-                  fontSize: '14px',
-                  textAlign: 'center',
-                  py: 3,
-                }}
-              >
-                No store suggestions available yet. Upload more receipts to get personalized recommendations!
-              </Typography>
-            ) : (
-              <>
-                <Typography
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
-                    fontSize: '13px',
-                    mb: 2,
-                  }}
-                >
-                  Based on your shopping history, here's where you can find your items:
-                </Typography>
-                {suggestedStores.map((suggestion, index) => (
-                  <Card
-                    key={index}
-                    sx={{
-                      mb: 1.5,
-                      bgcolor: '#F0FDF4',
-                      border: '1px solid #6EE7B7',
-                      boxShadow: 'none',
-                    }}
-                  >
-                    <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Store sx={{ fontSize: 20, color: '#059669' }} />
-                          <Typography
-                            sx={{
-                              fontFamily: 'Outfit, sans-serif',
-                              fontWeight: 600,
-                              color: '#059669',
-                              fontSize: '14px',
-                            }}
-                          >
-                            {suggestion.store}
-                          </Typography>
-                        </Box>
-                        <Chip
-                          label={`${suggestion.count} item${suggestion.count !== 1 ? 's' : ''}`}
-                          size="small"
-                          sx={{
-                            bgcolor: '#6EE7B7',
-                            color: '#059669',
-                            fontFamily: 'Outfit, sans-serif',
-                            fontWeight: 600,
-                            fontSize: '11px',
-                          }}
-                        />
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))}
-              </>
-            )}
-          </DialogContent>
-          <DialogActions sx={{ p: 2 }}>
-            <Button
-              onClick={() => setStoreDialogOpen(false)}
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 600,
-                textTransform: 'none',
-                color: '#10B981',
-              }}
-            >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
 
         {/* Snackbar */}
         <Snackbar
