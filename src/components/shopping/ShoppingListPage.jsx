@@ -52,6 +52,7 @@ export default function ShoppingListPage() {
   const [newItemCategory, setNewItemCategory] = useState('other');
   const [newItemNotes, setNewItemNotes] = useState('');
   const [addingItem, setAddingItem] = useState(false);
+  const [recategorizing, setRecategorizing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [expandedStore, setExpandedStore] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -246,6 +247,64 @@ export default function ShoppingListPage() {
     }
   };
 
+  // Handle recategorize items
+  const handleRecategorize = async () => {
+    // Get all items that need recategorization (category is 'other' or not set)
+    const itemsToRecategorize = shoppingList.filter(
+      (item) => !item.category || item.category === 'other'
+    );
+
+    if (itemsToRecategorize.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'All items are already categorized!',
+        severity: 'info',
+      });
+      return;
+    }
+
+    setRecategorizing(true);
+    let successCount = 0;
+    let failCount = 0;
+
+    try {
+      // Process items sequentially to avoid rate limits
+      for (const item of itemsToRecategorize) {
+        try {
+          const newCategory = await categorizeShoppingItem(item.name);
+
+          // Only update if AI returned a category different from 'other'
+          if (newCategory && newCategory !== 'other') {
+            await updateDoc(doc(db, 'shoppingList', item.id), {
+              category: newCategory,
+            });
+            successCount++;
+          } else {
+            failCount++;
+          }
+        } catch (error) {
+          console.error(`Error recategorizing ${item.name}:`, error);
+          failCount++;
+        }
+      }
+
+      setSnackbar({
+        open: true,
+        message: `Recategorized ${successCount} items${failCount > 0 ? `, ${failCount} remained as 'other'` : ''}`,
+        severity: successCount > 0 ? 'success' : 'info',
+      });
+    } catch (error) {
+      console.error('Error recategorizing items:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to recategorize items',
+        severity: 'error',
+      });
+    } finally {
+      setRecategorizing(false);
+    }
+  };
+
   // Get store suggestions
   const getStoreSuggestions = () => {
     const uncheckedItems = shoppingList.filter((item) => !item.checked);
@@ -349,18 +408,47 @@ export default function ShoppingListPage() {
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: '#10B981',
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            🛒 Shopping List
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: '#10B981',
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              🛒 Shopping List
+            </Typography>
+            {shoppingList.length > 0 && (
+              <Button
+                size="small"
+                onClick={handleRecategorize}
+                disabled={recategorizing}
+                startIcon={recategorizing ? <CircularProgress size={16} /> : null}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: '12px',
+                  textTransform: 'none',
+                  color: '#10B981',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  px: 2,
+                  py: 0.75,
+                  '&:hover': {
+                    bgcolor: '#F0FDF4',
+                    border: '1px solid #059669',
+                  },
+                  '&:disabled': {
+                    color: '#9CA3AF',
+                    border: '1px solid #D1D5DB',
+                  },
+                }}
+              >
+                {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
+              </Button>
+            )}
+          </Box>
           <Typography
             variant="body1"
             sx={{
