@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -14,9 +14,9 @@ import {
   Divider,
   Alert,
   Snackbar,
-  Select,
-  MenuItem,
-  FormControl,
+  Autocomplete,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import {
   Delete,
@@ -25,8 +25,8 @@ import {
   Store,
   CheckCircle,
   Restaurant,
-  ExpandMore,
-  ExpandLess,
+  ViewList,
+  LocationOn,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
@@ -76,6 +76,30 @@ export default function ShoppingListPage() {
 
   // Filter receipts with store info for store suggestions
   const receipts = allReceipts.filter((receipt) => receipt.storeInfo?.name);
+
+  // Generate item suggestions from receipts and shopping list history
+  const itemSuggestions = useMemo(() => {
+    const uniqueItems = new Set();
+
+    // Add items from receipts
+    allReceipts.forEach((receipt) => {
+      receipt.items?.forEach((item) => {
+        if (item.name) {
+          uniqueItems.add(item.name.toLowerCase());
+        }
+      });
+    });
+
+    // Add items from shopping list history
+    shoppingList.forEach((item) => {
+      if (item.name) {
+        uniqueItems.add(item.name.toLowerCase());
+      }
+    });
+
+    // Convert to array and sort alphabetically
+    return Array.from(uniqueItems).sort();
+  }, [allReceipts, shoppingList]);
 
   // Fetch shopping list items
   useEffect(() => {
@@ -518,36 +542,51 @@ export default function ShoppingListPage() {
                 : 'Your shopping list is empty'}
             </Typography>
             {uncheckedItems.length > 0 && (
-              <FormControl size="small">
-                <Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  sx={{
+              <ToggleButtonGroup
+                value={sortBy}
+                exclusive
+                onChange={(e, newValue) => {
+                  if (newValue !== null) {
+                    setSortBy(newValue);
+                  }
+                }}
+                size="small"
+                sx={{
+                  '& .MuiToggleButton-root': {
                     fontFamily: 'Outfit, sans-serif',
-                    fontSize: '12px',
-                    bgcolor: 'white',
+                    fontSize: '11px',
+                    textTransform: 'none',
+                    px: 1.5,
+                    py: 0.5,
                     border: '1px solid #D1D5DB',
-                    borderRadius: '8px',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      border: 'none',
+                    color: '#6B7280',
+                    '&.Mui-selected': {
+                      bgcolor: '#10B981',
+                      color: 'white',
+                      border: '1px solid #10B981',
+                      '&:hover': {
+                        bgcolor: '#059669',
+                      },
                     },
-                    '& .MuiSelect-select': {
-                      py: 0.75,
-                      px: 1.5,
+                    '&:hover': {
+                      bgcolor: '#F3F4F6',
                     },
-                  }}
-                >
-                  <MenuItem value="default" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
-                    Default View
-                  </MenuItem>
-                  <MenuItem value="store" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
-                    📍 Sort by Store
-                  </MenuItem>
-                  <MenuItem value="location" sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '12px' }}>
-                    🏪 Sort by Aisle
-                  </MenuItem>
-                </Select>
-              </FormControl>
+                  },
+                }}
+              >
+                <ToggleButton value="default">
+                  <ViewList sx={{ fontSize: 16, mr: 0.5 }} />
+                  Default
+                </ToggleButton>
+                <ToggleButton value="store">
+                  <Store sx={{ fontSize: 16, mr: 0.5 }} />
+                  Store
+                </ToggleButton>
+                <ToggleButton value="location">
+                  <LocationOn sx={{ fontSize: 16, mr: 0.5 }} />
+                  Aisle
+                </ToggleButton>
+              </ToggleButtonGroup>
             )}
           </Box>
         </Box>
@@ -565,25 +604,37 @@ export default function ShoppingListPage() {
           <CardContent sx={{ p: 2.5 }}>
             {/* Main input row */}
             <Box sx={{ display: 'flex', gap: 1.5, mb: showAdvanced ? 2 : 0 }}>
-              <TextField
+              <Autocomplete
+                freeSolo
                 fullWidth
                 size="small"
-                placeholder="Add item to shopping list..."
+                options={itemSuggestions}
                 value={newItemName}
-                onChange={(e) => setNewItemName(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !showAdvanced) handleAddItem();
+                onChange={(event, newValue) => {
+                  setNewItemName(newValue || '');
+                }}
+                onInputChange={(event, newValue) => {
+                  setNewItemName(newValue);
                 }}
                 disabled={addingItem}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    fontFamily: 'Outfit, sans-serif',
-                    bgcolor: 'white',
-                    '& fieldset': { borderColor: '#6EE7B7' },
-                    '&:hover fieldset': { borderColor: '#10B981' },
-                    '&.Mui-focused fieldset': { borderColor: '#10B981' },
-                  },
-                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Add item to shopping list..."
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !showAdvanced) handleAddItem();
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        fontFamily: 'Outfit, sans-serif',
+                        bgcolor: 'white',
+                        '& fieldset': { borderColor: '#6EE7B7' },
+                        '&:hover fieldset': { borderColor: '#10B981' },
+                        '&.Mui-focused fieldset': { borderColor: '#10B981' },
+                      },
+                    }}
+                  />
+                )}
               />
               <Button
                 variant="outlined"
