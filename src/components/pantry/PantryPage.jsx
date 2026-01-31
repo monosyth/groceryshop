@@ -450,16 +450,16 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#F97316',
-                  borderColor: '#F97316',
+                  color: '#10B981',
+                  borderColor: '#10B981',
                   px: 2,
                   '&:hover': {
-                    borderColor: '#EA580C',
-                    bgcolor: '#FFF7ED',
+                    borderColor: '#059669',
+                    bgcolor: '#F0FDF4',
                   },
                 }}
               >
-                📸 Photo
+                Photo
               </Button>
               <Button
                 variant="outlined"
@@ -469,27 +469,27 @@ export default function PantryPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   textTransform: 'none',
-                  color: '#F97316',
-                  borderColor: '#F97316',
+                  color: '#10B981',
+                  borderColor: '#10B981',
                   px: 2,
                   '&:hover': {
-                    borderColor: '#EA580C',
-                    bgcolor: '#FFF7ED',
+                    borderColor: '#059669',
+                    bgcolor: '#F0FDF4',
                   },
                 }}
               >
-                📁 Upload
+                Upload
               </Button>
             </Box>
 
             {analyzingPhoto && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                <CircularProgress size={20} sx={{ color: '#F97316' }} />
+                <CircularProgress size={20} sx={{ color: '#10B981' }} />
                 <Typography
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#EA580C',
+                    color: '#059669',
                     fontSize: '13px',
                   }}
                 >

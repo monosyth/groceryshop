@@ -509,7 +509,7 @@ export default function Dashboard() {
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1, flexWrap: 'wrap' }}>
             <Typography
               variant="h3"
               sx={{
@@ -519,8 +519,50 @@ export default function Dashboard() {
                 fontSize: { xs: '28px', md: '34px' },
               }}
             >
-              {activeTab === 0 ? '🏠 Dashboard' : '🛍️ All Items'}
+              {activeTab === 0 ? '🧾 Receipts' : '🛍️ All Items'}
             </Typography>
+            {activeTab === 0 && (
+              <Box sx={{ display: 'flex', gap: 1.5 }}>
+                <Button
+                  variant="outlined"
+                  startIcon={uploading ? <CircularProgress size={16} /> : <CameraAlt />}
+                  onClick={triggerCameraInput}
+                  disabled={uploading}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    textTransform: 'none',
+                    color: '#10B981',
+                    borderColor: '#10B981',
+                    px: 2,
+                    '&:hover': {
+                      borderColor: '#059669',
+                      bgcolor: '#F0FDF4',
+                    },
+                  }}
+                >
+                  Photo
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={uploading ? <CircularProgress size={16} /> : <UploadIcon />}
+                  onClick={triggerFileInput}
+                  disabled={uploading}
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    textTransform: 'none',
+                    color: '#10B981',
+                    borderColor: '#10B981',
+                    px: 2,
+                    '&:hover': {
+                      borderColor: '#059669',
+                      bgcolor: '#F0FDF4',
+                    },
+                  }}
+                >
+                  Upload
+                </Button>
+              </Box>
+            )}
           </Box>
           <Typography
             variant="body1"
@@ -532,97 +574,39 @@ export default function Dashboard() {
                 : 'Upload your first receipt to get started!'
               : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
           </Typography>
+          {uploading && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+              <CircularProgress size={20} sx={{ color: '#10B981' }} />
+              <Typography
+                variant="body2"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  color: '#059669',
+                  fontSize: '13px',
+                }}
+              >
+                Analyzing receipt...
+              </Typography>
+            </Box>
+          )}
         </Box>
 
-        {/* Upload Receipt Section */}
-        <Paper
-          sx={{
-            mb: 3,
-            p: 3,
-            bgcolor: '#ECFDF5',
-            borderRadius: '12px',
-            border: '2px solid #10B981',
-            boxShadow: '3px 3px 0px #6EE7B7',
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 600,
-              color: '#059669',
-              mb: 2,
-            }}
-          >
-            📸 Upload Receipt
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <Button
-              variant="contained"
-              startIcon={uploading ? <CircularProgress size={20} color="inherit" /> : <CameraAlt />}
-              onClick={triggerCameraInput}
-              disabled={uploading}
-              sx={{
-                bgcolor: '#10B981',
-                fontFamily: 'Outfit, sans-serif',
-                textTransform: 'none',
-                px: 3,
-                py: 1.5,
-                '&:hover': {
-                  bgcolor: '#059669',
-                },
-              }}
-            >
-              Take Photo
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={uploading ? <CircularProgress size={20} color="inherit" /> : <UploadIcon />}
-              onClick={triggerFileInput}
-              disabled={uploading}
-              sx={{
-                bgcolor: '#3B82F6',
-                fontFamily: 'Outfit, sans-serif',
-                textTransform: 'none',
-                px: 3,
-                py: 1.5,
-                '&:hover': {
-                  bgcolor: '#2563EB',
-                },
-              }}
-            >
-              Upload Image
-            </Button>
-            {uploading && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 2 }}>
-                <Typography
-                  sx={{
-                    fontFamily: 'Outfit, sans-serif',
-                    color: '#059669',
-                    fontSize: '14px',
-                  }}
-                >
-                  Uploading... {uploadProgress}%
-                </Typography>
-              </Box>
-            )}
-          </Box>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={handleFileSelect}
-          />
-          <input
-            ref={cameraInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            style={{ display: 'none' }}
-            onChange={handleFileSelect}
-          />
-        </Paper>
+        {/* Hidden file inputs */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleFileSelect}
+        />
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: 'none' }}
+          onChange={handleFileSelect}
+        />
 
         {/* Tabs */}
         {!loading && receipts.length > 0 && (
