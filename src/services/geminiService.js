@@ -166,3 +166,74 @@ Focus on ingredients that can be used for cooking. Ignore packaging, brands, or 
     throw error;
   }
 };
+
+/**
+ * Categorize a shopping list item using Gemini AI
+ * @param {string} itemName - Name of the shopping list item
+ * @returns {Promise<string>} Category value (produce, meat, dairy, bakery, frozen, pantry, beverages, snacks, household, other)
+ */
+export const categorizeShoppingItem = async (itemName) => {
+  try {
+    const prompt = `Categorize this grocery/shopping item into ONE of these categories:
+
+produce - Fresh fruits, vegetables, herbs
+meat - Meat, poultry, seafood, fish
+dairy - Milk, cheese, yogurt, eggs, butter
+bakery - Bread, bagels, pastries, baked goods
+frozen - Frozen foods, ice cream
+pantry - Canned goods, pasta, rice, flour, spices, condiments, oils
+beverages - Drinks, juice, soda, coffee, tea
+snacks - Chips, crackers, candy, cookies
+household - Cleaning supplies, paper products, toiletries, pet food
+other - Anything that doesn't fit above categories
+
+Item: "${itemName}"
+
+Return ONLY the category value (one word: produce, meat, dairy, bakery, frozen, pantry, beverages, snacks, household, or other). No explanation, just the category word.`;
+
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.1,
+          topK: 1,
+          topP: 0.95,
+          maxOutputTokens: 10,
+        }
+      })
+    });
+
+    if (!response.ok) {
+      console.warn('Gemini API error, falling back to "other" category');
+      return 'other';
+    }
+
+    const data = await response.json();
+    const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!generatedText) {
+      return 'other';
+    }
+
+    // Clean up the response and validate
+    const category = generatedText.trim().toLowerCase();
+    const validCategories = ['produce', 'meat', 'dairy', 'bakery', 'frozen', 'pantry', 'beverages', 'snacks', 'household', 'other'];
+
+    return validCategories.includes(category) ? category : 'other';
+  } catch (error) {
+    console.warn('categorizeShoppingItem error, falling back to "other":', error);
+    return 'other';
+  }
+};

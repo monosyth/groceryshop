@@ -28,6 +28,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
 import { SkeletonList, ShoppingListItemSkeleton } from '../common/Skeletons';
+import { categorizeShoppingItem } from '../../services/geminiService';
 import {
   collection,
   query,
@@ -143,11 +144,17 @@ export default function ShoppingListPage() {
       // Estimate price from receipt history
       const estimatedPrice = estimateItemPrice(newItemName.trim());
 
+      // Auto-categorize with AI if category is still 'other' (default)
+      let finalCategory = newItemCategory;
+      if (newItemCategory === 'other') {
+        finalCategory = await categorizeShoppingItem(newItemName.trim());
+      }
+
       await addDoc(collection(db, 'shoppingList'), {
         userId: currentUser.uid,
         name: newItemName.trim(),
         quantity: newItemQuantity.trim() || null,
-        category: newItemCategory,
+        category: finalCategory,
         notes: newItemNotes.trim() || null,
         estimatedPrice: estimatedPrice,
         checked: false,
