@@ -47,9 +47,27 @@ export default function ShoppingListPage() {
   const [shoppingList, setShoppingList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newItemName, setNewItemName] = useState('');
+  const [newItemQuantity, setNewItemQuantity] = useState('');
+  const [newItemCategory, setNewItemCategory] = useState('other');
+  const [newItemNotes, setNewItemNotes] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [expandedStore, setExpandedStore] = useState(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // Categories for shopping items
+  const categories = [
+    { value: 'produce', label: '🥬 Produce', color: '#10B981' },
+    { value: 'meat', label: '🥩 Meat & Seafood', color: '#EF4444' },
+    { value: 'dairy', label: '🥛 Dairy & Eggs', color: '#3B82F6' },
+    { value: 'bakery', label: '🍞 Bakery', color: '#F59E0B' },
+    { value: 'frozen', label: '🧊 Frozen', color: '#06B6D4' },
+    { value: 'pantry', label: '🥫 Pantry', color: '#8B5CF6' },
+    { value: 'beverages', label: '🥤 Beverages', color: '#EC4899' },
+    { value: 'snacks', label: '🍿 Snacks', color: '#F97316' },
+    { value: 'household', label: '🧹 Household', color: '#6B7280' },
+    { value: 'other', label: '📦 Other', color: '#9CA3AF' },
+  ];
 
   // Filter receipts with store info for store suggestions
   const receipts = allReceipts.filter((receipt) => receipt.storeInfo?.name);
@@ -91,21 +109,59 @@ export default function ShoppingListPage() {
     return () => unsubscribe();
   }, [currentUser]);
 
+  // Estimate item price from receipt history
+  const estimateItemPrice = (itemName) => {
+    const lowerItemName = itemName.toLowerCase();
+    const prices = [];
+
+    allReceipts.forEach((receipt) => {
+      receipt.items?.forEach((receiptItem) => {
+        if (
+          receiptItem.name?.toLowerCase().includes(lowerItemName) ||
+          lowerItemName.includes(receiptItem.name?.toLowerCase())
+        ) {
+          if (receiptItem.price && receiptItem.price > 0) {
+            prices.push(receiptItem.price);
+          }
+        }
+      });
+    });
+
+    if (prices.length === 0) return null;
+
+    // Return average price
+    const average = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+    return Math.round(average * 100) / 100; // Round to 2 decimal places
+  };
+
   // Handle add item
   const handleAddItem = async () => {
     if (!newItemName.trim()) return;
 
     setAddingItem(true);
     try {
+      // Estimate price from receipt history
+      const estimatedPrice = estimateItemPrice(newItemName.trim());
+
       await addDoc(collection(db, 'shoppingList'), {
         userId: currentUser.uid,
         name: newItemName.trim(),
+        quantity: newItemQuantity.trim() || null,
+        category: newItemCategory,
+        notes: newItemNotes.trim() || null,
+        estimatedPrice: estimatedPrice,
         checked: false,
         manual: true,
         createdAt: serverTimestamp(),
       });
 
+      // Reset form
       setNewItemName('');
+      setNewItemQuantity('');
+      setNewItemCategory('other');
+      setNewItemNotes('');
+      setShowAdvanced(false);
+
       setSnackbar({
         open: true,
         message: 'Item added to shopping list!',
@@ -323,7 +379,8 @@ export default function ShoppingListPage() {
           }}
         >
           <CardContent sx={{ p: 2.5 }}>
-            <Box sx={{ display: 'flex', gap: 1.5 }}>
+            {/* Main input row */}
+            <Box sx={{ display: 'flex', gap: 1.5, mb: showAdvanced ? 2 : 0 }}>
               <TextField
                 fullWidth
                 size="small"
@@ -331,7 +388,7 @@ export default function ShoppingListPage() {
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter') handleAddItem();
+                  if (e.key === 'Enter' && !showAdvanced) handleAddItem();
                 }}
                 disabled={addingItem}
                 sx={{
@@ -344,6 +401,27 @@ export default function ShoppingListPage() {
                   },
                 }}
               />
+              <Button
+                variant="outlined"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  textTransform: 'none',
+                  color: '#10B981',
+                  borderColor: '#10B981',
+                  bgcolor: 'white',
+                  minWidth: '40px',
+                  px: 2,
+                  '&:hover': {
+                    borderColor: '#059669',
+                    bgcolor: '#F0FDF4',
+                  },
+                }}
+              >
+                {showAdvanced ? '−' : '+'}
+              </Button>
               <Button
                 variant="contained"
                 startIcon={<Add />}
@@ -371,6 +449,74 @@ export default function ShoppingListPage() {
                 Add
               </Button>
             </Box>
+
+            {/* Advanced options */}
+            {showAdvanced && (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                <Box sx={{ display: 'flex', gap: 1.5 }}>
+                  <TextField
+                    size="small"
+                    placeholder="Quantity (e.g., 2x, 1 lb)"
+                    value={newItemQuantity}
+                    onChange={(e) => setNewItemQuantity(e.target.value)}
+                    disabled={addingItem}
+                    sx={{
+                      flex: 1,
+                      '& .MuiOutlinedInput-root': {
+                        fontFamily: 'Outfit, sans-serif',
+                        bgcolor: 'white',
+                        '& fieldset': { borderColor: '#6EE7B7' },
+                        '&:hover fieldset': { borderColor: '#10B981' },
+                        '&.Mui-focused fieldset': { borderColor: '#10B981' },
+                      },
+                    }}
+                  />
+                  <TextField
+                    select
+                    size="small"
+                    value={newItemCategory}
+                    onChange={(e) => setNewItemCategory(e.target.value)}
+                    disabled={addingItem}
+                    SelectProps={{
+                      native: true,
+                    }}
+                    sx={{
+                      flex: 1,
+                      '& .MuiOutlinedInput-root': {
+                        fontFamily: 'Outfit, sans-serif',
+                        bgcolor: 'white',
+                        '& fieldset': { borderColor: '#6EE7B7' },
+                        '&:hover fieldset': { borderColor: '#10B981' },
+                        '&.Mui-focused fieldset': { borderColor: '#10B981' },
+                      },
+                    }}
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Box>
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="Notes (e.g., organic, brand preference)"
+                  value={newItemNotes}
+                  onChange={(e) => setNewItemNotes(e.target.value)}
+                  disabled={addingItem}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      fontFamily: 'Outfit, sans-serif',
+                      bgcolor: 'white',
+                      '& fieldset': { borderColor: '#6EE7B7' },
+                      '&:hover fieldset': { borderColor: '#10B981' },
+                      '&.Mui-focused fieldset': { borderColor: '#10B981' },
+                    },
+                  }}
+                />
+              </Box>
+            )}
           </CardContent>
         </Card>
 
@@ -576,7 +722,7 @@ export default function ShoppingListPage() {
                         '&:last-child': { borderBottom: 'none' },
                       }}
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
                         <Checkbox
                           checked={item.checked}
                           onChange={() => handleToggleChecked(item.id, item.checked)}
@@ -584,20 +730,83 @@ export default function ShoppingListPage() {
                             color: '#10B981',
                             '&.Mui-checked': { color: '#10B981' },
                             py: 0.5,
+                            mt: -0.5,
                           }}
                         />
                         <Box sx={{ flex: 1 }}>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontFamily: 'Outfit, sans-serif',
-                              color: '#1F2937',
-                              fontSize: '13px',
-                              textDecoration: item.checked ? 'line-through' : 'none',
-                            }}
-                          >
-                            {item.name}
-                          </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                color: '#1F2937',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                textDecoration: item.checked ? 'line-through' : 'none',
+                              }}
+                            >
+                              {item.name}
+                            </Typography>
+                            {item.quantity && (
+                              <Chip
+                                label={item.quantity}
+                                size="small"
+                                sx={{
+                                  height: '20px',
+                                  fontSize: '11px',
+                                  fontFamily: 'Outfit, sans-serif',
+                                  bgcolor: '#FEF3C7',
+                                  color: '#92400E',
+                                  fontWeight: 500,
+                                }}
+                              />
+                            )}
+                            {item.category && item.category !== 'other' && (() => {
+                              const categoryInfo = categories.find((c) => c.value === item.category);
+                              return categoryInfo ? (
+                                <Chip
+                                  label={categoryInfo.label}
+                                  size="small"
+                                  sx={{
+                                    height: '20px',
+                                    fontSize: '11px',
+                                    fontFamily: 'Outfit, sans-serif',
+                                    bgcolor: `${categoryInfo.color}15`,
+                                    color: categoryInfo.color,
+                                    fontWeight: 500,
+                                  }}
+                                />
+                              ) : null;
+                            })()}
+                            {item.estimatedPrice && (
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#6B7280',
+                                  fontSize: '11px',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                ~${item.estimatedPrice.toFixed(2)}
+                              </Typography>
+                            )}
+                          </Box>
+                          {item.notes && (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                color: '#6B7280',
+                                fontSize: '11px',
+                                fontStyle: 'italic',
+                                display: 'block',
+                                mt: 0.25,
+                              }}
+                            >
+                              Note: {item.notes}
+                            </Typography>
+                          )}
                           {item.fromRecipe && (
                             <Typography
                               variant="caption"
@@ -605,6 +814,8 @@ export default function ShoppingListPage() {
                                 fontFamily: 'Outfit, sans-serif',
                                 color: '#6B7280',
                                 fontSize: '11px',
+                                display: 'block',
+                                mt: 0.25,
                               }}
                             >
                               from {item.fromRecipe}
@@ -664,7 +875,7 @@ export default function ShoppingListPage() {
                         '&:last-child': { borderBottom: 'none' },
                       }}
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
                         <Checkbox
                           checked={item.checked}
                           onChange={() => handleToggleChecked(item.id, item.checked)}
@@ -672,19 +883,84 @@ export default function ShoppingListPage() {
                             color: '#10B981',
                             '&.Mui-checked': { color: '#10B981' },
                             py: 0.5,
+                            mt: -0.5,
                           }}
                         />
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            color: '#1F2937',
-                            fontSize: '13px',
-                            textDecoration: item.checked ? 'line-through' : 'none',
-                          }}
-                        >
-                          {item.name}
-                        </Typography>
+                        <Box sx={{ flex: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                color: '#1F2937',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                textDecoration: item.checked ? 'line-through' : 'none',
+                              }}
+                            >
+                              {item.name}
+                            </Typography>
+                            {item.quantity && (
+                              <Chip
+                                label={item.quantity}
+                                size="small"
+                                sx={{
+                                  height: '20px',
+                                  fontSize: '11px',
+                                  fontFamily: 'Outfit, sans-serif',
+                                  bgcolor: '#FEF3C7',
+                                  color: '#92400E',
+                                  fontWeight: 500,
+                                }}
+                              />
+                            )}
+                            {item.category && item.category !== 'other' && (() => {
+                              const categoryInfo = categories.find((c) => c.value === item.category);
+                              return categoryInfo ? (
+                                <Chip
+                                  label={categoryInfo.label}
+                                  size="small"
+                                  sx={{
+                                    height: '20px',
+                                    fontSize: '11px',
+                                    fontFamily: 'Outfit, sans-serif',
+                                    bgcolor: `${categoryInfo.color}15`,
+                                    color: categoryInfo.color,
+                                    fontWeight: 500,
+                                  }}
+                                />
+                              ) : null;
+                            })()}
+                            {item.estimatedPrice && (
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#6B7280',
+                                  fontSize: '11px',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                ~${item.estimatedPrice.toFixed(2)}
+                              </Typography>
+                            )}
+                          </Box>
+                          {item.notes && (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                fontFamily: 'Outfit, sans-serif',
+                                color: '#6B7280',
+                                fontSize: '11px',
+                                fontStyle: 'italic',
+                                display: 'block',
+                                mt: 0.25,
+                              }}
+                            >
+                              Note: {item.notes}
+                            </Typography>
+                          )}
+                        </Box>
                       </Box>
                       <IconButton
                         size="small"
@@ -754,7 +1030,7 @@ export default function ShoppingListPage() {
                           '&:last-child': { borderBottom: 'none' },
                         }}
                       >
-                        <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
                           <Checkbox
                             checked={item.checked}
                             onChange={() => handleToggleChecked(item.id, item.checked)}
@@ -762,19 +1038,84 @@ export default function ShoppingListPage() {
                               color: '#10B981',
                               '&.Mui-checked': { color: '#10B981' },
                               py: 0.5,
+                              mt: -0.5,
                             }}
                           />
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontFamily: 'Outfit, sans-serif',
-                              color: '#9CA3AF',
-                              fontSize: '13px',
-                              textDecoration: 'line-through',
-                            }}
-                          >
-                            {item.name}
-                          </Typography>
+                          <Box sx={{ flex: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#9CA3AF',
+                                  fontSize: '13px',
+                                  fontWeight: 500,
+                                  textDecoration: 'line-through',
+                                }}
+                              >
+                                {item.name}
+                              </Typography>
+                              {item.quantity && (
+                                <Chip
+                                  label={item.quantity}
+                                  size="small"
+                                  sx={{
+                                    height: '20px',
+                                    fontSize: '11px',
+                                    fontFamily: 'Outfit, sans-serif',
+                                    bgcolor: '#F3F4F6',
+                                    color: '#6B7280',
+                                    fontWeight: 500,
+                                  }}
+                                />
+                              )}
+                              {item.category && item.category !== 'other' && (() => {
+                                const categoryInfo = categories.find((c) => c.value === item.category);
+                                return categoryInfo ? (
+                                  <Chip
+                                    label={categoryInfo.label}
+                                    size="small"
+                                    sx={{
+                                      height: '20px',
+                                      fontSize: '11px',
+                                      fontFamily: 'Outfit, sans-serif',
+                                      bgcolor: '#F3F4F6',
+                                      color: '#6B7280',
+                                      fontWeight: 500,
+                                    }}
+                                  />
+                                ) : null;
+                              })()}
+                              {item.estimatedPrice && (
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    fontFamily: 'Outfit, sans-serif',
+                                    color: '#9CA3AF',
+                                    fontSize: '11px',
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  ~${item.estimatedPrice.toFixed(2)}
+                                </Typography>
+                              )}
+                            </Box>
+                            {item.notes && (
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  color: '#9CA3AF',
+                                  fontSize: '11px',
+                                  fontStyle: 'italic',
+                                  display: 'block',
+                                  mt: 0.25,
+                                }}
+                              >
+                                Note: {item.notes}
+                              </Typography>
+                            )}
+                          </Box>
                         </Box>
                         <IconButton
                           size="small"
