@@ -34,12 +34,13 @@ import {
   where,
   onSnapshot,
   addDoc,
+  updateDoc,
   deleteDoc,
   doc,
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { analyzePantryPhoto } from '../../services/geminiService';
+import { analyzePantryPhoto, categorizeShoppingItem } from '../../services/geminiService';
 import { addPhotoItemsToPantry } from '../../services/pantryService';
 
 export default function PantryPage() {
@@ -49,10 +50,25 @@ export default function PantryPage() {
   const [newItemName, setNewItemName] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
+  const [recategorizing, setRecategorizing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+
+  // Categories for pantry items (same as shopping list)
+  const categories = [
+    { value: 'produce', label: '🥬 Produce', color: '#10B981' },
+    { value: 'meat', label: '🥩 Meat & Seafood', color: '#EF4444' },
+    { value: 'dairy', label: '🥛 Dairy & Eggs', color: '#3B82F6' },
+    { value: 'bakery', label: '🍞 Bakery', color: '#F59E0B' },
+    { value: 'frozen', label: '🧊 Frozen', color: '#06B6D4' },
+    { value: 'pantry', label: '🥫 Pantry', color: '#8B5CF6' },
+    { value: 'beverages', label: '🥤 Beverages', color: '#EC4899' },
+    { value: 'snacks', label: '🍿 Snacks', color: '#F97316' },
+    { value: 'household', label: '🧹 Household', color: '#6B7280' },
+    { value: 'other', label: '📦 Other', color: '#9CA3AF' },
+  ];
 
   // Fetch pantry items
   useEffect(() => {
@@ -101,9 +117,13 @@ export default function PantryPage() {
 
     setAddingItem(true);
     try {
+      // Auto-categorize with AI
+      const category = await categorizeShoppingItem(newItemName.trim());
+
       await addDoc(collection(db, 'pantry'), {
         userId: currentUser.uid,
         name: newItemName.trim().toLowerCase(),
+        category: category,
         source: 'manual',
         createdAt: serverTimestamp(),
       });
@@ -210,15 +230,77 @@ export default function PantryPage() {
     }
   };
 
-  // Group items by source
-  const groupedItems = pantryItems.reduce((acc, item) => {
-    const source = item.source || 'unknown';
-    if (!acc[source]) {
-      acc[source] = [];
+  // Handle recategorize items
+  const handleRecategorize = async () => {
+    // Get all items that need recategorization (category is 'other' or not set)
+    const itemsToRecategorize = pantryItems.filter(
+      (item) => !item.category || item.category === 'other'
+    );
+
+    if (itemsToRecategorize.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'All items are already categorized!',
+        severity: 'info',
+      });
+      return;
     }
-    acc[source].push(item);
+
+    setRecategorizing(true);
+    let successCount = 0;
+    let failCount = 0;
+
+    try {
+      // Process items sequentially to avoid rate limits
+      for (const item of itemsToRecategorize) {
+        try {
+          const newCategory = await categorizeShoppingItem(item.name);
+
+          // Only update if AI returned a category different from 'other'
+          if (newCategory && newCategory !== 'other') {
+            await updateDoc(doc(db, 'pantry', item.id), {
+              category: newCategory,
+            });
+            successCount++;
+          } else {
+            failCount++;
+          }
+        } catch (error) {
+          console.error(`Error recategorizing ${item.name}:`, error);
+          failCount++;
+        }
+      }
+
+      setSnackbar({
+        open: true,
+        message: `Recategorized ${successCount} items${failCount > 0 ? `, ${failCount} remained as 'other'` : ''}`,
+        severity: successCount > 0 ? 'success' : 'info',
+      });
+    } catch (error) {
+      console.error('Error recategorizing items:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to recategorize items',
+        severity: 'error',
+      });
+    } finally {
+      setRecategorizing(false);
+    }
+  };
+
+  // Group items by category
+  const groupedItems = pantryItems.reduce((acc, item) => {
+    const category = item.category || 'other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
     return acc;
   }, {});
+
+  // Sort categories in a logical order
+  const categoryOrder = ['produce', 'meat', 'dairy', 'bakery', 'frozen', 'pantry', 'beverages', 'snacks', 'household', 'other'];
+  const sortedCategories = categoryOrder.filter((cat) => groupedItems[cat] && groupedItems[cat].length > 0);
 
   // Get source label
   const getSourceLabel = (source, item) => {
@@ -265,18 +347,47 @@ export default function PantryPage() {
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: '#10B981',
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            🥫 My Pantry
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: '#10B981',
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              🥫 My Pantry
+            </Typography>
+            {pantryItems.length > 0 && (
+              <Button
+                size="small"
+                onClick={handleRecategorize}
+                disabled={recategorizing}
+                startIcon={recategorizing ? <CircularProgress size={16} /> : null}
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: '12px',
+                  textTransform: 'none',
+                  color: '#10B981',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  px: 2,
+                  py: 0.75,
+                  '&:hover': {
+                    bgcolor: '#F0FDF4',
+                    border: '1px solid #059669',
+                  },
+                  '&:disabled': {
+                    color: '#9CA3AF',
+                    border: '1px solid #D1D5DB',
+                  },
+                }}
+              >
+                {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
+              </Button>
+            )}
+          </Box>
           <Typography
             sx={{
               fontFamily: 'Outfit, sans-serif',
@@ -492,57 +603,111 @@ export default function PantryPage() {
           </Card>
         ) : (
           <Grid container spacing={2}>
-            {Object.entries(groupedItems).map(([source, items]) => (
-              <Grid item xs={12} key={source}>
-                <Card
-                  sx={{
-                    bgcolor: '#fff',
-                    borderRadius: '12px',
-                    border: '2px solid #E5E7EB',
-                    boxShadow: '2px 2px 0px #D1D5DB',
-                  }}
-                >
-                  <CardContent sx={{ p: 2.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                      {getSourceIcon(source)}
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          color: '#374151',
-                          fontSize: '16px',
-                          textTransform: 'capitalize',
-                        }}
-                      >
-                        From {source} ({items.length} item{items.length !== 1 ? 's' : ''})
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      {items.map((item) => (
-                        <Chip
-                          key={item.id}
-                          label={item.name}
-                          onDelete={() => handleDeleteItem(item.id)}
-                          deleteIcon={<Delete />}
+            {sortedCategories.map((categoryValue) => {
+              const categoryInfo = categories.find((c) => c.value === categoryValue);
+              const items = groupedItems[categoryValue];
+
+              return (
+                <Grid item xs={12} md={6} key={categoryValue}>
+                  <Card
+                    sx={{
+                      bgcolor: '#fff',
+                      borderRadius: '12px',
+                      border: '2px solid #E5E7EB',
+                      boxShadow: '2px 2px 0px #D1D5DB',
+                      height: '100%',
+                    }}
+                  >
+                    <CardContent sx={{ p: 2.5 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                        <Typography
+                          variant="h6"
                           sx={{
-                            bgcolor: '#F3F4F6',
                             fontFamily: 'Outfit, sans-serif',
-                            fontSize: '13px',
-                            '& .MuiChip-deleteIcon': {
-                              color: '#EF4444',
-                              '&:hover': {
-                                color: '#DC2626',
-                              },
-                            },
+                            fontWeight: 600,
+                            color: categoryInfo.color,
+                            fontSize: '16px',
+                          }}
+                        >
+                          {categoryInfo.label}
+                        </Typography>
+                        <Chip
+                          label={items.length}
+                          size="small"
+                          sx={{
+                            height: '20px',
+                            fontSize: '11px',
+                            fontFamily: 'Outfit, sans-serif',
+                            bgcolor: `${categoryInfo.color}15`,
+                            color: categoryInfo.color,
+                            fontWeight: 600,
                           }}
                         />
-                      ))}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+                      </Box>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        {items.map((item) => (
+                          <Box
+                            key={item.id}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              p: 1,
+                              borderRadius: '8px',
+                              bgcolor: '#F9FAFB',
+                              '&:hover': {
+                                bgcolor: '#F3F4F6',
+                              },
+                            }}
+                          >
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  width: 24,
+                                  height: 24,
+                                  borderRadius: '6px',
+                                  bgcolor: '#E5E7EB',
+                                  color: '#6B7280',
+                                }}
+                              >
+                                {getSourceIcon(item.source)}
+                              </Box>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontSize: '13px',
+                                  color: '#374151',
+                                  textTransform: 'capitalize',
+                                }}
+                              >
+                                {item.name}
+                              </Typography>
+                            </Box>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDeleteItem(item.id)}
+                              sx={{
+                                color: '#EF4444',
+                                p: 0.5,
+                                '&:hover': {
+                                  bgcolor: '#FEE2E2',
+                                },
+                              }}
+                            >
+                              <Delete sx={{ fontSize: 16 }} />
+                            </IconButton>
+                          </Box>
+                        ))}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
         )}
       </Container>
