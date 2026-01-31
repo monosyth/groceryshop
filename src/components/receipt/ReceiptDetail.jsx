@@ -384,7 +384,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
           </Paper>
         </Box>
 
-        {/* Items Table */}
+        {/* Items List - Receipt Style */}
         {items.length > 0 ? (
           <>
             <Typography
@@ -400,164 +400,143 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               Items ({items.length})
             </Typography>
 
-            <TableContainer
-              component={Paper}
+            <Paper
               elevation={0}
               sx={{
                 mb: 3,
                 borderRadius: '12px',
                 border: '2px solid #F59E0B',
                 boxShadow: '2px 2px 0px #FCD34D',
+                p: 2,
               }}
             >
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ bgcolor: '#FEF3C7' }}>
-                    <TableCell
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#78350F',
-                        fontSize: '13px',
-                      }}
-                    >
-                      Item
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#78350F',
-                        fontSize: '13px',
-                      }}
-                    >
-                      Qty
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#78350F',
-                        fontSize: '13px',
-                      }}
-                    >
-                      Unit Price
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: '#78350F',
-                        fontSize: '13px',
-                      }}
-                    >
-                      Total
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedItems.map((item) => (
-                    <TableRow key={item.originalIndex} sx={{ '&:last-child td': { border: 0 } }}>
-                      <TableCell>
-                        <Box>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              {(() => {
+                // Group items by category
+                const groupedItems = {};
+                sortedItems.forEach((item) => {
+                  const category = item.category || 'other';
+                  if (!groupedItems[category]) {
+                    groupedItems[category] = [];
+                  }
+                  groupedItems[category].push(item);
+                });
+
+                return Object.entries(groupedItems).map(([category, categoryItems], categoryIndex) => {
+                  const categoryInfo = getCategoryInfo(category);
+                  return (
+                    <Box key={category}>
+                      {/* Category Header */}
+                      {categoryIndex > 0 && (
+                        <Divider
+                          sx={{
+                            my: 1.5,
+                            borderStyle: 'dashed',
+                            borderColor: '#E5E7EB',
+                          }}
+                        />
+                      )}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          mb: 1,
+                          bgcolor: categoryInfo.bg,
+                          px: 1,
+                          py: 0.5,
+                          borderRadius: '6px',
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: 700,
+                            fontSize: '11px',
+                            color: categoryInfo.color,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                          }}
+                        >
+                          {categoryInfo.emoji} {category}
+                        </Typography>
+                      </Box>
+
+                      {/* Category Items */}
+                      {categoryItems.map((item) => (
+                        <Box
+                          key={item.originalIndex}
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            py: 0.75,
+                            px: 0.5,
+                            '&:hover': {
+                              bgcolor: '#F9FAFB',
+                            },
+                          }}
+                        >
+                          {/* Left: Item name and quantity */}
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
                             <Typography
                               variant="body2"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
                                 fontWeight: 500,
-                                fontSize: '13px',
+                                fontSize: '12px',
+                                color: '#374151',
+                                flex: 1,
                               }}
                             >
+                              {item.quantity > 1 && (
+                                <Box
+                                  component="span"
+                                  sx={{
+                                    color: '#6B7280',
+                                    fontSize: '11px',
+                                    mr: 0.5,
+                                  }}
+                                >
+                                  {item.quantity}x
+                                </Box>
+                              )}
                               {item.name}
                             </Typography>
                             <IconButton
                               size="small"
                               onClick={() => handleEditClick(item.originalIndex, item.name)}
                               sx={{
-                                ml: 0.5,
-                                padding: 0.5,
+                                padding: 0.25,
                                 color: 'text.secondary',
-                                '&:hover': { color: '#10B981' },
+                                '&:hover': { color: '#10B981', bgcolor: '#F0FDF4' },
                               }}
                             >
-                              <Edit sx={{ fontSize: 16 }} />
+                              <Edit sx={{ fontSize: 14 }} />
                             </IconButton>
                           </Box>
-                          {item.receiptText && item.receiptText !== item.name && (
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                              sx={{
-                                display: 'block',
-                                mt: 0.25,
-                                fontFamily: 'Outfit, sans-serif',
-                                fontSize: '11px',
-                              }}
-                            >
-                              Receipt: {item.receiptText}
-                            </Typography>
-                          )}
-                          {item.category && (() => {
-                            const categoryInfo = getCategoryInfo(item.category);
-                            return (
-                              <Chip
-                                label={`${categoryInfo.emoji} ${item.category}`}
-                                size="small"
-                                sx={{
-                                  mt: 0.5,
-                                  height: 22,
-                                  fontSize: '11px',
-                                  fontFamily: 'Outfit, sans-serif',
-                                  fontWeight: 600,
-                                  bgcolor: categoryInfo.bg,
-                                  color: categoryInfo.color,
-                                  border: `1px solid ${categoryInfo.color}`,
-                                  '& .MuiChip-label': {
-                                    px: 1,
-                                  },
-                                }}
-                              />
-                            );
-                          })()}
+
+                          {/* Right: Price */}
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontFamily: 'Outfit, sans-serif',
+                              fontWeight: 600,
+                              fontSize: '12px',
+                              color: '#1F2937',
+                              minWidth: '60px',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {formatCurrency(item.totalPrice)}
+                          </Typography>
                         </Box>
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '13px',
-                        }}
-                      >
-                        {item.quantity}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '13px',
-                        }}
-                      >
-                        {formatCurrency(item.unitPrice)}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          fontSize: '13px',
-                        }}
-                      >
-                        {formatCurrency(item.totalPrice)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                      ))}
+                    </Box>
+                  );
+                });
+              })()}
+            </Paper>
           </>
         ) : (
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center', py: 3 }}>
