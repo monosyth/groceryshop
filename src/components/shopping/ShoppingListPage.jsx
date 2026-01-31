@@ -62,16 +62,16 @@ export default function ShoppingListPage() {
 
   // Categories for shopping items
   const categories = [
-    { value: 'produce', label: '🥬 Produce', color: '#10B981' },
-    { value: 'meat', label: '🥩 Meat & Seafood', color: '#EF4444' },
-    { value: 'dairy', label: '🥛 Dairy & Eggs', color: '#3B82F6' },
-    { value: 'bakery', label: '🍞 Bakery', color: '#F59E0B' },
-    { value: 'frozen', label: '🧊 Frozen', color: '#06B6D4' },
-    { value: 'pantry', label: '🥫 Pantry', color: '#8B5CF6' },
-    { value: 'beverages', label: '🥤 Beverages', color: '#EC4899' },
-    { value: 'snacks', label: '🍿 Snacks', color: '#F97316' },
-    { value: 'household', label: '🧹 Household', color: '#6B7280' },
-    { value: 'other', label: '📦 Other', color: '#9CA3AF' },
+    { value: 'produce', label: '🥬 Produce', emoji: '🥬', color: '#10B981' },
+    { value: 'meat', label: '🥩 Meat & Seafood', emoji: '🥩', color: '#EF4444' },
+    { value: 'dairy', label: '🥛 Dairy & Eggs', emoji: '🥛', color: '#3B82F6' },
+    { value: 'bakery', label: '🍞 Bakery', emoji: '🍞', color: '#F59E0B' },
+    { value: 'frozen', label: '🧊 Frozen', emoji: '🧊', color: '#06B6D4' },
+    { value: 'pantry', label: '🥫 Pantry', emoji: '🥫', color: '#8B5CF6' },
+    { value: 'beverages', label: '🥤 Beverages', emoji: '🥤', color: '#EC4899' },
+    { value: 'snacks', label: '🍿 Snacks', emoji: '🍿', color: '#F97316' },
+    { value: 'household', label: '🧹 Household', emoji: '🧹', color: '#6B7280' },
+    { value: 'other', label: '📦 Other', emoji: '📦', color: '#9CA3AF' },
   ];
 
   // Filter receipts with store info for store suggestions
@@ -1306,7 +1306,7 @@ export default function ShoppingListPage() {
                                     const categoryInfo = categories.find((c) => c.value === item.category);
                                     return categoryInfo ? (
                                       <Chip
-                                        label={`${categoryInfo.emoji} ${categoryInfo.label}`}
+                                        label={categoryInfo.label}
                                         size="small"
                                         sx={{
                                           height: '20px',
@@ -1401,7 +1401,7 @@ export default function ShoppingListPage() {
                                 fontSize: '15px',
                               }}
                             >
-                              {categoryInfo.label}
+                              {categoryInfo.label.replace(/^[\u{1F000}-\u{1FFFF}]\s*/u, '')}
                             </Typography>
                             <Chip
                               label={`${items.length} item${items.length !== 1 ? 's' : ''}`}
