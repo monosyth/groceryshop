@@ -39,16 +39,17 @@ import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, set
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients, analyzePantryPhoto } from '../../services/geminiService';
 import { parseRecipeFromText } from '../../services/recipeUrlService';
+import { addPhotoItemsToPantry } from '../../services/pantryService';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
   const [receipts, setReceipts] = useState([]);
+  const [pantryItems, setPantryItems] = useState([]); // From Firestore pantry collection
   const [selectedIngredients, setSelectedIngredients] = useState([]); // Individual ingredient selection
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
-  const [pantryIngredients, setPantryIngredients] = useState([]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -134,6 +135,32 @@ export default function RecipePage() {
     return () => unsubscribe();
   }, [currentUser]);
 
+  // Fetch pantry items
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const q = query(collection(db, 'pantry'), where('userId', '==', currentUser.uid));
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const items = [];
+        snapshot.forEach((doc) => {
+          items.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setPantryItems(items);
+      },
+      (error) => {
+        console.error('Error fetching pantry:', error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
   // Get all available ingredients from all receipts
   const availableIngredients = useMemo(() => {
     const ingredients = new Set();
@@ -153,8 +180,9 @@ export default function RecipePage() {
 
   // All ingredients including pantry
   const allIngredients = useMemo(() => {
-    return [...new Set([...availableIngredients, ...pantryIngredients])].sort();
-  }, [availableIngredients, pantryIngredients]);
+    const pantryIngredientNames = pantryItems.map((item) => item.name);
+    return [...new Set([...availableIngredients, ...pantryIngredientNames])].sort();
+  }, [availableIngredients, pantryItems]);
 
   // Handle ingredient selection
   const handleIngredientSelect = (ingredient) => {
@@ -260,13 +288,27 @@ export default function RecipePage() {
 
         try {
           const ingredients = await analyzePantryPhoto(base64);
-          setPantryIngredients((prev) => [...new Set([...prev, ...ingredients])]);
+
+          // Add ingredients to pantry collection
+          if (ingredients.length > 0) {
+            try {
+              const addedCount = await addPhotoItemsToPantry(currentUser.uid, ingredients);
+              setSnackbar({
+                open: true,
+                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''} and added ${addedCount} to pantry!`,
+                severity: 'success',
+              });
+            } catch (pantryError) {
+              console.error('Error adding to pantry:', pantryError);
+              setSnackbar({
+                open: true,
+                message: `Found ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''}, but couldn't add to pantry`,
+                severity: 'warning',
+              });
+            }
+          }
+
           setPhotoDialogOpen(false);
-          setSnackbar({
-            open: true,
-            message: `Found ${ingredients.length} ingredients in your photo!`,
-            severity: 'success',
-          });
         } catch (error) {
           console.error('Error analyzing photo:', error);
           setSnackbar({

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Container,
   Typography,
@@ -32,9 +32,12 @@ import {
   ArrowDownward,
   Store as StoreIcon,
   CalendarToday as CalendarIcon,
+  CameraAlt,
+  Upload as UploadIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
-import { getUserReceipts, retryReceiptAnalysis } from '../../services/receiptService';
+import { getUserReceipts, retryReceiptAnalysis, createReceipt } from '../../services/receiptService';
+import { addReceiptItemsToPantry } from '../../services/pantryService';
 import ReceiptCard, { ReceiptCardSkeleton } from '../receipt/ReceiptCard';
 import ReceiptDetail from '../receipt/ReceiptDetail';
 import SearchBar from '../search/SearchBar';
@@ -86,6 +89,12 @@ export default function Dashboard() {
   // Snackbar state
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
+  // Upload state
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
   // Fetch receipts with real-time updates
   useEffect(() => {
     if (!currentUser) return;
@@ -99,7 +108,7 @@ export default function Dashboard() {
     // Subscribe to real-time updates
     const unsubscribe = onSnapshot(
       q,
-      (snapshot) => {
+      async (snapshot) => {
         const receiptData = [];
         snapshot.forEach((doc) => {
           receiptData.push({
@@ -113,6 +122,47 @@ export default function Dashboard() {
           const dateA = a.createdAt?.toDate() || new Date(0);
           const dateB = b.createdAt?.toDate() || new Date(0);
           return dateB - dateA;
+        });
+
+        // Auto-add items to pantry for newly analyzed receipts
+        snapshot.docChanges().forEach(async (change) => {
+          if (change.type === 'modified') {
+            const receipt = change.doc.data();
+            const receiptId = change.doc.id;
+
+            // Check if receipt was just analyzed (has items and analysis is completed)
+            if (
+              receipt.items &&
+              receipt.items.length > 0 &&
+              receipt.metadata?.analysisStatus === 'completed' &&
+              !receipt.metadata?.addedToPantry
+            ) {
+              try {
+                const addedCount = await addReceiptItemsToPantry(
+                  currentUser.uid,
+                  receiptId,
+                  receipt.items,
+                  receipt.storeInfo?.name
+                );
+
+                // Mark receipt as processed
+                await updateDoc(doc(db, 'receipts', receiptId), {
+                  'metadata.addedToPantry': true,
+                  'metadata.pantryItemsAdded': addedCount,
+                });
+
+                if (addedCount > 0) {
+                  setSnackbar({
+                    open: true,
+                    message: `Added ${addedCount} item${addedCount !== 1 ? 's' : ''} to pantry!`,
+                    severity: 'success',
+                  });
+                }
+              } catch (error) {
+                console.error('Error adding items to pantry:', error);
+              }
+            }
+          }
         });
 
         setReceipts(receiptData);
@@ -151,6 +201,61 @@ export default function Dashboard() {
         severity: 'error',
       });
     }
+  };
+
+  // Handle file upload
+  const handleFileUpload = async (file) => {
+    if (!currentUser) {
+      setSnackbar({
+        open: true,
+        message: 'You must be logged in to upload receipts',
+        severity: 'error',
+      });
+      return;
+    }
+
+    try {
+      setUploading(true);
+      setUploadProgress(0);
+
+      await createReceipt(file, currentUser.uid, (progressPercent) => {
+        setUploadProgress(progressPercent);
+      });
+
+      setSnackbar({
+        open: true,
+        message: 'Receipt uploaded successfully! Analyzing...',
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Upload error:', error);
+      setSnackbar({
+        open: true,
+        message: error.message || 'Failed to upload receipt',
+        severity: 'error',
+      });
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+    }
+  };
+
+  // Handle file select
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
+
+  // Trigger file input
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Trigger camera input
+  const triggerCameraInput = () => {
+    cameraInputRef.current?.click();
   };
 
   // Handle snackbar close
@@ -465,6 +570,96 @@ export default function Dashboard() {
               : `${filteredItems.length} total item${filteredItems.length !== 1 ? 's' : ''}`}
           </Typography>
         </Box>
+
+        {/* Upload Receipt Section */}
+        <Paper
+          sx={{
+            mb: 3,
+            p: 3,
+            bgcolor: '#ECFDF5',
+            borderRadius: '12px',
+            border: '2px solid #10B981',
+            boxShadow: '3px 3px 0px #6EE7B7',
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: 'Outfit, sans-serif',
+              fontWeight: 600,
+              color: '#059669',
+              mb: 2,
+            }}
+          >
+            📸 Upload Receipt
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+            <Button
+              variant="contained"
+              startIcon={uploading ? <CircularProgress size={20} color="inherit" /> : <CameraAlt />}
+              onClick={triggerCameraInput}
+              disabled={uploading}
+              sx={{
+                bgcolor: '#10B981',
+                fontFamily: 'Outfit, sans-serif',
+                textTransform: 'none',
+                px: 3,
+                py: 1.5,
+                '&:hover': {
+                  bgcolor: '#059669',
+                },
+              }}
+            >
+              Take Photo
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={uploading ? <CircularProgress size={20} color="inherit" /> : <UploadIcon />}
+              onClick={triggerFileInput}
+              disabled={uploading}
+              sx={{
+                bgcolor: '#3B82F6',
+                fontFamily: 'Outfit, sans-serif',
+                textTransform: 'none',
+                px: 3,
+                py: 1.5,
+                '&:hover': {
+                  bgcolor: '#2563EB',
+                },
+              }}
+            >
+              Upload Image
+            </Button>
+            {uploading && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 2 }}>
+                <Typography
+                  sx={{
+                    fontFamily: 'Outfit, sans-serif',
+                    color: '#059669',
+                    fontSize: '14px',
+                  }}
+                >
+                  Uploading... {uploadProgress}%
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFileSelect}
+          />
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            style={{ display: 'none' }}
+            onChange={handleFileSelect}
+          />
+        </Paper>
 
         {/* Tabs */}
         {!loading && receipts.length > 0 && (
