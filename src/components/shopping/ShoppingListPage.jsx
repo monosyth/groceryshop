@@ -58,7 +58,7 @@ export default function ShoppingListPage() {
   const [recategorizing, setRecategorizing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [sortBy, setSortBy] = useState('default'); // 'default', 'store', 'location'
+  const [sortBy, setSortBy] = useState('location'); // 'default', 'store', 'location' - default to category view
 
   // Categories for shopping items
   const categories = [

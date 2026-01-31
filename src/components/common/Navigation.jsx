@@ -64,7 +64,7 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: <Dashboard />, emoji: '🏠' },
+    { label: 'Receipts', path: '/dashboard', icon: <Dashboard />, emoji: '🧾' },
     { label: 'Pantry', path: '/pantry', icon: <Kitchen />, emoji: '🥫' },
     { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
     { label: 'My Recipes', path: '/my-recipes', icon: <MenuBook />, emoji: '📖' },
