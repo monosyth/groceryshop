@@ -27,6 +27,7 @@ import { doc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '../../firebase';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { categorizeShoppingItem } from '../../services/geminiService';
 
 /**
  * Receipt detail dialog showing full item breakdown
@@ -40,6 +41,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editedName, setEditedName] = useState('');
+  const [savingEdit, setSavingEdit] = useState(false);
 
   // Real-time receipt data
   const [liveReceipt, setLiveReceipt] = useState(receipt);
@@ -163,18 +165,23 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   };
 
   /**
-   * Handle save edited name
+   * Handle save edited name with AI recategorization
    */
   const handleSaveEdit = async () => {
     if (editingItemIndex === null || !editedName.trim()) {
       return;
     }
 
+    setSavingEdit(true);
     try {
+      // Recategorize with AI using the new name
+      const newCategory = await categorizeShoppingItem(editedName.trim());
+
       const updatedItems = [...items];
       updatedItems[editingItemIndex] = {
         ...updatedItems[editingItemIndex],
         name: editedName.trim(),
+        category: newCategory,
       };
 
       await updateDoc(doc(db, 'receipts', liveReceipt.id), {
@@ -183,7 +190,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
 
       setSnackbar({
         open: true,
-        message: 'Item name updated successfully',
+        message: 'Item updated and recategorized successfully',
         severity: 'success',
       });
 
@@ -194,9 +201,11 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
       console.error('Error updating item name:', error);
       setSnackbar({
         open: true,
-        message: 'Failed to update item name',
+        message: 'Failed to update item',
         severity: 'error',
       });
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -715,14 +724,21 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                   handleSaveEdit();
                 }
               }}
-              helperText="Update the product name (e.g., 'Tillamook Ice Cream' instead of 'Tillamook Cheese')"
+              helperText="Update the product name - will automatically recategorize with AI"
+              disabled={savingEdit}
             />
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancelEdit}>Cancel</Button>
-          <Button onClick={handleSaveEdit} variant="contained" disabled={!editedName.trim()}>
-            Save
+          <Button onClick={handleCancelEdit} disabled={savingEdit}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSaveEdit}
+            variant="contained"
+            disabled={!editedName.trim() || savingEdit}
+          >
+            {savingEdit ? 'Saving & Recategorizing...' : 'Save & Recategorize'}
           </Button>
         </DialogActions>
       </Dialog>
