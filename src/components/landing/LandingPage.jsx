@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -14,9 +14,16 @@ import { teal, pink, rose, orange, amber, brown, white } from '../../theme/color
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [currentUser, navigate]);
 
   const handleGoogleSignIn = async () => {
     try {
