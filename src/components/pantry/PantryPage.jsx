@@ -27,15 +27,14 @@ import {
   Edit as EditIcon,
   Upload,
   Undo,
-  Leaf,
   LocalFlorist,
   LocalDining,
   BakeryDining,
   AcUnit,
   LocalBar,
-  FastfoodRounded,
+  Fastfood,
   CleaningServices,
-  Package,
+  Inventory2,
   AutoAwesome,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
@@ -83,16 +82,16 @@ export default function PantryPage() {
 
   // Categories for pantry items (same as shopping list)
   const categories = [
-    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Leaf sx={{ fontSize: 16 }} /> Produce</Box>, color: teal.main },
+    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalFlorist sx={{ fontSize: 16 }} /> Produce</Box>, color: teal.main },
     { value: 'meat', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Meat & Seafood</Box>, color: red.main },
     { value: 'dairy', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Dairy & Eggs</Box>, color: blue.main },
     { value: 'bakery', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><BakeryDining sx={{ fontSize: 16 }} /> Bakery</Box>, color: amber.main },
     { value: 'frozen', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AcUnit sx={{ fontSize: 16 }} /> Frozen</Box>, color: cyan.main },
     { value: 'pantry', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Kitchen sx={{ fontSize: 16 }} /> Pantry</Box>, color: purple.main },
     { value: 'beverages', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalBar sx={{ fontSize: 16 }} /> Beverages</Box>, color: pink.main },
-    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><FastfoodRounded sx={{ fontSize: 16 }} /> Snacks</Box>, color: orange.main },
+    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Fastfood sx={{ fontSize: 16 }} /> Snacks</Box>, color: orange.main },
     { value: 'household', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CleaningServices sx={{ fontSize: 16 }} /> Household</Box>, color: gray.main },
-    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Package sx={{ fontSize: 16 }} /> Other</Box>, color: darkGray.light },
+    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Inventory2 sx={{ fontSize: 16 }} /> Other</Box>, color: darkGray.light },
   ];
 
   // Fetch pantry items

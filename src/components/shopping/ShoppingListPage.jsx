@@ -27,15 +27,15 @@ import {
   Restaurant,
   ViewList,
   LocationOn,
-  Lettuce,
-  LocalFireDepartment,
+  LocalFlorist,
+  Restaurant as MeatIcon,
   LocalDining,
-  Bakery,
+  BakeryDining,
   AcUnit,
   Inventory2,
   LocalBar,
-  Popcorn,
-  Cleaning,
+  Fastfood,
+  CleaningServices,
   AutoAwesome,
   ShoppingBag,
 } from '@mui/icons-material';
@@ -77,15 +77,15 @@ export default function ShoppingListPage() {
 
   // Categories for shopping items
   const categories = [
-    { value: 'produce', label: 'Produce', icon: Lettuce, color: teal.main },
-    { value: 'meat', label: 'Meat & Seafood', icon: LocalFireDepartment, color: red.main },
+    { value: 'produce', label: 'Produce', icon: LocalFlorist, color: teal.main },
+    { value: 'meat', label: 'Meat & Seafood', icon: MeatIcon, color: red.main },
     { value: 'dairy', label: 'Dairy & Eggs', icon: LocalDining, color: blue.main },
-    { value: 'bakery', label: 'Bakery', icon: Bakery, color: amber.main },
+    { value: 'bakery', label: 'Bakery', icon: BakeryDining, color: amber.main },
     { value: 'frozen', label: 'Frozen', icon: AcUnit, color: cyan.main },
     { value: 'pantry', label: 'Pantry', icon: Inventory2, color: purple.main },
     { value: 'beverages', label: 'Beverages', icon: LocalBar, color: pink.main },
-    { value: 'snacks', label: 'Snacks', icon: Popcorn, color: orange.main },
-    { value: 'household', label: 'Household', icon: Cleaning, color: gray.main },
+    { value: 'snacks', label: 'Snacks', icon: Fastfood, color: orange.main },
+    { value: 'household', label: 'Household', icon: CleaningServices, color: gray.main },
     { value: 'other', label: 'Other', icon: Inventory2, color: darkGray.light },
   ];
 
@@ -561,7 +561,7 @@ export default function ShoppingListPage() {
                 size="small"
                 onClick={handleRecategorize}
                 disabled={recategorizing}
-                startIcon={recategorizing ? <CircularProgress size={16} /> : null}
+                startIcon={recategorizing ? <CircularProgress size={16} /> : <AutoAwesome sx={{ fontSize: 16 }} />}
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '12px',
@@ -580,7 +580,6 @@ export default function ShoppingListPage() {
                     border: `1px solid ${gray.light}`,
                   },
                 }}
-                startIcon={recategorizing ? undefined : <AutoAwesome sx={{ fontSize: 16 }} />}
               >
                 {recategorizing ? 'Analyzing...' : 'AI Categorize'}
               </Button>

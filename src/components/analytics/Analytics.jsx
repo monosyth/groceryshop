@@ -15,7 +15,7 @@ import {
   Receipt,
   ShoppingCart,
   Storefront,
-  BarChart,
+  BarChart as BarChartIcon,
   TrendingUp,
   LocalOffer,
 } from '@mui/icons-material';
@@ -119,7 +119,7 @@ export default function AnalyticsPage() {
                 gap: 1.5,
               }}
             >
-              <BarChart sx={{ fontSize: '36px', color: teal.main }} />
+              <BarChartIcon sx={{ fontSize: '36px', color: teal.main }} />
               Analytics
             </Typography>
             <Typography
@@ -192,7 +192,7 @@ export default function AnalyticsPage() {
               gap: 1.5,
             }}
           >
-            <BarChart sx={{ fontSize: '36px', color: teal.main }} />
+            <BarChartIcon sx={{ fontSize: '36px', color: teal.main }} />
             Analytics
           </Typography>
           <Typography

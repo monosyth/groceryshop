@@ -713,7 +713,6 @@ export default function RecipePage() {
                           Available Ingredients ({allIngredients.length})
                         </Typography>
                       </Box>
-                      </Box>
                       <Button
                         size="small"
                         onClick={handleSelectAllIngredients}
