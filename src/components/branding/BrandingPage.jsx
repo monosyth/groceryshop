@@ -73,7 +73,7 @@ export default function BrandingPage() {
   );
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 6 }}>
+    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 6 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 6, pb: 4, textAlign: 'center' }}>

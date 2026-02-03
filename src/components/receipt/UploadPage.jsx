@@ -61,7 +61,7 @@ export default function UploadPage() {
   };
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         <Box sx={{ pt: 4, pb: 3 }}>
           <Typography
