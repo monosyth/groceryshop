@@ -31,6 +31,8 @@ import {
   ShoppingCart,
   AddLink,
   Save,
+  ReceiptLong,
+  Edit as EditIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
@@ -466,18 +468,20 @@ export default function RecipePage() {
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: teal.main,
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            👨‍🍳 Recipe Ideas
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+            <Restaurant sx={{ fontSize: { xs: '28px', md: '34px' }, color: teal.main }} />
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: teal.main,
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              Recipe Ideas
+            </Typography>
+          </Box>
           <Typography
             variant="body1"
             sx={{
@@ -501,7 +505,7 @@ export default function RecipePage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>🧾</Box>
+            <ReceiptLong sx={{ fontSize: '56px', mb: 2, color: brown.main }} />
             <Typography
               variant="h5"
               sx={{
@@ -542,18 +546,20 @@ export default function RecipePage() {
                       height: '100%',
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: blue.dark,
-                        fontSize: '16px',
-                        mb: 1.5,
-                      }}
-                    >
-                      🧾 Quick Select from Receipts
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                      <ReceiptLong sx={{ color: blue.dark, fontSize: '20px' }} />
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          color: blue.dark,
+                          fontSize: '16px',
+                        }}
+                      >
+                        Quick Select from Receipts
+                      </Typography>
+                    </Box>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                       {receipts.map((receipt) => (
                         <Button
@@ -599,18 +605,20 @@ export default function RecipePage() {
                   }}
                 >
                   <CardContent sx={{ p: 2.5 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 600,
-                        color: purple.dark,
-                        fontSize: '16px',
-                        mb: 1.5,
-                      }}
-                    >
-                      📝 Paste Recipe
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                      <EditIcon sx={{ color: purple.dark, fontSize: '20px' }} />
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 600,
+                          color: purple.dark,
+                          fontSize: '16px',
+                        }}
+                      >
+                        Paste Recipe
+                      </Typography>
+                    </Box>
 
                     <Typography
                       variant="body2"
@@ -691,17 +699,21 @@ export default function RecipePage() {
                 >
                   <CardContent sx={{ p: 2.5 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontWeight: 600,
-                          color: teal.dark,
-                          fontSize: '16px',
-                        }}
-                      >
-                        🛒 Available Ingredients ({allIngredients.length})
-                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <ShoppingCart sx={{ color: teal.dark, fontSize: '20px' }} />
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: 600,
+                            color: teal.dark,
+                            fontSize: '16px',
+                          }}
+                        >
+                          Available Ingredients ({allIngredients.length})
+                        </Typography>
+                      </Box>
+                      </Box>
                       <Button
                         size="small"
                         onClick={handleSelectAllIngredients}

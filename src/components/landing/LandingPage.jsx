@@ -8,7 +8,16 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { Google as GoogleIcon, ShoppingCart } from '@mui/icons-material';
+import {
+  Google as GoogleIcon,
+  ShoppingCart,
+  PhotoCamera,
+  BarChart,
+  Search,
+  AttachMoney,
+  AutoAwesome,
+  Favorite,
+} from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 import { teal, pink, rose, orange, amber, brown, white } from '../../theme/colors';
 
@@ -115,12 +124,11 @@ export default function LandingPage() {
           position: 'absolute',
           top: '10%',
           right: '10%',
-          fontSize: '80px',
           opacity: 0.3,
           zIndex: 0,
         }}
       >
-        🥑
+        <PhotoCamera sx={{ fontSize: '80px', color: teal.main }} />
       </Box>
       <Box
         className="float-medium"
@@ -128,12 +136,11 @@ export default function LandingPage() {
           position: 'absolute',
           top: '60%',
           left: '5%',
-          fontSize: '60px',
           opacity: 0.3,
           zIndex: 0,
         }}
       >
-        🍞
+        <BarChart sx={{ fontSize: '60px', color: pink.main }} />
       </Box>
       <Box
         className="float-fast"
@@ -141,12 +148,11 @@ export default function LandingPage() {
           position: 'absolute',
           top: '30%',
           left: '15%',
-          fontSize: '70px',
           opacity: 0.3,
           zIndex: 0,
         }}
       >
-        🥛
+        <Search sx={{ fontSize: '70px', color: amber.main }} />
       </Box>
       <Box
         className="float-slow"
@@ -154,12 +160,11 @@ export default function LandingPage() {
           position: 'absolute',
           bottom: '20%',
           right: '20%',
-          fontSize: '65px',
           opacity: 0.3,
           zIndex: 0,
         }}
       >
-        🧀
+        <AttachMoney sx={{ fontSize: '65px', color: orange.main }} />
       </Box>
 
       {/* Header */}
@@ -283,7 +288,12 @@ export default function LandingPage() {
             }}
           >
             Take a pic of your receipt. We'll magically turn it into insights.
-            <Box component="span" sx={{ fontSize: '24px' }}> ✨</Box>
+            <Box
+              component="span"
+              sx={{ display: 'inline-flex', alignItems: 'center', ml: 0.5 }}
+            >
+              <AutoAwesome sx={{ fontSize: '24px', color: amber.main }} />
+            </Box>
           </Typography>
 
           {/* CTA Button */}
@@ -347,7 +357,9 @@ export default function LandingPage() {
               cursor: 'pointer',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
+            <Box sx={{ mb: 1 }}>
+              <PhotoCamera sx={{ fontSize: '56px', color: teal.dark }} />
+            </Box>
             <Typography sx={{ fontSize: '20px', fontWeight: 800, color: teal.dark, mb: 1 }}>
               Snap It
             </Typography>
@@ -368,7 +380,9 @@ export default function LandingPage() {
               cursor: 'pointer',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 1 }}>📊</Box>
+            <Box sx={{ mb: 1 }}>
+              <BarChart sx={{ fontSize: '56px', color: pink.dark }} />
+            </Box>
             <Typography sx={{ fontSize: '20px', fontWeight: 800, color: pink.dark, mb: 1 }}>
               See Patterns
             </Typography>
@@ -389,7 +403,9 @@ export default function LandingPage() {
               cursor: 'pointer',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 1 }}>🔍</Box>
+            <Box sx={{ mb: 1 }}>
+              <Search sx={{ fontSize: '56px', color: amber.dark }} />
+            </Box>
             <Typography sx={{ fontSize: '20px', fontWeight: 800, color: amber.dark, mb: 1 }}>
               Find Stuff
             </Typography>
@@ -410,7 +426,9 @@ export default function LandingPage() {
               cursor: 'pointer',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 1 }}>💰</Box>
+            <Box sx={{ mb: 1 }}>
+              <AttachMoney sx={{ fontSize: '56px', color: orange.dark }} />
+            </Box>
             <Typography sx={{ fontSize: '20px', fontWeight: 800, color: orange.dark, mb: 1 }}>
               Save Money
             </Typography>
@@ -490,9 +508,14 @@ export default function LandingPage() {
             fontSize: '14px',
             color: brown.dark,
             fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 0.5,
           }}
         >
-          Made with 💚 by people who hate spreadsheets
+          Made with <Favorite sx={{ fontSize: '16px', color: rose.main }} /> by people who
+          hate spreadsheets
         </Typography>
         <Typography
           sx={{

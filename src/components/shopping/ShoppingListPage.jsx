@@ -27,6 +27,17 @@ import {
   Restaurant,
   ViewList,
   LocationOn,
+  Lettuce,
+  LocalFireDepartment,
+  LocalDining,
+  Bakery,
+  AcUnit,
+  Inventory2,
+  LocalBar,
+  Popcorn,
+  Cleaning,
+  AutoAwesome,
+  ShoppingBag,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
@@ -66,16 +77,16 @@ export default function ShoppingListPage() {
 
   // Categories for shopping items
   const categories = [
-    { value: 'produce', label: '🥬 Produce', emoji: '🥬', color: teal.main },
-    { value: 'meat', label: '🥩 Meat & Seafood', emoji: '🥩', color: red.main },
-    { value: 'dairy', label: '🥛 Dairy & Eggs', emoji: '🥛', color: blue.main },
-    { value: 'bakery', label: '🍞 Bakery', emoji: '🍞', color: amber.main },
-    { value: 'frozen', label: '🧊 Frozen', emoji: '🧊', color: cyan.main },
-    { value: 'pantry', label: '🥫 Pantry', emoji: '🥫', color: purple.main },
-    { value: 'beverages', label: '🥤 Beverages', emoji: '🥤', color: pink.main },
-    { value: 'snacks', label: '🍿 Snacks', emoji: '🍿', color: orange.main },
-    { value: 'household', label: '🧹 Household', emoji: '🧹', color: gray.main },
-    { value: 'other', label: '📦 Other', emoji: '📦', color: darkGray.light },
+    { value: 'produce', label: 'Produce', icon: Lettuce, color: teal.main },
+    { value: 'meat', label: 'Meat & Seafood', icon: LocalFireDepartment, color: red.main },
+    { value: 'dairy', label: 'Dairy & Eggs', icon: LocalDining, color: blue.main },
+    { value: 'bakery', label: 'Bakery', icon: Bakery, color: amber.main },
+    { value: 'frozen', label: 'Frozen', icon: AcUnit, color: cyan.main },
+    { value: 'pantry', label: 'Pantry', icon: Inventory2, color: purple.main },
+    { value: 'beverages', label: 'Beverages', icon: LocalBar, color: pink.main },
+    { value: 'snacks', label: 'Snacks', icon: Popcorn, color: orange.main },
+    { value: 'household', label: 'Household', icon: Cleaning, color: gray.main },
+    { value: 'other', label: 'Other', icon: Inventory2, color: darkGray.light },
   ];
 
   // Filter receipts with store info for store suggestions
@@ -481,18 +492,21 @@ export default function ShoppingListPage() {
       <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="md">
           <Box sx={{ pt: 4, pb: 3 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                color: teal.main,
-                fontSize: { xs: '28px', md: '34px' },
-                mb: 1,
-              }}
-            >
-              🛒 Shopping List
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <ShoppingCart sx={{ fontSize: 36, color: teal.main }} />
+              <Typography
+                variant="h3"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  color: teal.main,
+                  fontSize: { xs: '28px', md: '34px' },
+                  mb: 0,
+                }}
+              >
+                Shopping List
+              </Typography>
+            </Box>
             <Typography
               variant="body1"
               sx={{
@@ -527,17 +541,21 @@ export default function ShoppingListPage() {
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                color: teal.main,
-                fontSize: { xs: '28px', md: '34px' },
-              }}
-            >
-              🛒 Shopping List
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <ShoppingCart sx={{ fontSize: 36, color: teal.main }} />
+              <Typography
+                variant="h3"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  color: teal.main,
+                  fontSize: { xs: '28px', md: '34px' },
+                  mb: 0,
+                }}
+              >
+                Shopping List
+              </Typography>
+            </Box>
             {shoppingList.length > 0 && (
               <Button
                 size="small"
@@ -562,8 +580,9 @@ export default function ShoppingListPage() {
                     border: `1px solid ${gray.light}`,
                   },
                 }}
+                startIcon={recategorizing ? undefined : <AutoAwesome sx={{ fontSize: 16 }} />}
               >
-                {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
+                {recategorizing ? 'Analyzing...' : 'AI Categorize'}
               </Button>
             )}
           </Box>
@@ -852,7 +871,7 @@ export default function ShoppingListPage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>🛍️</Box>
+            <ShoppingBag sx={{ fontSize: 56, color: amber.main, mb: 2 }} />
             <Typography
               variant="h5"
               sx={{
@@ -1401,7 +1420,10 @@ export default function ShoppingListPage() {
                       >
                         <CardContent sx={{ p: 2.5 }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                            <Box sx={{ fontSize: '18px' }}>{categoryInfo.emoji}</Box>
+                            {categoryInfo.icon && (function() {
+                              const IconComponent = categoryInfo.icon;
+                              return <IconComponent sx={{ fontSize: 20, color: categoryInfo.color }} />;
+                            })()}
                             <Typography
                               variant="h6"
                               sx={{
@@ -1411,7 +1433,7 @@ export default function ShoppingListPage() {
                                 fontSize: '15px',
                               }}
                             >
-                              {categoryInfo.label.replace(/^[\u{1F000}-\u{1FFFF}]\s*/u, '')}
+                              {categoryInfo.label}
                             </Typography>
                             <Chip
                               label={`${items.length} item${items.length !== 1 ? 's' : ''}`}

@@ -23,7 +23,28 @@ import {
   Alert,
   TextField,
 } from '@mui/material';
-import { Close, Store, CalendarToday, LocationOn, Delete, Edit } from '@mui/icons-material';
+import {
+  Close,
+  Store,
+  CalendarToday,
+  LocationOn,
+  Delete,
+  Edit,
+  LocalDining,
+  BakeryDining,
+  Inventory2,
+  ShoppingCart,
+  Category,
+  LocalFlorist,
+  Liquor,
+  Fastfood,
+  Cleaning,
+  Spa,
+  LocalPharmacy,
+  Storefront,
+  AttachMoney,
+  LocationCity
+} from '@mui/icons-material';
 import { doc, deleteDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '../../firebase';
@@ -219,22 +240,22 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
     setEditedName('');
   };
 
-  // Category colors and emojis (matching shopping list)
+  // Category colors and icons (matching shopping list)
   const getCategoryInfo = (category) => {
     const categoryMap = {
-      produce: { emoji: '🥬', color: teal.main, bg: teal.bg },
-      meat: { emoji: '🥩', color: red.main, bg: red.bg },
-      dairy: { emoji: '🥛', color: blue.main, bg: blue.bg },
-      bakery: { emoji: '🍞', color: amber.main, bg: amber.bg },
-      frozen: { emoji: '🧊', color: cyan.main, bg: cyan.bg },
-      pantry: { emoji: '🥫', color: purple.main, bg: purple.bg },
-      beverages: { emoji: '🥤', color: pink.main, bg: pink.bg },
-      snacks: { emoji: '🍿', color: orange.main, bg: orange.bg },
-      household: { emoji: '🧹', color: gray.main, bg: gray.bg },
-      'personal care': { emoji: '🧴', color: gray.main, bg: gray.bg },
-      health: { emoji: '💊', color: teal.main, bg: teal.bg },
-      grocery: { emoji: '🛒', color: teal.main, bg: teal.bg },
-      other: { emoji: '📦', color: gray.main, bg: gray.bg },
+      produce: { icon: LocalFlorist, color: teal.main, bg: teal.bg },
+      meat: { icon: LocalDining, color: red.main, bg: red.bg },
+      dairy: { icon: LocalDining, color: blue.main, bg: blue.bg },
+      bakery: { icon: BakeryDining, color: amber.main, bg: amber.bg },
+      frozen: { icon: LocalFlorist, color: cyan.main, bg: cyan.bg },
+      pantry: { icon: Inventory2, color: purple.main, bg: purple.bg },
+      beverages: { icon: Liquor, color: pink.main, bg: pink.bg },
+      snacks: { icon: Fastfood, color: orange.main, bg: orange.bg },
+      household: { icon: Cleaning, color: gray.main, bg: gray.bg },
+      'personal care': { icon: Spa, color: gray.main, bg: gray.bg },
+      health: { icon: LocalPharmacy, color: teal.main, bg: teal.bg },
+      grocery: { icon: ShoppingCart, color: teal.main, bg: teal.bg },
+      other: { icon: Category, color: gray.main, bg: gray.bg },
     };
     return categoryMap[category?.toLowerCase()] || categoryMap.other;
   };
@@ -333,7 +354,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
             <Stack spacing={1.5}>
               {storeInfo?.name && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ fontSize: '20px' }}>🏪</Box>
+                  <Storefront sx={{ fontSize: '20px', color: teal.main }} />
                   <Typography
                     variant="h6"
                     sx={{
@@ -350,7 +371,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
 
               {storeInfo?.location && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ fontSize: '16px' }}>📍</Box>
+                  <LocationOn sx={{ fontSize: '16px', color: teal.main }} />
                   <Typography
                     variant="body2"
                     sx={{
@@ -367,7 +388,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
 
               {storeInfo?.date && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ fontSize: '16px' }}>📅</Box>
+                  <CalendarToday sx={{ fontSize: '16px', color: teal.main }} />
                   <Typography
                     variant="body2"
                     sx={{
@@ -448,6 +469,12 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                           borderRadius: '6px',
                         }}
                       >
+                        <categoryInfo.icon
+                          sx={{
+                            fontSize: '14px',
+                            color: categoryInfo.color,
+                          }}
+                        />
                         <Typography
                           variant="caption"
                           sx={{
@@ -459,7 +486,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                             letterSpacing: '0.5px',
                           }}
                         >
-                          {categoryInfo.emoji} {category}
+                          {category}
                         </Typography>
                       </Box>
 
@@ -557,18 +584,20 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               boxShadow: `2px 2px 0px ${teal.light}`,
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{
-                mb: 2,
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 600,
-                color: teal.dark,
-                fontSize: '18px',
-              }}
-            >
-              💰 Summary
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+              <AttachMoney sx={{ color: teal.dark, fontSize: '24px' }} />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 600,
+                  color: teal.dark,
+                  fontSize: '18px',
+                }}
+              >
+                Summary
+              </Typography>
+            </Box>
 
             <Stack spacing={1}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

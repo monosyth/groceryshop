@@ -27,6 +27,16 @@ import {
   Edit as EditIcon,
   Upload,
   Undo,
+  Leaf,
+  LocalFlorist,
+  LocalDining,
+  BakeryDining,
+  AcUnit,
+  LocalBar,
+  FastfoodRounded,
+  CleaningServices,
+  Package,
+  AutoAwesome,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -73,16 +83,16 @@ export default function PantryPage() {
 
   // Categories for pantry items (same as shopping list)
   const categories = [
-    { value: 'produce', label: '🥬 Produce', color: teal.main },
-    { value: 'meat', label: '🥩 Meat & Seafood', color: red.main },
-    { value: 'dairy', label: '🥛 Dairy & Eggs', color: blue.main },
-    { value: 'bakery', label: '🍞 Bakery', color: amber.main },
-    { value: 'frozen', label: '🧊 Frozen', color: cyan.main },
-    { value: 'pantry', label: '🥫 Pantry', color: purple.main },
-    { value: 'beverages', label: '🥤 Beverages', color: pink.main },
-    { value: 'snacks', label: '🍿 Snacks', color: orange.main },
-    { value: 'household', label: '🧹 Household', color: gray.main },
-    { value: 'other', label: '📦 Other', color: darkGray.light },
+    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Leaf sx={{ fontSize: 16 }} /> Produce</Box>, color: teal.main },
+    { value: 'meat', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Meat & Seafood</Box>, color: red.main },
+    { value: 'dairy', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Dairy & Eggs</Box>, color: blue.main },
+    { value: 'bakery', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><BakeryDining sx={{ fontSize: 16 }} /> Bakery</Box>, color: amber.main },
+    { value: 'frozen', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AcUnit sx={{ fontSize: 16 }} /> Frozen</Box>, color: cyan.main },
+    { value: 'pantry', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Kitchen sx={{ fontSize: 16 }} /> Pantry</Box>, color: purple.main },
+    { value: 'beverages', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalBar sx={{ fontSize: 16 }} /> Beverages</Box>, color: pink.main },
+    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><FastfoodRounded sx={{ fontSize: 16 }} /> Snacks</Box>, color: orange.main },
+    { value: 'household', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CleaningServices sx={{ fontSize: 16 }} /> Household</Box>, color: gray.main },
+    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Package sx={{ fontSize: 16 }} /> Other</Box>, color: darkGray.light },
   ];
 
   // Fetch pantry items
@@ -555,17 +565,20 @@ export default function PantryPage() {
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                color: teal.main,
-                fontSize: { xs: '28px', md: '34px' },
-              }}
-            >
-              🥫 My Pantry
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Kitchen sx={{ fontSize: { xs: 32, md: 40 }, color: teal.main }} />
+              <Typography
+                variant="h3"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  color: teal.main,
+                  fontSize: { xs: '28px', md: '34px' },
+                }}
+              >
+                My Pantry
+              </Typography>
+            </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
               {undoStack.length > 0 && (
                 <Button
@@ -615,7 +628,10 @@ export default function PantryPage() {
                     },
                   }}
                 >
-                  {recategorizing ? 'Analyzing...' : '✨ AI Categorize'}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <AutoAwesome sx={{ fontSize: 16 }} />
+                    {recategorizing ? 'Analyzing...' : 'AI Categorize'}
+                  </Box>
                 </Button>
               )}
             </Box>
@@ -760,7 +776,7 @@ export default function PantryPage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>🥫</Box>
+            <Kitchen sx={{ fontSize: 56, color: brown.main, mb: 2 }} />
             <Typography
               variant="h5"
               sx={{

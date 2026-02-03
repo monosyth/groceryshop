@@ -115,82 +115,83 @@ export const ui = {
   overlay: 'rgba(0,0,0,0.5)', // Modal overlay
 };
 
-// Category Mapping
+// Category Mapping - using icon names instead of emojis
+// Components should map these to Material UI icons
 export const categories = {
   produce: {
-    emoji: '🥬',
+    icon: 'LocalFlorist',
     name: 'Produce',
     color: teal.main,
     bg: teal.bg,
   },
   meat: {
-    emoji: '🥩',
+    icon: 'Restaurant',
     name: 'Meat & Seafood',
     color: red.main,
     bg: red.bg,
   },
   dairy: {
-    emoji: '🥛',
+    icon: 'LocalDining',
     name: 'Dairy & Eggs',
     color: blue.main,
     bg: blue.bg,
   },
   bakery: {
-    emoji: '🍞',
+    icon: 'BakeryDining',
     name: 'Bakery',
     color: amber.main,
     bg: amber.bg,
   },
   frozen: {
-    emoji: '🧊',
+    icon: 'AcUnit',
     name: 'Frozen',
     color: cyan.main,
     bg: cyan.bg,
   },
   pantry: {
-    emoji: '🥫',
+    icon: 'Inventory2',
     name: 'Pantry',
     color: purple.main,
     bg: purple.bg,
   },
   beverages: {
-    emoji: '🥤',
+    icon: 'LocalBar',
     name: 'Beverages',
     color: pink.main,
     bg: pink.bg,
   },
   snacks: {
-    emoji: '🍿',
+    icon: 'Fastfood',
     name: 'Snacks',
     color: orange.main,
     bg: orange.bg,
   },
   household: {
-    emoji: '🧹',
+    icon: 'CleaningServices',
     name: 'Household',
     color: gray.main,
     bg: gray.bg,
   },
   'personal care': {
-    emoji: '🧴',
+    icon: 'Spa',
     name: 'Personal Care',
     color: gray.main,
     bg: gray.bg,
   },
   health: {
-    emoji: '💊',
+    icon: 'LocalPharmacy',
     name: 'Health',
     color: teal.main,
     bg: teal.bg,
   },
   grocery: {
-    emoji: '🛒',
+    icon: 'ShoppingCart',
     name: 'Grocery',
     color: teal.main,
     bg: teal.bg,
   },
   other: {
-    emoji: '📦',
+    icon: 'Category',
     name: 'Other',
     color: gray.main,
     bg: gray.bg,

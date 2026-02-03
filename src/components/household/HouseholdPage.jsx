@@ -33,6 +33,9 @@ import {
   Check,
   Edit,
   Close,
+  VpnKey,
+  Email,
+  Group,
 } from '@mui/icons-material';
 import { useHousehold } from '../../context/HouseholdContext';
 import { teal, orange, pink, amber, white, ui, gray, darkGray } from '../../theme/colors';
@@ -179,18 +182,20 @@ export default function HouseholdPage() {
     <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: teal.main,
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            👨‍👩‍👧‍👦 Household
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+            <People sx={{ fontSize: { xs: 28, md: 34 }, color: teal.main }} />
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: teal.main,
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              Household
+            </Typography>
+          </Box>
           <Typography
             variant="body1"
             sx={{
@@ -241,7 +246,7 @@ export default function HouseholdPage() {
                   }}
                   onClick={() => setMode('create')}
                 >
-                  <Box sx={{ fontSize: '56px', mb: 2 }}>🏠</Box>
+                  <Home sx={{ fontSize: '56px', mb: 2, color: teal.main }} />
                   <Typography
                     variant="h5"
                     sx={{
@@ -283,7 +288,7 @@ export default function HouseholdPage() {
                   }}
                   onClick={() => setMode('join')}
                 >
-                  <Box sx={{ fontSize: '56px', mb: 2 }}>🔑</Box>
+                  <VpnKey sx={{ fontSize: '56px', mb: 2, color: orange.main }} />
                   <Typography
                     variant="h5"
                     sx={{
@@ -326,10 +331,14 @@ export default function HouseholdPage() {
                     fontWeight: 600,
                     color: teal.darker,
                     mb: 3,
-                  }}
-                >
-                  🏠 Create Your Household
-                </Typography>
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
+                <Home sx={{ color: teal.main }} />
+                Create Your Household
+              </Typography>
                 <TextField
                   fullWidth
                   label="Household Name"
@@ -390,9 +399,13 @@ export default function HouseholdPage() {
                     fontWeight: 600,
                     color: orange.dark,
                     mb: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
                   }}
                 >
-                  🔑 Join a Household
+                  <VpnKey sx={{ color: orange.main }} />
+                  Join a Household
                 </Typography>
                 <TextField
                   fullWidth
@@ -454,7 +467,7 @@ export default function HouseholdPage() {
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <Box sx={{ fontSize: '48px' }}>🏠</Box>
+                <Home sx={{ fontSize: '48px', color: teal.main }} />
                 <Box sx={{ flex: 1 }}>
                   {isEditingName ? (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -541,9 +554,13 @@ export default function HouseholdPage() {
                     fontWeight: 600,
                     color: amber.dark,
                     mb: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.5,
                   }}
                 >
-                  📧 Invite Code - Share with family to join
+                  <Email fontSize="small" sx={{ color: amber.main }} />
+                  Invite Code - Share with family to join
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Typography
@@ -594,9 +611,13 @@ export default function HouseholdPage() {
                   fontWeight: 600,
                   color: teal.darker,
                   mb: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
                 }}
               >
-                👥 Household Members
+                <Group sx={{ color: teal.main }} />
+                Household Members
               </Typography>
               <List sx={{ bgcolor: gray.bg, borderRadius: '12px', overflow: 'hidden' }}>
                 {members.map((member, index) => (

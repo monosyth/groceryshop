@@ -12,6 +12,7 @@ import {
   CloudUpload,
   PhotoCamera,
   Close,
+  CameraAlt,
 } from '@mui/icons-material';
 import { formatFileSize } from '../../utils/formatters';
 import { ACCEPTED_IMAGE_TYPES } from '../../utils/constants';
@@ -138,19 +139,18 @@ export default function UploadForm({ onFileSelect, onCameraClick, loading, error
           }}
           onClick={handleButtonClick}
         >
-          <Box
+          <CameraAlt
             sx={{
               fontSize: '72px',
               mb: 2,
+              color: pink.main,
               animation: dragActive ? 'bounce 0.6s ease-in-out infinite' : 'none',
               '@keyframes bounce': {
                 '0%, 100%': { transform: 'translateY(0)' },
                 '50%': { transform: 'translateY(-12px)' },
               },
             }}
-          >
-            📸
-          </Box>
+          />
           <Typography
             variant="h5"
             sx={{

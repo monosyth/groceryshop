@@ -35,6 +35,8 @@ import {
   CalendarToday as CalendarIcon,
   CameraAlt,
   Upload as UploadIcon,
+  ShoppingBag,
+  Inventory2,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
@@ -494,17 +496,24 @@ export default function Dashboard() {
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1, flexWrap: 'wrap' }}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontFamily: 'Outfit, sans-serif',
-                fontWeight: 700,
-                color: teal.main,
-                fontSize: { xs: '28px', md: '34px' },
-              }}
-            >
-              {activeTab === 0 ? '🧾 Receipts' : '🛍️ All Items'}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              {activeTab === 0 ? (
+                <ReceiptIcon sx={{ fontSize: { xs: 28, md: 34 }, color: teal.main }} />
+              ) : (
+                <ShoppingBag sx={{ fontSize: { xs: 28, md: 34 }, color: teal.main }} />
+              )}
+              <Typography
+                variant="h3"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 700,
+                  color: teal.main,
+                  fontSize: { xs: '28px', md: '34px' },
+                }}
+              >
+                {activeTab === 0 ? 'Receipts' : 'All Items'}
+              </Typography>
+            </Box>
             {activeTab === 0 && (
               <Box sx={{ display: 'flex', gap: 1.5 }}>
                 <Button
@@ -616,8 +625,9 @@ export default function Dashboard() {
                   borderColor: activeTab === 0 ? teal.darker : gray.light,
                 },
               }}
+              startIcon={<ReceiptIcon fontSize="small" />}
             >
-              📋 Receipts
+              Receipts
             </Button>
             <Button
               onClick={(e) => handleTabChange(e, 1)}
@@ -640,8 +650,9 @@ export default function Dashboard() {
                   borderColor: activeTab === 1 ? teal.darker : gray.light,
                 },
               }}
+              startIcon={<ShoppingBag fontSize="small" />}
             >
-              🛍️ Items
+              Items
             </Button>
           </Box>
         )}
@@ -684,7 +695,7 @@ export default function Dashboard() {
               boxShadow: `6px 6px 0px ${blue.bg}`,
             }}
           >
-            <Box sx={{ fontSize: '80px', mb: 1 }}>🧾</Box>
+            <ReceiptIcon sx={{ fontSize: '80px', mb: 1, color: teal.light }} />
             <Typography
               variant="h5"
               sx={{

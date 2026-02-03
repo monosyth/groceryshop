@@ -10,6 +10,15 @@ import {
   CardContent,
   CircularProgress,
 } from '@mui/material';
+import {
+  Paid,
+  Receipt,
+  ShoppingCart,
+  Storefront,
+  BarChart,
+  TrendingUp,
+  LocalOffer,
+} from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
 import {
@@ -58,25 +67,25 @@ export default function AnalyticsPage() {
     {
       title: 'Total Spending',
       value: formatCurrency(stats.totalSpending),
-      emoji: '💰',
+      icon: Paid,
       colorScheme: cardColors[0], // Blue
     },
     {
       title: 'Average Receipt',
       value: formatCurrency(stats.averageReceipt),
-      emoji: '🧾',
+      icon: Receipt,
       colorScheme: cardColors[1], // Pink
     },
     {
       title: 'Total Receipts',
       value: stats.receiptCount,
-      emoji: '🛒',
+      icon: ShoppingCart,
       colorScheme: cardColors[2], // Green
     },
     {
       title: 'Unique Stores',
       value: stats.storeCount,
-      emoji: '🏪',
+      icon: Storefront,
       colorScheme: cardColors[3], // Yellow
     },
   ];
@@ -105,9 +114,13 @@ export default function AnalyticsPage() {
                 fontWeight: 700,
                 color: teal.main,
                 fontSize: { xs: '28px', md: '34px' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
               }}
             >
-              📊 Analytics
+              <BarChart sx={{ fontSize: '36px', color: teal.main }} />
+              Analytics
             </Typography>
             <Typography
               variant="body1"
@@ -130,7 +143,9 @@ export default function AnalyticsPage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>📈</Box>
+            <Box sx={{ fontSize: '56px', mb: 2, display: 'flex', justifyContent: 'center' }}>
+              <TrendingUp sx={{ fontSize: '56px', color: amber.main }} />
+            </Box>
             <Typography
               variant="h5"
               sx={{
@@ -172,9 +187,13 @@ export default function AnalyticsPage() {
               color: teal.main,
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
             }}
           >
-            📊 Analytics
+            <BarChart sx={{ fontSize: '36px', color: teal.main }} />
+            Analytics
           </Typography>
           <Typography
             variant="body1"
@@ -203,7 +222,9 @@ export default function AnalyticsPage() {
               >
                 <CardContent sx={{ p: 2.5 }}>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Box sx={{ fontSize: '36px', mb: 1 }}>{stat.emoji}</Box>
+                    <Box sx={{ mb: 1, display: 'flex', justifyContent: 'center' }}>
+                      <stat.icon sx={{ fontSize: '36px', color: stat.colorScheme.border }} />
+                    </Box>
                     <Typography
                       variant="h5"
                       sx={{
@@ -249,7 +270,7 @@ export default function AnalyticsPage() {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '20px' }}>📈</Box>
+                  <TrendingUp sx={{ fontSize: '24px', color: orange.dark }} />
                   <Typography
                     variant="h6"
                     sx={{
@@ -321,7 +342,7 @@ export default function AnalyticsPage() {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '20px' }}>🏷️</Box>
+                  <LocalOffer sx={{ fontSize: '24px', color: pink.dark }} />
                   <Typography
                     variant="h6"
                     sx={{
@@ -380,7 +401,7 @@ export default function AnalyticsPage() {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Box sx={{ fontSize: '20px' }}>🏪</Box>
+                  <Storefront sx={{ fontSize: '24px', color: teal.dark }} />
                   <Typography
                     variant="h6"
                     sx={{

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button } from '@mui/material';
-import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
+import { Storefront, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import { cardThemes, teal, ui } from '../../theme/colors';
 
@@ -90,7 +90,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
 
         {/* Store Name */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 1 }}>
-          <Box sx={{ fontSize: '18px' }}>🏪</Box>
+          <Storefront sx={{ fontSize: '20px', color: cardColor.border }} />
           <Typography
             variant="h6"
             component="h3"
@@ -108,7 +108,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
 
         {/* Date */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 1 }}>
-          <Box sx={{ fontSize: '14px' }}>📅</Box>
+          <CalendarToday sx={{ fontSize: '16px', color: 'text.secondary' }} />
           <Typography
             variant="body2"
             sx={{
@@ -151,7 +151,7 @@ export default function ReceiptCard({ receipt, onClick, onRetry }) {
               borderTop: `2px solid ${cardColor.border}`,
             }}
           >
-            <Box sx={{ fontSize: '20px' }}>💰</Box>
+            <AttachMoney sx={{ fontSize: '24px', color: cardColor.border }} />
             <Typography
               variant="h5"
               sx={{

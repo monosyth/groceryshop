@@ -27,6 +27,7 @@ import {
   Close,
   Link as LinkIcon,
   ShoppingCart,
+  MenuBook,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { collection, query, where, onSnapshot, deleteDoc, doc, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -169,18 +170,20 @@ export default function MyRecipesPage() {
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: teal.main,
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            📖 My Recipes
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+            <MenuBook sx={{ fontSize: '34px', color: teal.main }} />
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: teal.main,
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              My Recipes
+            </Typography>
+          </Box>
           <Typography
             variant="body1"
             sx={{
@@ -206,7 +209,7 @@ export default function MyRecipesPage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>📖</Box>
+            <MenuBook sx={{ fontSize: '56px', color: brown.main, mb: 2 }} />
             <Typography
               variant="h5"
               sx={{

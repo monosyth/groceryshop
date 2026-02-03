@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Box, Alert, Button, Stack } from '@mui/material';
-import { CheckCircle, Upload as UploadIcon } from '@mui/icons-material';
+import { CheckCircle, Upload as UploadIcon, CameraAlt, EmojiEvents, Lightbulb } from '@mui/icons-material';
 import UploadForm from './UploadForm';
 import ReceiptCamera from './ReceiptCamera';
 import { createReceipt } from '../../services/receiptService';
@@ -67,18 +67,20 @@ export default function UploadPage() {
     <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         <Box sx={{ pt: 4, pb: 3 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: teal.main,
-              fontSize: { xs: '28px', md: '34px' },
-              mb: 1,
-            }}
-          >
-            📸 Upload Receipt
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+            <CameraAlt sx={{ fontSize: '34px', color: teal.main }} />
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 700,
+                color: teal.main,
+                fontSize: { xs: '28px', md: '34px' },
+              }}
+            >
+              Upload Receipt
+            </Typography>
+          </Box>
           <Typography
             variant="body1"
             sx={{
@@ -104,7 +106,7 @@ export default function UploadPage() {
               textAlign: 'center',
             }}
           >
-            <Box sx={{ fontSize: '56px', mb: 2 }}>🎉</Box>
+            <EmojiEvents sx={{ fontSize: '56px', mb: 2, color: teal.main }} />
             <Typography
               variant="h5"
               sx={{
@@ -155,7 +157,7 @@ export default function UploadPage() {
               </Button>
               <Button
                 onClick={handleUploadAnother}
-                startIcon={<Box sx={{ fontSize: '16px' }}>📸</Box>}
+                startIcon={<CameraAlt />}
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 600,
@@ -195,7 +197,7 @@ export default function UploadPage() {
               gap: 2,
             }}
           >
-            <Box sx={{ fontSize: '24px' }}>💡</Box>
+            <Lightbulb sx={{ fontSize: '24px', color: orange.dark, flexShrink: 0 }} />
             <Typography
               variant="body2"
               sx={{
