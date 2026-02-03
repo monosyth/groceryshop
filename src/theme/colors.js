@@ -212,6 +212,103 @@ export const getCategoryInfo = (categoryName) => {
   return categories[categoryKey] || categories.other;
 };
 
+// ============================================
+// CENTRALIZED STYLE FUNCTIONS
+// Use these across all components for consistent branding
+// ============================================
+
+// Category Card Style - for card containers grouped by category
+export const getCategoryCardStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    bgcolor: info.bg,
+    borderRadius: '12px',
+    border: `2px solid ${info.color}`,
+    boxShadow: `3px 3px 0px ${info.color}40`,
+  };
+};
+
+// Category Header Style - for inline category headers/labels
+export const getCategoryHeaderStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1,
+    bgcolor: info.bg,
+    border: `2px solid ${info.color}`,
+    px: 1.5,
+    py: 0.75,
+    borderRadius: '8px',
+  };
+};
+
+// Category Title Text Style
+export const getCategoryTitleStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    fontFamily: 'Outfit, sans-serif',
+    fontWeight: 600,
+    color: info.color,
+    fontSize: '16px',
+  };
+};
+
+// Category Count Chip Style
+export const getCategoryChipStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    height: '20px',
+    fontSize: '11px',
+    fontFamily: 'Outfit, sans-serif',
+    bgcolor: `${info.color}20`,
+    color: info.color,
+    fontWeight: 600,
+  };
+};
+
+// Category Item Row Style - for items within a category
+export const getCategoryItemStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    bgcolor: white,
+    border: `1px solid ${info.color}25`,
+    borderRadius: '8px',
+    '&:hover': {
+      bgcolor: `${info.color}10`,
+    },
+  };
+};
+
+// Source Icon Style - for receipt/photo/manual icons
+export const getSourceIconStyle = (color) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 28,
+  height: 28,
+  borderRadius: '6px',
+  bgcolor: `${color}15`,
+  border: `1.5px solid ${color}`,
+});
+
+// Category Checkbox Style
+export const getCategoryCheckboxStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    color: info.color,
+    '&.Mui-checked': { color: info.color },
+  };
+};
+
+// Category Divider Style
+export const getCategoryDividerStyle = (category) => {
+  const info = getCategoryInfo(category);
+  return {
+    borderBottom: `1px solid ${info.color}20`,
+  };
+};
+
 // Export all color families for easy access
 export const colors = {
   teal,

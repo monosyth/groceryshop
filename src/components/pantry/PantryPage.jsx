@@ -53,7 +53,18 @@ import {
 import { db } from '../../firebase';
 import { analyzePantryPhoto, categorizeShoppingItem } from '../../services/geminiService';
 import { addPhotoItemsToPantry } from '../../services/pantryService';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, ui, white, cream } from '../../theme/colors';
+import { teal, gray, darkGray, ui, white } from '../../theme/colors';
+import {
+  categoryList,
+  getCategory,
+  getCategoryCardStyle,
+  getCategoryTitleStyle,
+  getCategoryChipStyle,
+  getCategoryItemStyle,
+  getSourceIconStyle,
+  getCategoryEditButtonStyle,
+  categoryOrder,
+} from '../../theme/categoryStyles';
 
 export default function PantryPage() {
   const { currentUser } = useAuth();
@@ -81,19 +92,8 @@ export default function PantryPage() {
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
-  // Categories for pantry items (same as shopping list)
-  const categories = [
-    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Grass sx={{ fontSize: 16, color: teal.main }} /> Produce</Box>, color: teal.main },
-    { value: 'meat', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><SetMeal sx={{ fontSize: 16, color: red.main }} /> Meat & Seafood</Box>, color: red.main },
-    { value: 'dairy', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><EggAlt sx={{ fontSize: 16, color: blue.main }} /> Dairy & Eggs</Box>, color: blue.main },
-    { value: 'bakery', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><BakeryDining sx={{ fontSize: 16, color: amber.main }} /> Bakery</Box>, color: amber.main },
-    { value: 'frozen', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AcUnit sx={{ fontSize: 16, color: cyan.main }} /> Frozen</Box>, color: cyan.main },
-    { value: 'pantry', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Kitchen sx={{ fontSize: 16, color: purple.main }} /> Pantry</Box>, color: purple.main },
-    { value: 'beverages', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalCafe sx={{ fontSize: 16, color: pink.main }} /> Beverages</Box>, color: pink.main },
-    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Fastfood sx={{ fontSize: 16, color: orange.main }} /> Snacks</Box>, color: orange.main },
-    { value: 'household', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CleaningServices sx={{ fontSize: 16, color: gray.main }} /> Household</Box>, color: gray.main },
-    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Inventory2 sx={{ fontSize: 16, color: gray.main }} /> Other</Box>, color: gray.main },
-  ];
+  // Categories imported from centralized config
+  const categories = categoryList;
 
   // Fetch pantry items
   useEffect(() => {
@@ -759,41 +759,20 @@ export default function PantryPage() {
               const categoryInfo = categories.find((c) => c.value === categoryValue);
               const items = groupedItems[categoryValue];
 
+              const IconComponent = categoryInfo.icon;
               return (
                 <Grid item xs={12} sm={6} md={6} lg={4} key={categoryValue}>
-                  <Card
-                    sx={{
-                      bgcolor: `${categoryInfo.color}08`,
-                      borderRadius: '12px',
-                      border: `2px solid ${categoryInfo.color}`,
-                      boxShadow: `3px 3px 0px ${categoryInfo.color}30`,
-                      height: '100%',
-                    }}
-                  >
+                  <Card sx={getCategoryCardStyle(categoryValue)}>
                     <CardContent sx={{ p: 2.5 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            fontWeight: 600,
-                            color: categoryInfo.color,
-                            fontSize: '16px',
-                          }}
-                        >
+                        <IconComponent sx={{ fontSize: 20, color: categoryInfo.color }} />
+                        <Typography variant="h6" sx={getCategoryTitleStyle(categoryValue)}>
                           {categoryInfo.label}
                         </Typography>
                         <Chip
                           label={items.length}
                           size="small"
-                          sx={{
-                            height: '20px',
-                            fontSize: '11px',
-                            fontFamily: 'Outfit, sans-serif',
-                            bgcolor: `${categoryInfo.color}15`,
-                            color: categoryInfo.color,
-                            fontWeight: 600,
-                          }}
+                          sx={getCategoryChipStyle(categoryValue)}
                         />
                       </Box>
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -804,17 +783,15 @@ export default function PantryPage() {
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'space-between',
-                              p: 1,
-                              borderRadius: '8px',
-                              bgcolor: white,
-                              border: `1px solid ${categoryInfo.color}25`,
-                              '&:hover': {
-                                bgcolor: `${categoryInfo.color}10`,
-                              },
+                              ...getCategoryItemStyle(categoryValue),
                             }}
                           >
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
-                              {getSourceIcon(item.source, categoryInfo.color)}
+                              <Box sx={getSourceIconStyle(categoryInfo.color)}>
+                                {item.source === 'receipt' ? <ReceiptIcon sx={{ fontSize: 16, color: categoryInfo.color }} /> :
+                                 item.source === 'photo' ? <CameraAlt sx={{ fontSize: 16, color: categoryInfo.color }} /> :
+                                 <EditIcon sx={{ fontSize: 16, color: categoryInfo.color }} />}
+                              </Box>
                               <Typography
                                 variant="body2"
                                 sx={{

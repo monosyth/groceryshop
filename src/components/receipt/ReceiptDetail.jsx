@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, ui } from '../../theme/colors';
+import { teal, gray, darkGray, cream, ui, red } from '../../theme/colors';
+import {
+  getCategory,
+  getCategoryHeaderStyle,
+  getCategoryTitleStyle,
+} from '../../theme/categoryStyles';
 import {
   Dialog,
   DialogTitle,
@@ -242,25 +247,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
     setEditedName('');
   };
 
-  // Category colors and icons (matching shopping list)
-  const getCategoryInfo = (category) => {
-    const categoryMap = {
-      produce: { icon: Grass, color: teal.main, bg: teal.bg },
-      meat: { icon: SetMeal, color: red.main, bg: red.bg },
-      dairy: { icon: EggAlt, color: blue.main, bg: blue.bg },
-      bakery: { icon: BakeryDining, color: amber.main, bg: amber.bg },
-      frozen: { icon: AcUnit, color: cyan.main, bg: cyan.bg },
-      pantry: { icon: Inventory2, color: purple.main, bg: purple.bg },
-      beverages: { icon: LocalCafe, color: pink.main, bg: pink.bg },
-      snacks: { icon: Fastfood, color: orange.main, bg: orange.bg },
-      household: { icon: CleaningServices, color: gray.main, bg: gray.bg },
-      'personal care': { icon: Spa, color: gray.main, bg: gray.bg },
-      health: { icon: LocalPharmacy, color: teal.main, bg: teal.bg },
-      grocery: { icon: ShoppingCart, color: teal.main, bg: teal.bg },
-      other: { icon: Category, color: gray.main, bg: gray.bg },
-    };
-    return categoryMap[category?.toLowerCase()] || categoryMap.other;
-  };
+  // Use centralized category styling from categoryStyles.js
 
   return (
     <Dialog
@@ -446,7 +433,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                 });
 
                 return Object.entries(groupedItems).map(([category, categoryItems], categoryIndex) => {
-                  const categoryInfo = getCategoryInfo(category);
+                  const categoryInfo = getCategory(category);
+                  const IconComponent = categoryInfo.icon;
                   return (
                     <Box key={category}>
                       {/* Category Header */}
@@ -459,37 +447,19 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                           }}
                         />
                       )}
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 0.5,
-                          mb: 1,
-                          bgcolor: `${categoryInfo.color}10`,
-                          border: `1px solid ${categoryInfo.color}`,
-                          px: 1,
-                          py: 0.5,
-                          borderRadius: '6px',
-                        }}
-                      >
-                        <categoryInfo.icon
-                          sx={{
-                            fontSize: '14px',
-                            color: categoryInfo.color,
-                          }}
-                        />
+                      <Box sx={{ ...getCategoryHeaderStyle(category), gap: 0.5, mb: 1, px: 1, py: 0.5, borderRadius: '6px' }}>
+                        <IconComponent sx={{ fontSize: '14px', color: categoryInfo.color }} />
                         <Typography
                           variant="caption"
                           sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            fontWeight: 700,
+                            ...getCategoryTitleStyle(category),
                             fontSize: '11px',
-                            color: categoryInfo.color,
+                            fontWeight: 700,
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
                           }}
                         >
-                          {category}
+                          {categoryInfo.label}
                         </Typography>
                       </Box>
 

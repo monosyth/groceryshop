@@ -48,7 +48,14 @@ import SearchBar from '../search/SearchBar';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { format } from 'date-fns';
-import { getCategoryInfo, teal, blue, darkGray, brown, gray, amber, pink, ui, white, cream } from '../../theme/colors';
+import { teal, darkGray, brown, gray, ui, white, cream } from '../../theme/colors';
+import {
+  getCategory,
+  getCategoryHeaderStyle,
+  getCategoryTitleStyle,
+  getCategoryChipStyle,
+  categoryOrder,
+} from '../../theme/categoryStyles';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -872,7 +879,7 @@ export default function Dashboard() {
                 });
 
                 return Object.entries(groupedItems).map(([category, categoryItems], categoryIndex) => {
-                  const categoryInfo = getCategoryInfo(category);
+                  const categoryInfo = getCategory(category);
                   return (
                     <Box key={category}>
                       {/* Category Header */}
@@ -885,42 +892,21 @@ export default function Dashboard() {
                           }}
                         />
                       )}
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1,
-                          mb: 1.5,
-                          bgcolor: `${categoryInfo.color}10`,
-                          border: `1.5px solid ${categoryInfo.color}`,
-                          px: 1.5,
-                          py: 0.75,
-                          borderRadius: '8px',
-                        }}
-                      >
+                      <Box sx={{ ...getCategoryHeaderStyle(category), mb: 1.5 }}>
                         <Typography
                           variant="subtitle2"
                           sx={{
-                            fontFamily: 'Outfit, sans-serif',
-                            fontWeight: 700,
+                            ...getCategoryTitleStyle(category),
                             fontSize: '13px',
-                            color: categoryInfo.color,
-                            textTransform: 'capitalize',
+                            fontWeight: 700,
                           }}
                         >
-                          {categoryInfo.name}
+                          {categoryInfo.label}
                         </Typography>
                         <Chip
                           label={`${categoryItems.length}`}
                           size="small"
-                          sx={{
-                            height: '20px',
-                            fontSize: '11px',
-                            fontFamily: 'Outfit, sans-serif',
-                            bgcolor: `${categoryInfo.color}20`,
-                            color: categoryInfo.color,
-                            fontWeight: 600,
-                          }}
+                          sx={getCategoryChipStyle(category)}
                         />
                       </Box>
 

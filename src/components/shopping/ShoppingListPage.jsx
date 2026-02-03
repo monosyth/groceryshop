@@ -57,7 +57,17 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, brown, darkGray, ui, white } from '../../theme/colors';
+import { teal, gray, brown, darkGray, ui, white, amber } from '../../theme/colors';
+import {
+  categoryList,
+  getCategory,
+  getCategoryCardStyle,
+  getCategoryTitleStyle,
+  getCategoryChipStyle,
+  getCategoryCheckboxStyle,
+  getCategoryDividerStyle,
+  categoryOrder,
+} from '../../theme/categoryStyles';
 
 export default function ShoppingListPage() {
   const { currentUser } = useAuth();
@@ -75,19 +85,8 @@ export default function ShoppingListPage() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [sortBy, setSortBy] = useState('location'); // 'default', 'store', 'location' - default to category view
 
-  // Categories for shopping items
-  const categories = [
-    { value: 'produce', label: 'Produce', icon: Grass, color: teal.main },
-    { value: 'meat', label: 'Meat & Seafood', icon: SetMeal, color: red.main },
-    { value: 'dairy', label: 'Dairy & Eggs', icon: EggAlt, color: blue.main },
-    { value: 'bakery', label: 'Bakery', icon: BakeryDining, color: amber.main },
-    { value: 'frozen', label: 'Frozen', icon: AcUnit, color: cyan.main },
-    { value: 'pantry', label: 'Pantry', icon: Inventory2, color: purple.main },
-    { value: 'beverages', label: 'Beverages', icon: LocalCafe, color: pink.main },
-    { value: 'snacks', label: 'Snacks', icon: Fastfood, color: orange.main },
-    { value: 'household', label: 'Household', icon: CleaningServices, color: gray.main },
-    { value: 'other', label: 'Other', icon: Inventory2, color: gray.main },
-  ];
+  // Categories imported from centralized config
+  const categories = categoryList;
 
   // Filter receipts with store info for store suggestions
   const receipts = allReceipts.filter((receipt) => receipt.storeInfo?.name);
@@ -1405,46 +1404,20 @@ export default function ShoppingListPage() {
                   .map(([category, items]) => {
                     const categoryInfo = categories.find((c) => c.value === category);
                     if (!categoryInfo) return null;
+                    const IconComponent = categoryInfo.icon;
 
                     return (
-                      <Card
-                        key={category}
-                        sx={{
-                          bgcolor: `${categoryInfo.color}08`,
-                          borderRadius: '12px',
-                          border: `2px solid ${categoryInfo.color}`,
-                          boxShadow: `3px 3px 0px ${categoryInfo.color}30`,
-                          mb: 2,
-                        }}
-                      >
+                      <Card key={category} sx={{ ...getCategoryCardStyle(category), mb: 2 }}>
                         <CardContent sx={{ p: 2.5 }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                            {categoryInfo.icon && (function() {
-                              const IconComponent = categoryInfo.icon;
-                              return <IconComponent sx={{ fontSize: 20, color: categoryInfo.color }} />;
-                            })()}
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontFamily: 'Outfit, sans-serif',
-                                fontWeight: 600,
-                                color: categoryInfo.color,
-                                fontSize: '15px',
-                              }}
-                            >
+                            {IconComponent && <IconComponent sx={{ fontSize: 20, color: categoryInfo.color }} />}
+                            <Typography variant="h6" sx={getCategoryTitleStyle(category)}>
                               {categoryInfo.label}
                             </Typography>
                             <Chip
                               label={`${items.length} item${items.length !== 1 ? 's' : ''}`}
                               size="small"
-                              sx={{
-                                height: '20px',
-                                fontSize: '11px',
-                                fontFamily: 'Outfit, sans-serif',
-                                bgcolor: `${categoryInfo.color}20`,
-                                color: categoryInfo.color,
-                                fontWeight: 600,
-                              }}
+                              sx={getCategoryChipStyle(category)}
                             />
                           </Box>
 
@@ -1456,20 +1429,14 @@ export default function ShoppingListPage() {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 py: 0.75,
-                                borderBottom: `1px solid ${categoryInfo.color}20`,
-                                '&:last-child': { borderBottom: 'none' },
+                                ...getCategoryDividerStyle(category),
                               }}
                             >
                               <Box sx={{ display: 'flex', alignItems: 'start', flex: 1 }}>
                                 <Checkbox
                                   checked={item.checked}
                                   onChange={() => handleToggleChecked(item.id, item.checked)}
-                                  sx={{
-                                    color: categoryInfo.color,
-                                    '&.Mui-checked': { color: categoryInfo.color },
-                                    py: 0.5,
-                                    mt: -0.5,
-                                  }}
+                                  sx={{ ...getCategoryCheckboxStyle(category), mt: -0.5 }}
                                 />
                                 <Box sx={{ flex: 1 }}>
                                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
