@@ -27,13 +27,13 @@ import {
   Restaurant,
   ViewList,
   LocationOn,
-  LocalFlorist,
-  Restaurant as MeatIcon,
-  LocalDining,
+  Grass,
+  SetMeal,
+  EggAlt,
   BakeryDining,
   AcUnit,
   Inventory2,
-  LocalBar,
+  LocalCafe,
   Fastfood,
   CleaningServices,
   AutoAwesome,
@@ -77,16 +77,16 @@ export default function ShoppingListPage() {
 
   // Categories for shopping items
   const categories = [
-    { value: 'produce', label: 'Produce', icon: LocalFlorist, color: teal.main },
-    { value: 'meat', label: 'Meat & Seafood', icon: MeatIcon, color: red.main },
-    { value: 'dairy', label: 'Dairy & Eggs', icon: LocalDining, color: blue.main },
+    { value: 'produce', label: 'Produce', icon: Grass, color: teal.main },
+    { value: 'meat', label: 'Meat & Seafood', icon: SetMeal, color: red.main },
+    { value: 'dairy', label: 'Dairy & Eggs', icon: EggAlt, color: blue.main },
     { value: 'bakery', label: 'Bakery', icon: BakeryDining, color: amber.main },
     { value: 'frozen', label: 'Frozen', icon: AcUnit, color: cyan.main },
     { value: 'pantry', label: 'Pantry', icon: Inventory2, color: purple.main },
-    { value: 'beverages', label: 'Beverages', icon: LocalBar, color: pink.main },
+    { value: 'beverages', label: 'Beverages', icon: LocalCafe, color: pink.main },
     { value: 'snacks', label: 'Snacks', icon: Fastfood, color: orange.main },
     { value: 'household', label: 'Household', icon: CleaningServices, color: gray.main },
-    { value: 'other', label: 'Other', icon: Inventory2, color: darkGray.light },
+    { value: 'other', label: 'Other', icon: Inventory2, color: gray.main },
   ];
 
   // Filter receipts with store info for store suggestions

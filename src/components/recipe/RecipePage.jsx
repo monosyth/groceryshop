@@ -21,6 +21,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  InputAdornment,
 } from '@mui/material';
 import {
   Restaurant,
@@ -33,6 +34,7 @@ import {
   Save,
   ReceiptLong,
   Edit as EditIcon,
+  Search,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
@@ -55,6 +57,7 @@ export default function RecipePage() {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [checkedIngredients, setCheckedIngredients] = useState({}); // Track checked ingredients per recipe
   const [recipeText, setRecipeText] = useState('');
+  const [ingredientSearch, setIngredientSearch] = useState('');
   const [importingRecipe, setImportingRecipe] = useState(false);
   const [importedRecipe, setImportedRecipe] = useState(null);
   const [importedRecipeIngredients, setImportedRecipeIngredients] = useState([]);
@@ -729,6 +732,44 @@ export default function RecipePage() {
                       </Button>
                     </Box>
 
+                    {/* Search input */}
+                    <TextField
+                      size="small"
+                      placeholder="Search ingredients..."
+                      value={ingredientSearch}
+                      onChange={(e) => setIngredientSearch(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Search sx={{ color: teal.main, fontSize: 18 }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{
+                        mb: 1.5,
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': {
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '13px',
+                          bgcolor: white,
+                          borderRadius: '8px',
+                          '& fieldset': {
+                            borderColor: teal.light,
+                          },
+                          '&:hover fieldset': {
+                            borderColor: teal.main,
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: teal.main,
+                          },
+                        },
+                        '& .MuiInputBase-input::placeholder': {
+                          color: gray.main,
+                          opacity: 1,
+                        },
+                      }}
+                    />
+
                     <Box sx={{ maxHeight: '300px', overflowY: 'auto', pr: 1 }}>
                       {allIngredients.length === 0 ? (
                         <Typography
@@ -745,25 +786,29 @@ export default function RecipePage() {
                         </Typography>
                       ) : (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-                          {allIngredients.map((ingredient, idx) => (
-                            <Chip
-                              key={idx}
-                              label={ingredient}
-                              onClick={() => handleIngredientSelect(ingredient)}
-                              sx={{
-                                bgcolor: selectedIngredients.includes(ingredient) ? teal.main : teal.bg,
-                                color: selectedIngredients.includes(ingredient) ? white : teal.dark,
-                                border: `1px solid ${teal.main}`,
-                                fontFamily: 'Outfit, sans-serif',
-                                fontSize: '12px',
-                                fontWeight: selectedIngredients.includes(ingredient) ? 600 : 400,
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  bgcolor: selectedIngredients.includes(ingredient) ? teal.dark : teal.light,
-                                },
-                              }}
-                            />
-                          ))}
+                          {allIngredients
+                            .filter((ingredient) =>
+                              ingredient.toLowerCase().includes(ingredientSearch.toLowerCase())
+                            )
+                            .map((ingredient, idx) => (
+                              <Chip
+                                key={idx}
+                                label={ingredient}
+                                onClick={() => handleIngredientSelect(ingredient)}
+                                sx={{
+                                  bgcolor: selectedIngredients.includes(ingredient) ? teal.main : teal.bg,
+                                  color: selectedIngredients.includes(ingredient) ? white : teal.dark,
+                                  border: `1px solid ${teal.main}`,
+                                  fontFamily: 'Outfit, sans-serif',
+                                  fontSize: '12px',
+                                  fontWeight: selectedIngredients.includes(ingredient) ? 600 : 400,
+                                  cursor: 'pointer',
+                                  '&:hover': {
+                                    bgcolor: selectedIngredients.includes(ingredient) ? teal.dark : teal.light,
+                                  },
+                                }}
+                              />
+                            ))}
                         </Box>
                       )}
                     </Box>

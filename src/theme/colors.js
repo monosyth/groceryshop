@@ -119,19 +119,19 @@ export const ui = {
 // Components should map these to Material UI icons
 export const categories = {
   produce: {
-    icon: 'LocalFlorist',
+    icon: 'Grass',
     name: 'Produce',
     color: teal.main,
     bg: teal.bg,
   },
   meat: {
-    icon: 'Restaurant',
+    icon: 'SetMeal',
     name: 'Meat & Seafood',
     color: red.main,
     bg: red.bg,
   },
   dairy: {
-    icon: 'LocalDining',
+    icon: 'EggAlt',
     name: 'Dairy & Eggs',
     color: blue.main,
     bg: blue.bg,
@@ -155,7 +155,7 @@ export const categories = {
     bg: purple.bg,
   },
   beverages: {
-    icon: 'LocalBar',
+    icon: 'LocalCafe',
     name: 'Beverages',
     color: pink.main,
     bg: pink.bg,

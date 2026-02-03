@@ -27,11 +27,12 @@ import {
   Edit as EditIcon,
   Upload,
   Undo,
-  LocalFlorist,
-  LocalDining,
+  Grass,
+  SetMeal,
+  EggAlt,
   BakeryDining,
   AcUnit,
-  LocalBar,
+  LocalCafe,
   Fastfood,
   CleaningServices,
   Inventory2,
@@ -82,16 +83,16 @@ export default function PantryPage() {
 
   // Categories for pantry items (same as shopping list)
   const categories = [
-    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalFlorist sx={{ fontSize: 16 }} /> Produce</Box>, color: teal.main },
-    { value: 'meat', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Meat & Seafood</Box>, color: red.main },
-    { value: 'dairy', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalDining sx={{ fontSize: 16 }} /> Dairy & Eggs</Box>, color: blue.main },
-    { value: 'bakery', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><BakeryDining sx={{ fontSize: 16 }} /> Bakery</Box>, color: amber.main },
-    { value: 'frozen', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AcUnit sx={{ fontSize: 16 }} /> Frozen</Box>, color: cyan.main },
-    { value: 'pantry', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Kitchen sx={{ fontSize: 16 }} /> Pantry</Box>, color: purple.main },
-    { value: 'beverages', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalBar sx={{ fontSize: 16 }} /> Beverages</Box>, color: pink.main },
-    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Fastfood sx={{ fontSize: 16 }} /> Snacks</Box>, color: orange.main },
-    { value: 'household', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CleaningServices sx={{ fontSize: 16 }} /> Household</Box>, color: gray.main },
-    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Inventory2 sx={{ fontSize: 16 }} /> Other</Box>, color: darkGray.light },
+    { value: 'produce', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Grass sx={{ fontSize: 16, color: teal.main }} /> Produce</Box>, color: teal.main },
+    { value: 'meat', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><SetMeal sx={{ fontSize: 16, color: red.main }} /> Meat & Seafood</Box>, color: red.main },
+    { value: 'dairy', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><EggAlt sx={{ fontSize: 16, color: blue.main }} /> Dairy & Eggs</Box>, color: blue.main },
+    { value: 'bakery', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><BakeryDining sx={{ fontSize: 16, color: amber.main }} /> Bakery</Box>, color: amber.main },
+    { value: 'frozen', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AcUnit sx={{ fontSize: 16, color: cyan.main }} /> Frozen</Box>, color: cyan.main },
+    { value: 'pantry', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Kitchen sx={{ fontSize: 16, color: purple.main }} /> Pantry</Box>, color: purple.main },
+    { value: 'beverages', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><LocalCafe sx={{ fontSize: 16, color: pink.main }} /> Beverages</Box>, color: pink.main },
+    { value: 'snacks', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Fastfood sx={{ fontSize: 16, color: orange.main }} /> Snacks</Box>, color: orange.main },
+    { value: 'household', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CleaningServices sx={{ fontSize: 16, color: gray.main }} /> Household</Box>, color: gray.main },
+    { value: 'other', label: <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><Inventory2 sx={{ fontSize: 16, color: gray.main }} /> Other</Box>, color: gray.main },
   ];
 
   // Fetch pantry items
