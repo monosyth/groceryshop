@@ -32,7 +32,7 @@ import {
   People,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
-import { teal, cream, pink, brown, red, darkGray } from '../../theme/colors';
+import { teal, pink, red } from '../../theme/colors';
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -138,8 +138,8 @@ export default function Navigation() {
         position="sticky"
         elevation={0}
         sx={{
-          background: `linear-gradient(135deg, ${teal.bg} 0%, ${teal.bgAlt} 100%)`,
-          borderBottom: `2px solid ${teal.main}`,
+          background: `linear-gradient(135deg, ${teal.darker} 0%, ${teal.dark} 100%)`,
+          borderBottom: 'none',
           borderRadius: 0,
         }}
       >
@@ -151,7 +151,7 @@ export default function Navigation() {
               onClick={handleDrawerToggle}
               sx={{
                 mr: 2,
-                color: teal.main,
+                color: 'white',
               }}
             >
               <MenuIcon />
@@ -176,15 +176,16 @@ export default function Navigation() {
                 width: 42,
                 height: 42,
                 borderRadius: '10px',
-                background: `linear-gradient(135deg, ${teal.main} 0%, ${teal.darker} 100%)`,
+                background: 'rgba(255, 255, 255, 0.15)',
+                border: '2px solid rgba(255, 255, 255, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transform: 'rotate(-3deg)',
-                boxShadow: `0 2px 10px rgba(20, 184, 166, 0.25)`,
                 transition: 'transform 0.2s ease',
                 '&:hover': {
                   transform: 'rotate(-3deg) scale(1.05)',
+                  background: 'rgba(255, 255, 255, 0.2)',
                 },
               }}
             >
@@ -194,7 +195,7 @@ export default function Navigation() {
               sx={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: teal.main,
+                color: 'white',
                 fontFamily: 'Outfit, sans-serif',
                 letterSpacing: '-0.02em',
               }}
@@ -221,15 +222,16 @@ export default function Navigation() {
                       py: 0.5,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: isActive ? 'white' : brown.main,
-                      bgcolor: isActive ? teal.main : 'transparent',
-                      border: isActive ? `2px solid ${teal.darker}` : '2px solid transparent',
+                      color: 'white',
+                      bgcolor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                      border: isActive ? '2px solid rgba(255, 255, 255, 0.3)' : '2px solid transparent',
                       minWidth: 'auto',
+                      opacity: isActive ? 1 : 0.8,
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? teal.dark : `rgba(20, 184, 166, 0.12)`,
-                        border: isActive ? `2px solid ${teal.darker}` : `2px solid ${teal.light}`,
-                        color: isActive ? 'white' : teal.darker,
+                        bgcolor: 'rgba(255, 255, 255, 0.15)',
+                        border: '2px solid rgba(255, 255, 255, 0.2)',
+                        opacity: 1,
                       },
                     }}
                   >
@@ -251,7 +253,7 @@ export default function Navigation() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 600,
-                  color: brown.dark,
+                  color: 'rgba(255, 255, 255, 0.9)',
                 }}
               >
                 {currentUser.displayName}
@@ -273,7 +275,7 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    border: `2px solid ${teal.main}`,
+                    border: '2px solid rgba(255, 255, 255, 0.5)',
                   }}
                 />
               ) : (
@@ -281,10 +283,11 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    bgcolor: pink.main,
-                    border: `2px solid ${pink.dark}`,
+                    bgcolor: 'rgba(255, 255, 255, 0.2)',
+                    border: '2px solid rgba(255, 255, 255, 0.4)',
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
+                    color: 'white',
                   }}
                 >
                   {currentUser?.displayName?.charAt(0) || 'U'}
@@ -325,7 +328,7 @@ export default function Navigation() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: teal.darker,
+                color: teal.dark,
                 '&:hover': {
                   bgcolor: `rgba(20, 184, 166, 0.1)`,
                 },

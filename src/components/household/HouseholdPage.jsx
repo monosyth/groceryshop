@@ -35,7 +35,7 @@ import {
   Close,
 } from '@mui/icons-material';
 import { useHousehold } from '../../context/HouseholdContext';
-import { teal, orange, pink, amber, brown, white, ui, gray, darkGray } from '../../theme/colors';
+import { teal, orange, pink, amber, white, ui, gray, darkGray } from '../../theme/colors';
 
 export default function HouseholdPage() {
   const {
@@ -196,7 +196,7 @@ export default function HouseholdPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 400,
-              color: brown.main,
+              color: darkGray.main,
             }}
           >
             {hasHousehold
@@ -551,7 +551,7 @@ export default function HouseholdPage() {
                     sx={{
                       fontFamily: 'monospace',
                       fontWeight: 700,
-                      color: brown.main,
+                      color: teal.darker,
                       letterSpacing: '6px',
                       flex: 1,
                     }}

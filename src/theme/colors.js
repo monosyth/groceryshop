@@ -91,11 +91,12 @@ export const darkGray = {
   light: '#9CA3AF',
 };
 
+// Brown - now mapped to neutral grays (no brown in the app)
 export const brown = {
-  dark: '#92400E',
-  main: '#78350F',    // Text accents
-  light: '#B45309',
-  bg: '#FFFBEB',      // Cream background
+  dark: '#374151',    // Gray-700
+  main: '#4B5563',    // Gray-600 (neutral text)
+  light: '#6B7280',   // Gray-500
+  bg: '#F9FAFB',      // Gray-50 background
 };
 
 // UI Colors
