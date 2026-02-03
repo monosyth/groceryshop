@@ -32,7 +32,7 @@ import {
   People,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
-import { teal, cream, pink, brown, red } from '../../theme/colors';
+import { teal, cream, pink, brown, red, darkGray } from '../../theme/colors';
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -221,14 +221,15 @@ export default function Navigation() {
                       py: 0.5,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: isActive ? 'white' : teal.main,
+                      color: isActive ? 'white' : brown.main,
                       bgcolor: isActive ? teal.main : 'transparent',
-                      border: '1px solid transparent',
+                      border: isActive ? `2px solid ${teal.darker}` : '2px solid transparent',
                       minWidth: 'auto',
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? teal.dark : `rgba(20, 184, 166, 0.08)`,
-                        border: isActive ? `1px solid ${teal.darker}` : `1px solid rgba(20, 184, 166, 0.2)`,
+                        bgcolor: isActive ? teal.dark : `rgba(20, 184, 166, 0.12)`,
+                        border: isActive ? `2px solid ${teal.darker}` : `2px solid ${teal.light}`,
+                        color: isActive ? 'white' : teal.darker,
                       },
                     }}
                   >
