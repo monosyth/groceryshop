@@ -117,10 +117,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Handle redirect result from Google sign-in
+  // Combined auth initialization - handles both redirect result and auth state
   useEffect(() => {
-    const handleRedirectResult = async () => {
+    let isMounted = true;
+
+    const initializeAuth = async () => {
       try {
+        // First, check for redirect result (from Google sign-in return)
         const result = await getRedirectResult(auth);
         if (result?.user) {
           // Create user profile in Firestore if doesn't exist
@@ -128,36 +131,52 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('Redirect sign-in error:', error);
-        setError(error.message);
+        if (isMounted) {
+          setError(error.message);
+        }
       }
+
+      // Set up auth state listener (this handles the actual user state)
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (!isMounted) return;
+
+        if (user) {
+          // Fetch user profile from Firestore
+          try {
+            const userRef = doc(db, 'users', user.uid);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+              setCurrentUser({
+                ...user,
+                preferences: userSnap.data().preferences || {},
+              });
+            } else {
+              // Profile doesn't exist yet - create it
+              await createUserProfile(user);
+              setCurrentUser(user);
+            }
+          } catch (err) {
+            console.error('Error fetching user profile:', err);
+            setCurrentUser(user);
+          }
+        } else {
+          setCurrentUser(null);
+        }
+        setLoading(false);
+      });
+
+      return unsubscribe;
     };
 
-    handleRedirectResult();
-  }, []);
+    const unsubscribePromise = initializeAuth();
 
-  // Listen for auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Fetch user profile from Firestore
-        const userRef = doc(db, 'users', user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-          setCurrentUser({
-            ...user,
-            preferences: userSnap.data().preferences || {},
-          });
-        } else {
-          setCurrentUser(user);
-        }
-      } else {
-        setCurrentUser(null);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    return () => {
+      isMounted = false;
+      unsubscribePromise.then((unsubscribe) => {
+        if (unsubscribe) unsubscribe();
+      });
+    };
   }, []);
 
   const value = {
