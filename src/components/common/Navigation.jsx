@@ -66,12 +66,12 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { label: 'Receipts', path: '/dashboard', icon: <Dashboard />, emoji: '🧾' },
-    { label: 'Pantry', path: '/pantry', icon: <Kitchen />, emoji: '🥫' },
-    { label: 'Recipes', path: '/recipes', icon: <Restaurant />, emoji: '👨‍🍳' },
-    { label: 'My Recipes', path: '/my-recipes', icon: <MenuBook />, emoji: '📖' },
-    { label: 'Shopping List', path: '/shopping-list', icon: <ListIcon />, emoji: '🛒' },
-    { label: 'Analytics', path: '/analytics', icon: <BarChart />, emoji: '📊' },
+    { label: 'Receipts', path: '/dashboard', icon: <Dashboard fontSize="small" /> },
+    { label: 'Pantry', path: '/pantry', icon: <Kitchen fontSize="small" /> },
+    { label: 'Recipes', path: '/recipes', icon: <Restaurant fontSize="small" /> },
+    { label: 'My Recipes', path: '/my-recipes', icon: <MenuBook fontSize="small" /> },
+    { label: 'Shopping List', path: '/shopping-list', icon: <ListIcon fontSize="small" /> },
+    { label: 'Analytics', path: '/analytics', icon: <BarChart fontSize="small" /> },
   ];
 
   // Mobile drawer
@@ -115,8 +115,8 @@ export default function Navigation() {
               },
             }}
           >
-            <ListItemIcon sx={{ minWidth: '36px' }}>
-              <Box sx={{ fontSize: '20px' }}>{item.emoji}</Box>
+            <ListItemIcon sx={{ minWidth: '36px', color: location.pathname === item.path ? teal.main : 'inherit' }}>
+              {item.icon}
             </ListItemIcon>
             <ListItemText
               primary={item.label}
@@ -231,8 +231,8 @@ export default function Navigation() {
                       },
                     }}
                   >
-                    <Box component="span" sx={{ fontSize: '15px', mr: 0.5 }}>
-                      {item.emoji}
+                    <Box component="span" sx={{ display: 'flex', alignItems: 'center', mr: 0.75 }}>
+                      {item.icon}
                     </Box>
                     {item.label}
                   </Button>
