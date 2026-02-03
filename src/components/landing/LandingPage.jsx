@@ -35,8 +35,8 @@ export default function LandingPage() {
       setError('');
       setLoading(true);
       await signInWithGoogle();
-      // With redirect auth, page will redirect to Google
-      // When it returns, currentUser will be set and we'll redirect to dashboard
+      // With popup auth, we get the result directly - navigate immediately
+      navigate('/dashboard', { replace: true });
     } catch (error) {
       console.error('Google sign-in error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
@@ -46,7 +46,6 @@ export default function LandingPage() {
       }
       setLoading(false);
     }
-    // Don't setLoading(false) on success - page redirects to Google
   };
 
   return (

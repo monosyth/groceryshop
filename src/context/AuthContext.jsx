@@ -5,8 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -89,14 +88,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Sign in with Google (using redirect)
+  // Sign in with Google (using popup - simpler and more reliable)
   const signInWithGoogle = async () => {
     try {
       setError(null);
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+
+      // Create user profile if needed
+      await createUserProfile(result.user);
+
+      return result.user;
     } catch (error) {
-      setError(error.message);
+      // Don't set error for user-cancelled popups
+      if (error.code !== 'auth/popup-closed-by-user') {
+        setError(error.message);
+      }
       throw error;
     }
   };
@@ -112,21 +119,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Handle redirect result (runs once on mount)
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then(async (result) => {
-        if (result?.user) {
-          await createUserProfile(result.user);
-        }
-      })
-      .catch((error) => {
-        console.error('Redirect sign-in error:', error);
-        setError(error.message);
-      });
-  }, []);
-
-  // Listen for auth state changes (primary auth state management)
+  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
