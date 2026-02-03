@@ -1,14 +1,15 @@
 import { Box, Card, CardContent, Skeleton, Grid } from '@mui/material';
+import { ui, white } from '../../theme/colors';
 
 // Receipt Card Skeleton
 export function ReceiptCardSkeleton() {
   return (
     <Card
       sx={{
-        bgcolor: 'white',
+        bgcolor: white,
         borderRadius: '12px',
-        border: '2px solid #E5E7EB',
-        boxShadow: '3px 3px 0px #E5E7EB',
+        border: `2px solid ${ui.border}`,
+        boxShadow: `3px 3px 0px ${ui.border}`,
       }}
     >
       <CardContent sx={{ p: 2.5 }}>
@@ -38,7 +39,7 @@ export function ListItemSkeleton() {
         alignItems: 'center',
         gap: 1.5,
         py: 1.5,
-        borderBottom: '1px solid #F3F4F6',
+        borderBottom: `1px solid ${ui.borderLight}`,
       }}
     >
       <Skeleton variant="circular" width={40} height={40} />
@@ -59,7 +60,7 @@ export function ShoppingListItemSkeleton() {
         display: 'flex',
         alignItems: 'center',
         py: 0.75,
-        borderBottom: '1px solid #F3F4F6',
+        borderBottom: `1px solid ${ui.borderLight}`,
       }}
     >
       <Skeleton variant="circular" width={42} height={42} sx={{ mr: 1.5 }} />
@@ -73,10 +74,10 @@ export function RecipeCardSkeleton() {
   return (
     <Card
       sx={{
-        bgcolor: 'white',
+        bgcolor: white,
         borderRadius: '12px',
-        border: '2px solid #E5E7EB',
-        boxShadow: '3px 3px 0px #E5E7EB',
+        border: `2px solid ${ui.border}`,
+        boxShadow: `3px 3px 0px ${ui.border}`,
       }}
     >
       <CardContent sx={{ p: 2.5 }}>
@@ -104,7 +105,7 @@ export function TableRowSkeleton({ columns = 4 }) {
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gap: 2,
         py: 2,
-        borderBottom: '1px solid #E5E7EB',
+        borderBottom: `1px solid ${ui.border}`,
       }}
     >
       {Array.from({ length: columns }).map((_, index) => (

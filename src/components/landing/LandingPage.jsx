@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Google as GoogleIcon, ShoppingCart } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
+import { teal, pink, rose, orange, amber, brown, white } from '../../theme/colors';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export default function LandingPage() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%)',
+        background: `linear-gradient(135deg, ${amber.bg} 0%, ${amber.light} 50%, ${amber.light} 100%)`,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -166,12 +167,12 @@ export default function LandingPage() {
                   width: 50,
                   height: 50,
                   borderRadius: '15px',
-                  background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
+                  background: `linear-gradient(135deg, ${teal.main} 0%, ${teal.dark} 100%)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   transform: 'rotate(-5deg)',
-                  boxShadow: '0 4px 20px rgba(16, 185, 129, 0.4)',
+                  boxShadow: `0 4px 20px rgba(20, 184, 166, 0.4)`,
                 }}
               >
                 <ShoppingCart sx={{ color: 'white', fontSize: '28px' }} />
@@ -180,7 +181,7 @@ export default function LandingPage() {
                 sx={{
                   fontSize: '28px',
                   fontWeight: 900,
-                  color: '#14B8A6',
+                  color: teal.main,
                   letterSpacing: '-0.02em',
                 }}
               >
@@ -192,8 +193,8 @@ export default function LandingPage() {
               disabled={loading}
               startIcon={<GoogleIcon />}
               sx={{
-                bgcolor: '#FFFFFF',
-                color: '#14B8A6',
+                bgcolor: white,
+                color: teal.main,
                 fontWeight: 700,
                 px: 3,
                 py: 1.2,
@@ -201,9 +202,9 @@ export default function LandingPage() {
                 fontSize: '15px',
                 textTransform: 'none',
                 boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-                border: '2px solid #14B8A6',
+                border: `2px solid ${teal.main}`,
                 '&:hover': {
-                  bgcolor: '#F0FDFA',
+                  bgcolor: teal.bg,
                   transform: 'scale(1.05)',
                   boxShadow: '0 6px 20px rgba(0,0,0,0.15)',
                 },
@@ -226,7 +227,7 @@ export default function LandingPage() {
               fontWeight: 600,
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
-              color: '#B45309',
+              color: amber.dark,
               mb: 2,
             }}
           >
@@ -238,7 +239,7 @@ export default function LandingPage() {
               fontSize: { xs: '48px', sm: '60px', md: '72px' },
               fontWeight: 900,
               lineHeight: 1.1,
-              color: '#14B8A6',
+              color: teal.main,
               letterSpacing: '-0.03em',
               textShadow: '4px 4px 0px rgba(0,0,0,0.1)',
               mb: 2,
@@ -248,7 +249,7 @@ export default function LandingPage() {
             <Box
               component="span"
               sx={{
-                background: 'linear-gradient(135deg, #EC4899 0%, #F43F5E 100%)',
+                background: `linear-gradient(135deg, ${pink.main} 0%, ${rose.main} 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -261,7 +262,7 @@ export default function LandingPage() {
           <Typography
             sx={{
               fontSize: { xs: '18px', md: '22px' },
-              color: '#78350F',
+              color: brown.main,
               maxWidth: '600px',
               mx: 'auto',
               mb: 4,
@@ -279,20 +280,20 @@ export default function LandingPage() {
             disabled={loading}
             startIcon={<GoogleIcon />}
             sx={{
-              bgcolor: '#14B8A6',
-              color: 'white',
+              bgcolor: teal.main,
+              color: white,
               fontWeight: 800,
               px: 5,
               py: 2,
               borderRadius: '50px',
               fontSize: '20px',
               textTransform: 'none',
-              boxShadow: '0 8px 25px rgba(21, 128, 61, 0.4)',
-              border: '3px solid #0D9488',
+              boxShadow: '0 8px 25px rgba(20, 184, 166, 0.4)',
+              border: `3px solid ${teal.dark}`,
               '&:hover': {
-                bgcolor: '#0D9488',
+                bgcolor: teal.dark,
                 transform: 'scale(1.08) rotate(-1deg)',
-                boxShadow: '0 12px 35px rgba(21, 128, 61, 0.5)',
+                boxShadow: '0 12px 35px rgba(20, 184, 166, 0.5)',
               },
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
               mb: 2,
@@ -304,7 +305,7 @@ export default function LandingPage() {
           <Typography
             sx={{
               fontSize: '14px',
-              color: '#92400E',
+              color: brown.dark,
               fontWeight: 600,
             }}
           >
@@ -326,19 +327,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#F0FDFA',
+              bgcolor: teal.bg,
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #14B8A6',
-              boxShadow: '6px 6px 0px #14B8A6',
+              border: `4px solid ${teal.main}`,
+              boxShadow: `6px 6px 0px ${teal.main}`,
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📸</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#0D9488', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: teal.dark, mb: 1 }}>
               Snap It
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#0D9488', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: teal.dark, lineHeight: 1.4 }}>
               One photo and you're done. No typing needed.
             </Typography>
           </Box>
@@ -347,19 +348,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#FCE7F3',
+              bgcolor: pink.bg,
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #EC4899',
-              boxShadow: '6px 6px 0px #EC4899',
+              border: `4px solid ${pink.main}`,
+              boxShadow: `6px 6px 0px ${pink.main}`,
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>📊</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#BE185D', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: pink.dark, mb: 1 }}>
               See Patterns
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#BE185D', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: pink.dark, lineHeight: 1.4 }}>
               Pretty charts that actually make sense.
             </Typography>
           </Box>
@@ -368,19 +369,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #F59E0B',
-              boxShadow: '6px 6px 0px #F59E0B',
+              border: `4px solid ${amber.main}`,
+              boxShadow: `6px 6px 0px ${amber.main}`,
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>🔍</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#D97706', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: amber.dark, mb: 1 }}>
               Find Stuff
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#D97706', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: amber.dark, lineHeight: 1.4 }}>
               Search across all your receipts in seconds.
             </Typography>
           </Box>
@@ -389,19 +390,19 @@ export default function LandingPage() {
           <Box
             className="feature-card wiggle-hover"
             sx={{
-              bgcolor: '#FFEDD5',
+              bgcolor: orange.bg,
               borderRadius: '24px',
               p: 3,
-              border: '4px solid #F97316',
-              boxShadow: '6px 6px 0px #F97316',
+              border: `4px solid ${orange.main}`,
+              boxShadow: `6px 6px 0px ${orange.main}`,
               cursor: 'pointer',
             }}
           >
             <Box sx={{ fontSize: '56px', mb: 1 }}>💰</Box>
-            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#EA580C', mb: 1 }}>
+            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: orange.dark, mb: 1 }}>
               Save Money
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#EA580C', lineHeight: 1.4 }}>
+            <Typography sx={{ fontSize: '14px', color: orange.dark, lineHeight: 1.4 }}>
               See where your money goes. Keep more of it.
             </Typography>
           </Box>
@@ -412,12 +413,12 @@ export default function LandingPage() {
       <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, py: 6 }}>
         <Box
           sx={{
-            bgcolor: 'white',
+            bgcolor: white,
             borderRadius: '32px',
             p: { xs: 4, md: 6 },
             textAlign: 'center',
-            border: '6px solid #14B8A6',
-            boxShadow: '12px 12px 0px #14B8A6',
+            border: `6px solid ${teal.main}`,
+            boxShadow: `12px 12px 0px ${teal.main}`,
             transform: 'rotate(-1deg)',
           }}
         >
@@ -425,7 +426,7 @@ export default function LandingPage() {
             sx={{
               fontSize: { xs: '32px', md: '42px' },
               fontWeight: 900,
-              color: '#14B8A6',
+              color: teal.main,
               mb: 2,
               lineHeight: 1.1,
             }}
@@ -435,7 +436,7 @@ export default function LandingPage() {
           <Typography
             sx={{
               fontSize: '18px',
-              color: '#0D9488',
+              color: teal.dark,
               mb: 3,
               fontWeight: 500,
             }}
@@ -447,20 +448,20 @@ export default function LandingPage() {
             disabled={loading}
             startIcon={<GoogleIcon />}
             sx={{
-              bgcolor: '#EC4899',
-              color: 'white',
+              bgcolor: pink.main,
+              color: white,
               fontWeight: 800,
               px: 5,
               py: 2,
               borderRadius: '50px',
               fontSize: '20px',
               textTransform: 'none',
-              boxShadow: '0 8px 25px rgba(236, 72, 153, 0.4)',
-              border: '3px solid #BE185D',
+              boxShadow: `0 8px 25px rgba(236, 72, 153, 0.4)`,
+              border: `3px solid ${pink.dark}`,
               '&:hover': {
-                bgcolor: '#DB2777',
+                bgcolor: rose.dark,
                 transform: 'scale(1.08)',
-                boxShadow: '0 12px 35px rgba(236, 72, 153, 0.5)',
+                boxShadow: `0 12px 35px rgba(236, 72, 153, 0.5)`,
               },
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
@@ -475,7 +476,7 @@ export default function LandingPage() {
         <Typography
           sx={{
             fontSize: '14px',
-            color: '#92400E',
+            color: brown.dark,
             fontWeight: 600,
           }}
         >
@@ -484,7 +485,7 @@ export default function LandingPage() {
         <Typography
           sx={{
             fontSize: '12px',
-            color: '#B45309',
+            color: amber.dark,
             mt: 1,
           }}
         >

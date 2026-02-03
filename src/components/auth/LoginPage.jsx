@@ -20,6 +20,7 @@ import {
   Google as GoogleIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
+import { teal, amber } from '../../theme/colors';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -88,7 +89,7 @@ export default function LoginPage() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #c8e6c9 0%, #ffe0b2 100%)',
+        background: `linear-gradient(135deg, ${teal.bg} 0%, ${amber.bg} 100%)`,
         py: 4,
       }}
     >

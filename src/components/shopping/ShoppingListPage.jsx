@@ -44,7 +44,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, brown, cream } from '../../theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, brown, darkGray, ui, white } from '../../theme/colors';
 
 export default function ShoppingListPage() {
   const { currentUser } = useAuth();
@@ -64,15 +64,15 @@ export default function ShoppingListPage() {
   // Categories for shopping items
   const categories = [
     { value: 'produce', label: '🥬 Produce', emoji: '🥬', color: teal.main },
-    { value: 'meat', label: '🥩 Meat & Seafood', emoji: '🥩', color: '#EF4444' },
-    { value: 'dairy', label: '🥛 Dairy & Eggs', emoji: '🥛', color: '#3B82F6' },
-    { value: 'bakery', label: '🍞 Bakery', emoji: '🍞', color: '#F59E0B' },
-    { value: 'frozen', label: '🧊 Frozen', emoji: '🧊', color: '#06B6D4' },
-    { value: 'pantry', label: '🥫 Pantry', emoji: '🥫', color: '#8B5CF6' },
-    { value: 'beverages', label: '🥤 Beverages', emoji: '🥤', color: '#EC4899' },
-    { value: 'snacks', label: '🍿 Snacks', emoji: '🍿', color: '#F97316' },
-    { value: 'household', label: '🧹 Household', emoji: '🧹', color: '#6B7280' },
-    { value: 'other', label: '📦 Other', emoji: '📦', color: '#9CA3AF' },
+    { value: 'meat', label: '🥩 Meat & Seafood', emoji: '🥩', color: red.main },
+    { value: 'dairy', label: '🥛 Dairy & Eggs', emoji: '🥛', color: blue.main },
+    { value: 'bakery', label: '🍞 Bakery', emoji: '🍞', color: amber.main },
+    { value: 'frozen', label: '🧊 Frozen', emoji: '🧊', color: cyan.main },
+    { value: 'pantry', label: '🥫 Pantry', emoji: '🥫', color: purple.main },
+    { value: 'beverages', label: '🥤 Beverages', emoji: '🥤', color: pink.main },
+    { value: 'snacks', label: '🍿 Snacks', emoji: '🍿', color: orange.main },
+    { value: 'household', label: '🧹 Household', emoji: '🧹', color: gray.main },
+    { value: 'other', label: '📦 Other', emoji: '📦', color: darkGray.light },
   ];
 
   // Filter receipts with store info for store suggestions
@@ -462,7 +462,7 @@ export default function ShoppingListPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="md">
           <Box sx={{ pt: 4, pb: 3 }}>
             <Typography
@@ -482,7 +482,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#78350F',
+                color: brown.main,
               }}
             >
               Loading your shopping list...
@@ -490,10 +490,10 @@ export default function ShoppingListPage() {
           </Box>
           <Card
             sx={{
-              bgcolor: 'white',
+              bgcolor: white,
               borderRadius: '12px',
-              border: '2px solid #E5E7EB',
-              boxShadow: '3px 3px 0px #E5E7EB',
+              border: `2px solid ${ui.border}`,
+              boxShadow: `3px 3px 0px ${ui.border}`,
             }}
           >
             <CardContent sx={{ p: 2.5 }}>
@@ -506,7 +506,7 @@ export default function ShoppingListPage() {
   }
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -533,17 +533,17 @@ export default function ShoppingListPage() {
                   fontSize: '12px',
                   textTransform: 'none',
                   color: teal.main,
-                  border: '1px solid #14B8A6',
+                  border: `1px solid ${teal.main}`,
                   borderRadius: '8px',
                   px: 2,
                   py: 0.75,
                   '&:hover': {
                     bgcolor: teal.bg,
-                    border: '1px solid #0D9488',
+                    border: `1px solid ${teal.dark}`,
                   },
                   '&:disabled': {
-                    color: '#9CA3AF',
-                    border: '1px solid #D1D5DB',
+                    color: darkGray.light,
+                    border: `1px solid ${gray.light}`,
                   },
                 }}
               >
@@ -557,7 +557,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#78350F',
+                color: brown.main,
               }}
             >
               {uncheckedItems.length > 0
@@ -581,18 +581,18 @@ export default function ShoppingListPage() {
                     textTransform: 'none',
                     px: 1.5,
                     py: 0.5,
-                    border: '1px solid #D1D5DB',
-                    color: '#6B7280',
+                    border: `1px solid ${gray.light}`,
+                    color: gray.main,
                     '&.Mui-selected': {
                       bgcolor: teal.main,
                       color: 'white',
-                      border: '1px solid #14B8A6',
+                      border: `1px solid ${teal.main}`,
                       '&:hover': {
                         bgcolor: teal.dark,
                       },
                     },
                     '&:hover': {
-                      bgcolor: '#F3F4F6',
+                      bgcolor: ui.borderLight,
                     },
                   },
                 }}
@@ -619,8 +619,8 @@ export default function ShoppingListPage() {
           sx={{
             bgcolor: teal.bg,
             borderRadius: '12px',
-            border: '2px solid #14B8A6',
-            boxShadow: '3px 3px 0px #5EEAD4',
+            border: `2px solid ${teal.main}`,
+            boxShadow: `3px 3px 0px ${teal.light}`,
             mb: 3,
           }}
         >
@@ -681,11 +681,11 @@ export default function ShoppingListPage() {
                           height: '18px',
                           fontSize: '10px',
                           fontFamily: 'Outfit, sans-serif',
-                          bgcolor: '#DBEAFE',
-                          color: '#1E40AF',
+                          bgcolor: blue.bg,
+                          color: blue.dark,
                           fontWeight: 500,
                           '& .MuiChip-icon': {
-                            color: '#1E40AF',
+                            color: blue.dark,
                             ml: 0.5,
                           },
                         }}
@@ -704,7 +704,7 @@ export default function ShoppingListPage() {
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
-                        bgcolor: 'white',
+                        bgcolor: white,
                         '& fieldset': { borderColor: teal.light },
                         '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
@@ -723,7 +723,7 @@ export default function ShoppingListPage() {
                   textTransform: 'none',
                   color: teal.main,
                   borderColor: teal.main,
-                  bgcolor: 'white',
+                  bgcolor: white,
                   minWidth: '40px',
                   px: 2,
                   '&:hover': {
@@ -769,7 +769,7 @@ export default function ShoppingListPage() {
                       flex: 1,
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
-                        bgcolor: 'white',
+                        bgcolor: white,
                         '& fieldset': { borderColor: teal.light },
                         '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
@@ -789,7 +789,7 @@ export default function ShoppingListPage() {
                       flex: 1,
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
-                        bgcolor: 'white',
+                        bgcolor: white,
                         '& fieldset': { borderColor: teal.light },
                         '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
@@ -813,7 +813,7 @@ export default function ShoppingListPage() {
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       fontFamily: 'Outfit, sans-serif',
-                      bgcolor: 'white',
+                      bgcolor: white,
                       '& fieldset': { borderColor: teal.light },
                       '&:hover fieldset': { borderColor: teal.main },
                       '&.Mui-focused fieldset': { borderColor: teal.main },
@@ -828,10 +828,10 @@ export default function ShoppingListPage() {
         {shoppingList.length === 0 ? (
           <Card
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '16px',
-              border: '2px solid #F59E0B',
-              boxShadow: '3px 3px 0px #FCD34D',
+              border: `2px solid ${amber.main}`,
+              boxShadow: `3px 3px 0px ${amber.light}`,
               p: 5,
               textAlign: 'center',
             }}
@@ -842,7 +842,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#78350F',
+                color: brown.main,
                 mb: 1,
                 fontSize: '20px',
               }}
@@ -854,7 +854,7 @@ export default function ShoppingListPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#92400E',
+                color: brown.dark,
               }}
             >
               Add items manually or select ingredients from recipes to get started!
@@ -869,22 +869,22 @@ export default function ShoppingListPage() {
                 {fromRecipes.length > 0 && (
               <Card
                 sx={{
-                  bgcolor: 'white',
+                  bgcolor: white,
                   borderRadius: '12px',
-                  border: '2px solid #E5E7EB',
-                  boxShadow: '3px 3px 0px #E5E7EB',
+                  border: `2px solid ${ui.border}`,
+                  boxShadow: `3px 3px 0px ${ui.border}`,
                   mb: 2,
                 }}
               >
                 <CardContent sx={{ p: 2.5 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                    <Restaurant sx={{ fontSize: 18, color: '#F59E0B' }} />
+                    <Restaurant sx={{ fontSize: 18, color: amber.main }} />
                     <Typography
                       variant="h6"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#78350F',
+                        color: brown.main,
                         fontSize: '15px',
                       }}
                     >
@@ -900,7 +900,7 @@ export default function ShoppingListPage() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         py: 0.75,
-                        borderBottom: '1px solid #F3F4F6',
+                        borderBottom: `1px solid ${ui.borderLight}`,
                         '&:last-child': { borderBottom: 'none' },
                       }}
                     >
@@ -921,7 +921,7 @@ export default function ShoppingListPage() {
                               variant="body2"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#1F2937',
+                                color: darkGray.darker,
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 textDecoration: item.checked ? 'line-through' : 'none',
@@ -937,8 +937,8 @@ export default function ShoppingListPage() {
                                   height: '20px',
                                   fontSize: '11px',
                                   fontFamily: 'Outfit, sans-serif',
-                                  bgcolor: '#FEF3C7',
-                                  color: '#92400E',
+                                  bgcolor: amber.bg,
+                                  color: brown.dark,
                                   fontWeight: 500,
                                 }}
                               />
@@ -965,7 +965,7 @@ export default function ShoppingListPage() {
                                 variant="caption"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#6B7280',
+                                  color: gray.main,
                                   fontSize: '11px',
                                   fontWeight: 500,
                                 }}
@@ -984,11 +984,11 @@ export default function ShoppingListPage() {
                                     height: '20px',
                                     fontSize: '10px',
                                     fontFamily: 'Outfit, sans-serif',
-                                    bgcolor: '#DBEAFE',
-                                    color: '#1E40AF',
+                                    bgcolor: blue.bg,
+                                    color: blue.dark,
                                     fontWeight: 500,
                                     '& .MuiChip-icon': {
-                                      color: '#1E40AF',
+                                      color: blue.dark,
                                     },
                                   }}
                                 />
@@ -1000,7 +1000,7 @@ export default function ShoppingListPage() {
                               variant="caption"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#6B7280',
+                                color: gray.main,
                                 fontSize: '11px',
                                 fontStyle: 'italic',
                                 display: 'block',
@@ -1015,7 +1015,7 @@ export default function ShoppingListPage() {
                               variant="caption"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#6B7280',
+                                color: gray.main,
                                 fontSize: '11px',
                                 display: 'block',
                                 mt: 0.25,
@@ -1029,7 +1029,7 @@ export default function ShoppingListPage() {
                       <IconButton
                         size="small"
                         onClick={() => handleDeleteItem(item.id)}
-                        sx={{ color: '#EF4444' }}
+                        sx={{ color: red.main }}
                       >
                         <Delete sx={{ fontSize: 18 }} />
                       </IconButton>
@@ -1043,10 +1043,10 @@ export default function ShoppingListPage() {
             {manualItems.length > 0 && (
               <Card
                 sx={{
-                  bgcolor: 'white',
+                  bgcolor: white,
                   borderRadius: '12px',
-                  border: '2px solid #E5E7EB',
-                  boxShadow: '3px 3px 0px #E5E7EB',
+                  border: `2px solid ${ui.border}`,
+                  boxShadow: `3px 3px 0px ${ui.border}`,
                   mb: 2,
                 }}
               >
@@ -1074,7 +1074,7 @@ export default function ShoppingListPage() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         py: 0.75,
-                        borderBottom: '1px solid #F3F4F6',
+                        borderBottom: `1px solid ${ui.borderLight}`,
                         '&:last-child': { borderBottom: 'none' },
                       }}
                     >
@@ -1095,7 +1095,7 @@ export default function ShoppingListPage() {
                               variant="body2"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#1F2937',
+                                color: darkGray.darker,
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 textDecoration: item.checked ? 'line-through' : 'none',
@@ -1111,8 +1111,8 @@ export default function ShoppingListPage() {
                                   height: '20px',
                                   fontSize: '11px',
                                   fontFamily: 'Outfit, sans-serif',
-                                  bgcolor: '#FEF3C7',
-                                  color: '#92400E',
+                                  bgcolor: amber.bg,
+                                  color: brown.dark,
                                   fontWeight: 500,
                                 }}
                               />
@@ -1139,7 +1139,7 @@ export default function ShoppingListPage() {
                                 variant="caption"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#6B7280',
+                                  color: gray.main,
                                   fontSize: '11px',
                                   fontWeight: 500,
                                 }}
@@ -1158,11 +1158,11 @@ export default function ShoppingListPage() {
                                     height: '20px',
                                     fontSize: '10px',
                                     fontFamily: 'Outfit, sans-serif',
-                                    bgcolor: '#DBEAFE',
-                                    color: '#1E40AF',
+                                    bgcolor: blue.bg,
+                                    color: blue.dark,
                                     fontWeight: 500,
                                     '& .MuiChip-icon': {
-                                      color: '#1E40AF',
+                                      color: blue.dark,
                                     },
                                   }}
                                 />
@@ -1174,7 +1174,7 @@ export default function ShoppingListPage() {
                               variant="caption"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#6B7280',
+                                color: gray.main,
                                 fontSize: '11px',
                                 fontStyle: 'italic',
                                 display: 'block',
@@ -1189,7 +1189,7 @@ export default function ShoppingListPage() {
                       <IconButton
                         size="small"
                         onClick={() => handleDeleteItem(item.id)}
-                        sx={{ color: '#EF4444' }}
+                        sx={{ color: red.main }}
                       >
                         <Delete sx={{ fontSize: 18 }} />
                       </IconButton>
@@ -1210,22 +1210,22 @@ export default function ShoppingListPage() {
                     <Card
                       key={store}
                       sx={{
-                        bgcolor: 'white',
+                        bgcolor: white,
                         borderRadius: '12px',
-                        border: '2px solid #E5E7EB',
-                        boxShadow: '3px 3px 0px #E5E7EB',
+                        border: `2px solid ${ui.border}`,
+                        boxShadow: `3px 3px 0px ${ui.border}`,
                         mb: 2,
                       }}
                     >
                       <CardContent sx={{ p: 2.5 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                          <Store sx={{ fontSize: 18, color: '#3B82F6' }} />
+                          <Store sx={{ fontSize: 18, color: blue.main }} />
                           <Typography
                             variant="h6"
                             sx={{
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 600,
-                              color: '#1E40AF',
+                              color: blue.dark,
                               fontSize: '15px',
                             }}
                           >
@@ -1238,8 +1238,8 @@ export default function ShoppingListPage() {
                               height: '20px',
                               fontSize: '11px',
                               fontFamily: 'Outfit, sans-serif',
-                              bgcolor: '#DBEAFE',
-                              color: '#1E40AF',
+                              bgcolor: blue.bg,
+                              color: blue.dark,
                               fontWeight: 500,
                             }}
                           />
@@ -1253,7 +1253,7 @@ export default function ShoppingListPage() {
                               alignItems: 'center',
                               justifyContent: 'space-between',
                               py: 0.75,
-                              borderBottom: '1px solid #F3F4F6',
+                              borderBottom: `1px solid ${ui.borderLight}`,
                               '&:last-child': { borderBottom: 'none' },
                             }}
                           >
@@ -1274,7 +1274,7 @@ export default function ShoppingListPage() {
                                     variant="body2"
                                     sx={{
                                       fontFamily: 'Outfit, sans-serif',
-                                      color: '#1F2937',
+                                      color: darkGray.darker,
                                       fontSize: '13px',
                                       fontWeight: 500,
                                       textDecoration: item.checked ? 'line-through' : 'none',
@@ -1290,8 +1290,8 @@ export default function ShoppingListPage() {
                                         height: '20px',
                                         fontSize: '11px',
                                         fontFamily: 'Outfit, sans-serif',
-                                        bgcolor: '#FEF3C7',
-                                        color: '#92400E',
+                                        bgcolor: amber.bg,
+                                        color: brown.dark,
                                         fontWeight: 500,
                                       }}
                                     />
@@ -1307,7 +1307,7 @@ export default function ShoppingListPage() {
                                           fontSize: '10px',
                                           fontFamily: 'Outfit, sans-serif',
                                           bgcolor: categoryInfo.color,
-                                          color: '#fff',
+                                          color: white,
                                           fontWeight: 500,
                                         }}
                                       />
@@ -1332,7 +1332,7 @@ export default function ShoppingListPage() {
                                     variant="caption"
                                     sx={{
                                       fontFamily: 'Outfit, sans-serif',
-                                      color: '#6B7280',
+                                      color: gray.main,
                                       fontSize: '11px',
                                       fontStyle: 'italic',
                                       display: 'block',
@@ -1347,7 +1347,7 @@ export default function ShoppingListPage() {
                             <IconButton
                               size="small"
                               onClick={() => handleDeleteItem(item.id)}
-                              sx={{ color: '#EF4444' }}
+                              sx={{ color: red.main }}
                             >
                               <Delete sx={{ fontSize: 18 }} />
                             </IconButton>
@@ -1378,8 +1378,8 @@ export default function ShoppingListPage() {
                         sx={{
                           bgcolor: 'white',
                           borderRadius: '12px',
-                          border: '2px solid #E5E7EB',
-                          boxShadow: '3px 3px 0px #E5E7EB',
+                          border: `2px solid ${ui.border}`,
+                          boxShadow: `3px 3px 0px ${ui.border}`,
                           mb: 2,
                         }}
                       >
@@ -1391,7 +1391,7 @@ export default function ShoppingListPage() {
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
                                 fontWeight: 600,
-                                color: '#1F2937',
+                                color: darkGray.darker,
                                 fontSize: '15px',
                               }}
                             >
@@ -1405,7 +1405,7 @@ export default function ShoppingListPage() {
                                 fontSize: '11px',
                                 fontFamily: 'Outfit, sans-serif',
                                 bgcolor: categoryInfo.color,
-                                color: '#fff',
+                                color: white,
                                 fontWeight: 500,
                               }}
                             />
@@ -1419,7 +1419,7 @@ export default function ShoppingListPage() {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 py: 0.75,
-                                borderBottom: '1px solid #F3F4F6',
+                                borderBottom: `1px solid ${ui.borderLight}`,
                                 '&:last-child': { borderBottom: 'none' },
                               }}
                             >
@@ -1440,7 +1440,7 @@ export default function ShoppingListPage() {
                                       variant="body2"
                                       sx={{
                                         fontFamily: 'Outfit, sans-serif',
-                                        color: '#1F2937',
+                                        color: darkGray.darker,
                                         fontSize: '13px',
                                         fontWeight: 500,
                                         textDecoration: item.checked ? 'line-through' : 'none',
@@ -1456,8 +1456,8 @@ export default function ShoppingListPage() {
                                           height: '20px',
                                           fontSize: '11px',
                                           fontFamily: 'Outfit, sans-serif',
-                                          bgcolor: '#FEF3C7',
-                                          color: '#92400E',
+                                          bgcolor: amber.bg,
+                                          color: brown.dark,
                                           fontWeight: 500,
                                         }}
                                       />
@@ -1486,11 +1486,11 @@ export default function ShoppingListPage() {
                                             height: '20px',
                                             fontSize: '10px',
                                             fontFamily: 'Outfit, sans-serif',
-                                            bgcolor: '#DBEAFE',
-                                            color: '#1E40AF',
+                                            bgcolor: blue.bg,
+                                            color: blue.dark,
                                             fontWeight: 500,
                                             '& .MuiChip-icon': {
-                                              color: '#1E40AF',
+                                              color: blue.dark,
                                             },
                                           }}
                                         />
@@ -1502,7 +1502,7 @@ export default function ShoppingListPage() {
                                       variant="caption"
                                       sx={{
                                         fontFamily: 'Outfit, sans-serif',
-                                        color: '#6B7280',
+                                        color: gray.main,
                                         fontSize: '11px',
                                         fontStyle: 'italic',
                                         display: 'block',
@@ -1517,7 +1517,7 @@ export default function ShoppingListPage() {
                               <IconButton
                                 size="small"
                                 onClick={() => handleDeleteItem(item.id)}
-                                sx={{ color: '#EF4444' }}
+                                sx={{ color: red.main }}
                               >
                                 <Delete sx={{ fontSize: 18 }} />
                               </IconButton>
@@ -1536,10 +1536,10 @@ export default function ShoppingListPage() {
                 <Divider sx={{ my: 3 }} />
                 <Card
                   sx={{
-                    bgcolor: '#F9FAFB',
+                    bgcolor: gray.bg,
                     borderRadius: '12px',
-                    border: '2px solid #D1D5DB',
-                    boxShadow: '2px 2px 0px #D1D5DB',
+                    border: `2px solid ${gray.light}`,
+                    boxShadow: `2px 2px 0px ${gray.light}`,
                     mb: 2,
                   }}
                 >
@@ -1552,7 +1552,7 @@ export default function ShoppingListPage() {
                           sx={{
                             fontFamily: 'Outfit, sans-serif',
                             fontWeight: 600,
-                            color: '#6B7280',
+                            color: gray.main,
                             fontSize: '15px',
                           }}
                         >
@@ -1566,7 +1566,7 @@ export default function ShoppingListPage() {
                           fontFamily: 'Outfit, sans-serif',
                           fontSize: '11px',
                           textTransform: 'none',
-                          color: '#6B7280',
+                          color: gray.main,
                         }}
                       >
                         Clear All
@@ -1581,7 +1581,7 @@ export default function ShoppingListPage() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           py: 0.75,
-                          borderBottom: '1px solid #E5E7EB',
+                          borderBottom: `1px solid ${ui.border}`,
                           '&:last-child': { borderBottom: 'none' },
                         }}
                       >
@@ -1602,7 +1602,7 @@ export default function ShoppingListPage() {
                                 variant="body2"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#9CA3AF',
+                                  color: darkGray.light,
                                   fontSize: '13px',
                                   fontWeight: 500,
                                   textDecoration: 'line-through',
@@ -1618,8 +1618,8 @@ export default function ShoppingListPage() {
                                     height: '20px',
                                     fontSize: '11px',
                                     fontFamily: 'Outfit, sans-serif',
-                                    bgcolor: '#F3F4F6',
-                                    color: '#6B7280',
+                                    bgcolor: ui.borderLight,
+                                    color: gray.main,
                                     fontWeight: 500,
                                   }}
                                 />
@@ -1634,8 +1634,8 @@ export default function ShoppingListPage() {
                                       height: '20px',
                                       fontSize: '11px',
                                       fontFamily: 'Outfit, sans-serif',
-                                      bgcolor: '#F3F4F6',
-                                      color: '#6B7280',
+                                      bgcolor: ui.borderLight,
+                                      color: gray.main,
                                       fontWeight: 500,
                                     }}
                                   />
@@ -1646,7 +1646,7 @@ export default function ShoppingListPage() {
                                   variant="caption"
                                   sx={{
                                     fontFamily: 'Outfit, sans-serif',
-                                    color: '#9CA3AF',
+                                    color: darkGray.light,
                                     fontSize: '11px',
                                     fontWeight: 500,
                                   }}
@@ -1660,7 +1660,7 @@ export default function ShoppingListPage() {
                                 variant="caption"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#9CA3AF',
+                                  color: darkGray.light,
                                   fontSize: '11px',
                                   fontStyle: 'italic',
                                   display: 'block',
@@ -1675,7 +1675,7 @@ export default function ShoppingListPage() {
                         <IconButton
                           size="small"
                           onClick={() => handleDeleteItem(item.id)}
-                          sx={{ color: '#9CA3AF' }}
+                          sx={{ color: darkGray.light }}
                         >
                           <Delete sx={{ fontSize: 18 }} />
                         </IconButton>

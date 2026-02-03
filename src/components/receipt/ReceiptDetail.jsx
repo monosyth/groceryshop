@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, getCategoryInfo } from '../../theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, ui } from '../../theme/colors';
 import {
   Dialog,
   DialogTitle,
@@ -222,19 +222,19 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
   // Category colors and emojis (matching shopping list)
   const getCategoryInfo = (category) => {
     const categoryMap = {
-      produce: { emoji: '🥬', color: teal.main, bg: '#CCFBF1' },
-      meat: { emoji: '🥩', color: '#EF4444', bg: '#FEE2E2' },
-      dairy: { emoji: '🥛', color: '#3B82F6', bg: '#DBEAFE' },
-      bakery: { emoji: '🍞', color: '#F59E0B', bg: '#FEF3C7' },
-      frozen: { emoji: '🧊', color: '#06B6D4', bg: '#CFFAFE' },
-      pantry: { emoji: '🥫', color: '#8B5CF6', bg: '#EDE9FE' },
-      beverages: { emoji: '🥤', color: '#EC4899', bg: '#FCE7F3' },
-      snacks: { emoji: '🍿', color: '#F97316', bg: '#FFEDD5' },
-      household: { emoji: '🧹', color: '#6B7280', bg: '#F3F4F6' },
-      'personal care': { emoji: '🧴', color: '#6B7280', bg: '#F3F4F6' },
-      health: { emoji: '💊', color: teal.main, bg: '#99F6E4' },
-      grocery: { emoji: '🛒', color: teal.main, bg: '#CCFBF1' },
-      other: { emoji: '📦', color: '#6B7280', bg: '#F3F4F6' },
+      produce: { emoji: '🥬', color: teal.main, bg: teal.bg },
+      meat: { emoji: '🥩', color: red.main, bg: red.bg },
+      dairy: { emoji: '🥛', color: blue.main, bg: blue.bg },
+      bakery: { emoji: '🍞', color: amber.main, bg: amber.bg },
+      frozen: { emoji: '🧊', color: cyan.main, bg: cyan.bg },
+      pantry: { emoji: '🥫', color: purple.main, bg: purple.bg },
+      beverages: { emoji: '🥤', color: pink.main, bg: pink.bg },
+      snacks: { emoji: '🍿', color: orange.main, bg: orange.bg },
+      household: { emoji: '🧹', color: gray.main, bg: gray.bg },
+      'personal care': { emoji: '🧴', color: gray.main, bg: gray.bg },
+      health: { emoji: '💊', color: teal.main, bg: teal.bg },
+      grocery: { emoji: '🛒', color: teal.main, bg: teal.bg },
+      other: { emoji: '📦', color: gray.main, bg: gray.bg },
     };
     return categoryMap[category?.toLowerCase()] || categoryMap.other;
   };
@@ -248,8 +248,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
       PaperProps={{
         sx: {
           borderRadius: '16px',
-          border: '2px solid #14B8A6',
-          boxShadow: '4px 4px 0px #5EEAD4',
+          border: `2px solid ${teal.main}`,
+          boxShadow: `4px 4px 0px ${teal.light}`,
         },
       }}
     >
@@ -272,10 +272,10 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               onClick={() => setConfirmDelete(true)}
               size="small"
               sx={{
-                color: '#DC2626',
-                border: '2px solid #DC2626',
+                color: red.dark,
+                border: `2px solid ${red.dark}`,
                 '&:hover': {
-                  bgcolor: '#FEE2E2',
+                  bgcolor: red.light,
                 },
               }}
             >
@@ -285,9 +285,9 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               onClick={onClose}
               size="small"
               sx={{
-                border: '2px solid #9CA3AF',
+                border: `2px solid ${darkGray.light}`,
                 '&:hover': {
-                  bgcolor: '#F3F4F6',
+                  bgcolor: ui.borderLight,
                 },
               }}
             >
@@ -311,7 +311,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               objectFit: 'contain',
               borderRadius: '10px',
               backgroundColor: 'grey.100',
-              border: '2px solid #E5E7EB',
+              border: `2px solid ${ui.border}`,
             }}
           />
 
@@ -323,8 +323,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               p: 2.5,
               bgcolor: teal.bg,
               borderRadius: '12px',
-              border: '2px solid #14B8A6',
-              boxShadow: '2px 2px 0px #5EEAD4',
+              border: `2px solid ${teal.main}`,
+              boxShadow: `2px 2px 0px ${teal.light}`,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -406,8 +406,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               sx={{
                 mb: 3,
                 borderRadius: '12px',
-                border: '2px solid #F59E0B',
-                boxShadow: '2px 2px 0px #FCD34D',
+                border: `2px solid ${amber.main}`,
+                boxShadow: `2px 2px 0px ${amber.light}`,
                 p: 2,
               }}
             >
@@ -432,7 +432,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                           sx={{
                             my: 1.5,
                             borderStyle: 'dashed',
-                            borderColor: '#E5E7EB',
+                            borderColor: ui.border,
                           }}
                         />
                       )}
@@ -474,7 +474,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                             py: 0.75,
                             px: 0.5,
                             '&:hover': {
-                              bgcolor: '#F9FAFB',
+                              bgcolor: gray.bg,
                             },
                           }}
                         >
@@ -486,7 +486,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                                 fontFamily: 'Outfit, sans-serif',
                                 fontWeight: 500,
                                 fontSize: '12px',
-                                color: '#374151',
+                                color: darkGray.dark,
                                 flex: 1,
                               }}
                             >
@@ -494,7 +494,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                                 <Box
                                   component="span"
                                   sx={{
-                                    color: '#6B7280',
+                                    color: gray.main,
                                     fontSize: '11px',
                                     mr: 0.5,
                                   }}
@@ -524,7 +524,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 600,
                               fontSize: '12px',
-                              color: '#1F2937',
+                              color: darkGray.darker,
                               minWidth: '60px',
                               textAlign: 'right',
                             }}
@@ -553,8 +553,8 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
               p: 2.5,
               bgcolor: teal.bg,
               borderRadius: '12px',
-              border: '2px solid #14B8A6',
-              boxShadow: '2px 2px 0px #5EEAD4',
+              border: `2px solid ${teal.main}`,
+              boxShadow: `2px 2px 0px ${teal.light}`,
             }}
           >
             <Typography
@@ -617,7 +617,7 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                 </Typography>
               </Box>
 
-              <Divider sx={{ my: 1, borderColor: '#99F6E4' }} />
+              <Divider sx={{ my: 1, borderColor: teal.light }} />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography

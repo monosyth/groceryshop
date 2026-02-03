@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, getCategoryInfo } from '../../theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, ui, getCategoryInfo } from '../../theme/colors';
 import {
   Box,
   TextField,
@@ -102,7 +102,7 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <Search sx={{ color: '#9CA3AF', fontSize: 20 }} />
+              <Search sx={{ color: darkGray.light, fontSize: 20 }} />
             </InputAdornment>
           ),
           endAdornment: searchText && (
@@ -112,9 +112,9 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 onClick={handleClearSearch}
                 edge="end"
                 sx={{
-                  color: '#9CA3AF',
+                  color: darkGray.light,
                   '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    backgroundColor: ui.backgroundAlt,
                   },
                 }}
               >
@@ -131,11 +131,11 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
             borderRadius: '8px',
             bgcolor: 'white',
             '& fieldset': {
-              borderColor: '#E5E7EB',
+              borderColor: ui.border,
               borderWidth: '1px',
             },
             '&:hover fieldset': {
-              borderColor: '#D1D5DB',
+              borderColor: gray.light,
             },
             '&.Mui-focused fieldset': {
               borderColor: teal.main,
@@ -162,14 +162,14 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 px: 0.5,
                 height: '32px',
                 bgcolor: dateRange === range.value ? teal.main : 'white',
-                color: dateRange === range.value ? 'white' : '#374151',
+                color: dateRange === range.value ? 'white' : darkGray.dark,
                 border: '1px solid',
-                borderColor: dateRange === range.value ? teal.main : '#E5E7EB',
+                borderColor: dateRange === range.value ? teal.main : ui.border,
                 transition: 'all 0.15s ease',
                 cursor: 'pointer',
                 '&:hover': {
-                  bgcolor: dateRange === range.value ? teal.dark : '#F9FAFB',
-                  borderColor: dateRange === range.value ? teal.dark : '#D1D5DB',
+                  bgcolor: dateRange === range.value ? teal.dark : gray.bg,
+                  borderColor: dateRange === range.value ? teal.dark : gray.light,
                 },
               }}
             />
@@ -202,11 +202,11 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
               borderRadius: '8px',
               bgcolor: 'white',
               '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#E5E7EB',
+                borderColor: ui.border,
                 borderWidth: '1px',
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#D1D5DB',
+                borderColor: gray.light,
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: teal.main,
@@ -265,11 +265,11 @@ export default function SearchBar({ onSearchChange, onFilterChange, onSortChange
                 borderRadius: '8px',
                 bgcolor: 'white',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#E5E7EB',
+                  borderColor: ui.border,
                   borderWidth: '1px',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#D1D5DB',
+                  borderColor: gray.light,
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                   borderColor: teal.main,

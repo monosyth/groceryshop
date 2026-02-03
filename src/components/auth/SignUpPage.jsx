@@ -20,6 +20,7 @@ import {
   Google as GoogleIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
+import { teal, amber } from '../../theme/colors';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -110,7 +111,7 @@ export default function SignUpPage() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #ffe0b2 0%, #c8e6c9 100%)',
+        background: `linear-gradient(135deg, ${amber.bg} 0%, ${teal.bg} 100%)`,
         py: 4,
       }}
     >

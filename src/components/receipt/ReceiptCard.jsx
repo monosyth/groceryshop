@@ -1,7 +1,7 @@
 import { Card, CardContent, CardMedia, Chip, Typography, Box, Skeleton, Button } from '@mui/material';
 import { Store, CalendarToday, AttachMoney, CheckCircle, Error, HourglassEmpty, Refresh } from '@mui/icons-material';
 import { formatCurrency, formatDate } from '../../utils/formatters';
-import { cardThemes, teal } from '../../theme/colors';
+import { cardThemes, teal, ui } from '../../theme/colors';
 
 /**
  * Receipt card component displaying receipt summary
@@ -213,7 +213,7 @@ export function ReceiptCardSkeleton() {
     <Card
       sx={{
         borderRadius: '24px',
-        border: '4px solid #E5E7EB',
+        border: `4px solid ${ui.border}`,
       }}
     >
       <Skeleton variant="rectangular" height={200} />

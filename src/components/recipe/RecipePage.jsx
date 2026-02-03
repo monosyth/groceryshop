@@ -38,6 +38,7 @@ import { collection, query, where, onSnapshot, addDoc, serverTimestamp, doc, set
 import { db } from '../../firebase';
 import { generateRecipesFromIngredients } from '../../services/geminiService';
 import { parseRecipeFromText } from '../../services/recipeUrlService';
+import { teal, pink, orange, amber, brown, purple, blue, gray, darkGray, ui, white, cream, red } from '../../theme/colors';
 
 export default function RecipePage() {
   const { currentUser } = useAuth();
@@ -443,17 +444,17 @@ export default function RecipePage() {
   };
 
   const difficultyColors = {
-    Easy: '#14B8A6',
-    Medium: '#F59E0B',
-    Hard: '#EF4444',
+    Easy: teal.main,
+    Medium: amber.main,
+    Hard: red.main,
   };
 
   if (loading) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
+            <CircularProgress size={60} sx={{ color: teal.main }} />
           </Box>
         </Container>
       </Box>
@@ -461,7 +462,7 @@ export default function RecipePage() {
   }
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -470,7 +471,7 @@ export default function RecipePage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#14B8A6',
+              color: teal.main,
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -482,7 +483,7 @@ export default function RecipePage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 400,
-              color: '#78350F',
+              color: brown.main,
             }}
           >
             Turn your groceries into delicious meals
@@ -492,10 +493,10 @@ export default function RecipePage() {
         {receipts.length === 0 ? (
           <Card
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '16px',
-              border: '2px solid #F59E0B',
-              boxShadow: '3px 3px 0px #FCD34D',
+              border: `2px solid ${amber.main}`,
+              boxShadow: `3px 3px 0px ${amber.light}`,
               p: 5,
               textAlign: 'center',
             }}
@@ -506,7 +507,7 @@ export default function RecipePage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#78350F',
+                color: brown.main,
                 mb: 1,
                 fontSize: '20px',
               }}
@@ -518,7 +519,7 @@ export default function RecipePage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#92400E',
+                color: brown.dark,
               }}
             >
               Upload some receipts to get recipe suggestions based on your groceries!
@@ -533,10 +534,10 @@ export default function RecipePage() {
                 <Grid item xs={12} md={6}>
                   <Card
                     sx={{
-                      bgcolor: '#DBEAFE',
+                      bgcolor: blue.bg,
                       borderRadius: '12px',
-                      border: '2px solid #3B82F6',
-                      boxShadow: '3px 3px 0px #93C5FD',
+                      border: `2px solid ${blue.main}`,
+                      boxShadow: `3px 3px 0px ${blue.light}`,
                       p: 2,
                       height: '100%',
                     }}
@@ -546,7 +547,7 @@ export default function RecipePage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#1E40AF',
+                        color: blue.dark,
                         fontSize: '16px',
                         mb: 1.5,
                       }}
@@ -564,12 +565,12 @@ export default function RecipePage() {
                             fontFamily: 'Outfit, sans-serif',
                             fontSize: '12px',
                             textTransform: 'none',
-                            borderColor: '#3B82F6',
-                            color: isReceiptSelected(receipt.id) ? '#fff' : '#1E40AF',
-                            bgcolor: isReceiptSelected(receipt.id) ? '#3B82F6' : 'transparent',
+                            borderColor: blue.main,
+                            color: isReceiptSelected(receipt.id) ? white : blue.dark,
+                            bgcolor: isReceiptSelected(receipt.id) ? blue.main : 'transparent',
                             '&:hover': {
-                              bgcolor: isReceiptSelected(receipt.id) ? '#2563EB' : '#DBEAFE',
-                              borderColor: '#2563EB',
+                              bgcolor: isReceiptSelected(receipt.id) ? blue.dark : blue.bg,
+                              borderColor: blue.dark,
                             },
                           }}
                         >
@@ -590,10 +591,10 @@ export default function RecipePage() {
               <Grid item xs={12} md={receipts.length > 0 ? 6 : 12}>
                 <Card
                   sx={{
-                    bgcolor: '#EDE9FE',
+                    bgcolor: purple.bg,
                     borderRadius: '12px',
-                    border: '2px solid #7C3AED',
-                    boxShadow: '3px 3px 0px #C4B5FD',
+                    border: `2px solid ${purple.main}`,
+                    boxShadow: `3px 3px 0px ${purple.light}`,
                     height: '100%',
                   }}
                 >
@@ -603,7 +604,7 @@ export default function RecipePage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#5B21B6',
+                        color: purple.dark,
                         fontSize: '16px',
                         mb: 1.5,
                       }}
@@ -615,7 +616,7 @@ export default function RecipePage() {
                       variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        color: '#5B21B6',
+                        color: purple.dark,
                         mb: 1.5,
                         fontSize: '13px',
                       }}
@@ -636,10 +637,10 @@ export default function RecipePage() {
                         '& .MuiOutlinedInput-root': {
                           fontFamily: 'Outfit, sans-serif',
                           fontSize: '13px',
-                          bgcolor: 'white',
-                          '& fieldset': { borderColor: '#C4B5FD' },
-                          '&:hover fieldset': { borderColor: '#7C3AED' },
-                          '&.Mui-focused fieldset': { borderColor: '#7C3AED' },
+                          bgcolor: white,
+                          '& fieldset': { borderColor: purple.light },
+                          '&:hover fieldset': { borderColor: purple.main },
+                          '&.Mui-focused fieldset': { borderColor: purple.main },
                         },
                       }}
                     />
@@ -650,21 +651,21 @@ export default function RecipePage() {
                       onClick={handleImportRecipe}
                       disabled={!recipeText.trim() || importingRecipe}
                       sx={{
-                        bgcolor: '#7C3AED',
-                        color: 'white',
+                        bgcolor: purple.main,
+                        color: white,
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
                         fontSize: '13px',
                         textTransform: 'none',
-                        border: '2px solid #5B21B6',
-                        boxShadow: '2px 2px 0px #5B21B6',
+                        border: `2px solid ${purple.dark}`,
+                        boxShadow: `2px 2px 0px ${purple.dark}`,
                         py: 1.25,
                         '&:hover': {
-                          bgcolor: '#6D28D9',
+                          bgcolor: purple.dark,
                         },
                         '&:disabled': {
-                          bgcolor: '#C4B5FD',
-                          color: 'white',
+                          bgcolor: purple.light,
+                          color: white,
                         },
                       }}
                     >
@@ -681,10 +682,10 @@ export default function RecipePage() {
               <Grid item xs={12}>
                 <Card
                   sx={{
-                    bgcolor: '#F0FDFA',
+                    bgcolor: teal.bg,
                     borderRadius: '12px',
-                    border: '2px solid #14B8A6',
-                    boxShadow: '3px 3px 0px #5EEAD4',
+                    border: `2px solid ${teal.main}`,
+                    boxShadow: `3px 3px 0px ${teal.light}`,
                     height: '100%',
                   }}
                 >
@@ -695,7 +696,7 @@ export default function RecipePage() {
                         sx={{
                           fontFamily: 'Outfit, sans-serif',
                           fontWeight: 600,
-                          color: '#0D9488',
+                          color: teal.dark,
                           fontSize: '16px',
                         }}
                       >
@@ -708,7 +709,7 @@ export default function RecipePage() {
                           fontFamily: 'Outfit, sans-serif',
                           fontSize: '11px',
                           textTransform: 'none',
-                          color: '#0D9488',
+                          color: teal.dark,
                           minWidth: 'auto',
                           px: 1,
                         }}
@@ -722,7 +723,7 @@ export default function RecipePage() {
                         <Typography
                           sx={{
                             fontFamily: 'Outfit, sans-serif',
-                            color: '#0D9488',
+                            color: teal.dark,
                             fontSize: '13px',
                             fontStyle: 'italic',
                             textAlign: 'center',
@@ -739,15 +740,15 @@ export default function RecipePage() {
                               label={ingredient}
                               onClick={() => handleIngredientSelect(ingredient)}
                               sx={{
-                                bgcolor: selectedIngredients.includes(ingredient) ? '#14B8A6' : '#F0FDFA',
-                                color: selectedIngredients.includes(ingredient) ? '#fff' : '#0D9488',
-                                border: '1px solid #14B8A6',
+                                bgcolor: selectedIngredients.includes(ingredient) ? teal.main : teal.bg,
+                                color: selectedIngredients.includes(ingredient) ? white : teal.dark,
+                                border: `1px solid ${teal.main}`,
                                 fontFamily: 'Outfit, sans-serif',
                                 fontSize: '12px',
                                 fontWeight: selectedIngredients.includes(ingredient) ? 600 : 400,
                                 cursor: 'pointer',
                                 '&:hover': {
-                                  bgcolor: selectedIngredients.includes(ingredient) ? '#0D9488' : '#99F6E4',
+                                  bgcolor: selectedIngredients.includes(ingredient) ? teal.dark : teal.light,
                                 },
                               }}
                             />
@@ -761,25 +762,25 @@ export default function RecipePage() {
                       <Button
                         variant="contained"
                         fullWidth
-                        startIcon={generating ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <Restaurant />}
+                        startIcon={generating ? <CircularProgress size={20} sx={{ color: white }} /> : <Restaurant />}
                         onClick={handleGenerateRecipes}
                         disabled={generating || selectedIngredients.length === 0}
                         sx={{
-                          bgcolor: '#14B8A6',
-                          color: 'white',
+                          bgcolor: teal.main,
+                          color: white,
                           fontFamily: 'Outfit, sans-serif',
                           fontWeight: 600,
                           fontSize: '14px',
                           py: 1.25,
                           textTransform: 'none',
-                          border: '2px solid #0D9488',
-                          boxShadow: '2px 2px 0px #0D9488',
+                          border: `2px solid ${teal.dark}`,
+                          boxShadow: `2px 2px 0px ${teal.dark}`,
                           '&:hover': {
-                            bgcolor: '#0D9488',
+                            bgcolor: teal.dark,
                           },
                           '&:disabled': {
-                            bgcolor: '#5EEAD4',
-                            color: 'white',
+                            bgcolor: teal.light,
+                            color: white,
                           },
                         }}
                       >
@@ -795,10 +796,10 @@ export default function RecipePage() {
             {importedRecipe && (
               <Card
                 sx={{
-                  bgcolor: 'white',
+                  bgcolor: white,
                   borderRadius: '12px',
-                  border: '2px solid #7C3AED',
-                  boxShadow: '3px 3px 0px #C4B5FD',
+                  border: `2px solid ${purple.main}`,
+                  boxShadow: `3px 3px 0px ${purple.light}`,
                   mb: 3,
                 }}
               >
@@ -810,7 +811,7 @@ export default function RecipePage() {
                         sx={{
                           fontFamily: 'Outfit, sans-serif',
                           fontWeight: 700,
-                          color: '#5B21B6',
+                          color: purple.dark,
                           fontSize: '18px',
                           mb: 0.5,
                         }}
@@ -821,7 +822,7 @@ export default function RecipePage() {
                         variant="body2"
                         sx={{
                           fontFamily: 'Outfit, sans-serif',
-                          color: '#6B7280',
+                          color: gray.main,
                           fontSize: '13px',
                         }}
                       >
@@ -847,19 +848,19 @@ export default function RecipePage() {
                       <Grid item xs={12} sm={6}>
                         <Box
                           sx={{
-                            bgcolor: '#F0FDFA',
+                            bgcolor: teal.bg,
                             borderRadius: '8px',
-                            border: '1px solid #5EEAD4',
+                            border: `1px solid ${teal.light}`,
                             p: 1.5,
                           }}
                         >
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.75 }}>
-                            <CheckCircle sx={{ fontSize: 14, color: '#0D9488' }} />
+                            <CheckCircle sx={{ fontSize: 14, color: teal.dark }} />
                             <Typography
                               variant="caption"
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
-                                color: '#0D9488',
+                                color: teal.dark,
                                 fontWeight: 700,
                                 fontSize: '11px',
                                 textTransform: 'uppercase',
@@ -876,7 +877,7 @@ export default function RecipePage() {
                                 variant="caption"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#0D9488',
+                                  color: teal.dark,
                                   fontSize: '12px',
                                   lineHeight: 1.6,
                                 }}
@@ -894,9 +895,9 @@ export default function RecipePage() {
                       <Grid item xs={12} sm={6}>
                         <Box
                           sx={{
-                            bgcolor: '#FEF3C7',
+                            bgcolor: amber.bg,
                             borderRadius: '8px',
-                            border: '1px solid #FCD34D',
+                            border: `1px solid ${amber.light}`,
                             p: 1.5,
                           }}
                         >
@@ -904,7 +905,7 @@ export default function RecipePage() {
                             variant="caption"
                             sx={{
                               fontFamily: 'Outfit, sans-serif',
-                              color: '#92400E',
+                              color: brown.dark,
                               fontWeight: 700,
                               fontSize: '11px',
                               textTransform: 'uppercase',
@@ -924,8 +925,8 @@ export default function RecipePage() {
                                     checked={importedRecipeIngredients.includes(ingredient)}
                                     onChange={() => handleToggleImportedIngredient(ingredient)}
                                     sx={{
-                                      color: '#F59E0B',
-                                      '&.Mui-checked': { color: '#F59E0B' },
+                                      color: amber.main,
+                                      '&.Mui-checked': { color: amber.main },
                                       py: 0.25,
                                     }}
                                   />
@@ -935,7 +936,7 @@ export default function RecipePage() {
                                     variant="caption"
                                     sx={{
                                       fontFamily: 'Outfit, sans-serif',
-                                      color: '#92400E',
+                                      color: brown.dark,
                                       fontSize: '12px',
                                     }}
                                   >
@@ -959,15 +960,15 @@ export default function RecipePage() {
                       onClick={handleAddImportedToShoppingList}
                       disabled={importedRecipeIngredients.length === 0}
                       sx={{
-                        bgcolor: '#F59E0B',
-                        color: 'white',
+                        bgcolor: amber.main,
+                        color: white,
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
                         fontSize: '13px',
                         textTransform: 'none',
                         py: 1,
-                        '&:hover': { bgcolor: '#D97706' },
-                        '&:disabled': { bgcolor: '#FCD34D', color: 'white' },
+                        '&:hover': { bgcolor: amber.dark },
+                        '&:disabled': { bgcolor: amber.light, color: white },
                       }}
                     >
                       Add to Shopping List & Save
@@ -981,13 +982,13 @@ export default function RecipePage() {
                         fontWeight: 600,
                         fontSize: '13px',
                         textTransform: 'none',
-                        color: '#7C3AED',
-                        borderColor: '#7C3AED',
-                        border: '2px solid #7C3AED',
+                        color: purple.main,
+                        borderColor: purple.main,
+                        border: `2px solid ${purple.main}`,
                         '&:hover': {
-                          bgcolor: '#F5F3FF',
-                          borderColor: '#6D28D9',
-                          border: '2px solid #6D28D9',
+                          bgcolor: purple.bg,
+                          borderColor: purple.dark,
+                          border: `2px solid ${purple.dark}`,
                         },
                       }}
                     >
@@ -1008,10 +1009,10 @@ export default function RecipePage() {
                     <Card
                       key={index}
                       sx={{
-                        bgcolor: 'white',
+                        bgcolor: white,
                         borderRadius: '12px',
-                        border: '2px solid #E5E7EB',
-                        boxShadow: '3px 3px 0px #E5E7EB',
+                        border: `2px solid ${ui.border}`,
+                        boxShadow: `3px 3px 0px ${ui.border}`,
                       }}
                     >
                       <CardContent sx={{ p: 3 }}>
@@ -1022,7 +1023,7 @@ export default function RecipePage() {
                             sx={{
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 700,
-                              color: '#14B8A6',
+                              color: teal.main,
                               fontSize: { xs: '16px', sm: '18px' },
                               flex: 1,
                               pr: 1,
@@ -1034,7 +1035,7 @@ export default function RecipePage() {
                             label={recipe.difficulty}
                             size="small"
                             sx={{
-                              bgcolor: difficultyColors[recipe.difficulty] || '#14B8A6',
+                              bgcolor: difficultyColors[recipe.difficulty] || teal.main,
                               color: 'white',
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 600,
@@ -1049,7 +1050,7 @@ export default function RecipePage() {
                           variant="body2"
                           sx={{
                             fontFamily: 'Outfit, sans-serif',
-                            color: '#374151',
+                            color: darkGray.dark,
                             mb: 2,
                             lineHeight: 1.5,
                             fontSize: { xs: '13px', sm: '14px' },
@@ -1060,12 +1061,12 @@ export default function RecipePage() {
 
                         {/* Time Badge */}
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 2.5 }}>
-                          <AccessTime sx={{ fontSize: 16, color: '#6B7280' }} />
+                          <AccessTime sx={{ fontSize: 16, color: gray.main }} />
                           <Typography
                             variant="caption"
                             sx={{
                               fontFamily: 'Outfit, sans-serif',
-                              color: '#6B7280',
+                              color: gray.main,
                               fontSize: '12px',
                             }}
                           >
@@ -1087,19 +1088,19 @@ export default function RecipePage() {
                             <Box
                               sx={{
                                 flex: 1,
-                                bgcolor: '#F0FDFA',
+                                bgcolor: teal.bg,
                                 borderRadius: '8px',
-                                border: '1px solid #5EEAD4',
+                                border: `1px solid ${teal.light}`,
                                 p: 1.5,
                               }}
                             >
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.75 }}>
-                                <CheckCircle sx={{ fontSize: 14, color: '#0D9488' }} />
+                                <CheckCircle sx={{ fontSize: 14, color: teal.dark }} />
                                 <Typography
                                   variant="caption"
                                   sx={{
                                     fontFamily: 'Outfit, sans-serif',
-                                    color: '#0D9488',
+                                    color: teal.dark,
                                     fontWeight: 700,
                                     fontSize: '11px',
                                     textTransform: 'uppercase',
@@ -1124,7 +1125,7 @@ export default function RecipePage() {
                                     variant="caption"
                                     sx={{
                                       fontFamily: 'Outfit, sans-serif',
-                                      color: '#0D9488',
+                                      color: teal.dark,
                                       fontSize: '12px',
                                       lineHeight: 1.6,
                                     }}
@@ -1141,9 +1142,9 @@ export default function RecipePage() {
                             <Box
                               sx={{
                                 flex: 1,
-                                bgcolor: '#FEF3C7',
+                                bgcolor: amber.bg,
                                 borderRadius: '8px',
-                                border: '1px solid #FCD34D',
+                                border: `1px solid ${amber.light}`,
                                 p: 1.5,
                               }}
                             >
@@ -1151,7 +1152,7 @@ export default function RecipePage() {
                                 variant="caption"
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
-                                  color: '#92400E',
+                                  color: brown.dark,
                                   fontWeight: 700,
                                   fontSize: '11px',
                                   textTransform: 'uppercase',
@@ -1174,8 +1175,8 @@ export default function RecipePage() {
                                         }
                                         onChange={() => handleIngredientToggle(index, ingredient)}
                                         sx={{
-                                          color: '#F59E0B',
-                                          '&.Mui-checked': { color: '#F59E0B' },
+                                          color: amber.main,
+                                          '&.Mui-checked': { color: amber.main },
                                           py: 0.25,
                                         }}
                                       />
@@ -1185,7 +1186,7 @@ export default function RecipePage() {
                                         variant="caption"
                                         sx={{
                                           fontFamily: 'Outfit, sans-serif',
-                                          color: '#92400E',
+                                          color: brown.dark,
                                           fontSize: '12px',
                                         }}
                                       >
@@ -1204,19 +1205,19 @@ export default function RecipePage() {
                                 onClick={() => handleAddToShoppingList(index, recipe.name)}
                                 disabled={(checkedIngredients[`recipe-${index}`] || []).length === 0}
                                 sx={{
-                                  bgcolor: '#F59E0B',
-                                  color: 'white',
+                                  bgcolor: amber.main,
+                                  color: white,
                                   fontFamily: 'Outfit, sans-serif',
                                   fontWeight: 600,
                                   fontSize: '11px',
                                   textTransform: 'none',
                                   py: 0.75,
                                   '&:hover': {
-                                    bgcolor: '#D97706',
+                                    bgcolor: amber.dark,
                                   },
                                   '&:disabled': {
-                                    bgcolor: '#FCD34D',
-                                    color: 'white',
+                                    bgcolor: amber.light,
+                                    color: white,
                                   },
                                 }}
                               >
@@ -1239,14 +1240,14 @@ export default function RecipePage() {
                             fontWeight: 600,
                             fontSize: '13px',
                             textTransform: 'none',
-                            color: '#14B8A6',
-                            borderColor: '#14B8A6',
-                            border: '2px solid #14B8A6',
+                            color: teal.main,
+                            borderColor: teal.main,
+                            border: `2px solid ${teal.main}`,
                             py: 1,
                             '&:hover': {
-                              bgcolor: '#F0FDFA',
-                              borderColor: '#0D9488',
-                              border: '2px solid #0D9488',
+                              bgcolor: teal.bg,
+                              borderColor: teal.dark,
+                              border: `2px solid ${teal.dark}`,
                             },
                           }}
                         >

@@ -31,7 +31,7 @@ import {
   Kitchen,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
-import { teal, cream } from '../../theme/colors';
+import { teal, cream, pink, brown, red } from '../../theme/colors';
 
 export default function Navigation() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -79,7 +79,7 @@ export default function Navigation() {
       <Box
         sx={{
           p: 2,
-          background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
+          background: `linear-gradient(135deg, ${teal.main} 0%, ${teal.darker} 100%)`,
           color: 'white',
           display: 'flex',
           alignItems: 'center',
@@ -106,11 +106,11 @@ export default function Navigation() {
               mb: 0.5,
               borderRadius: '8px',
               '&.Mui-selected': {
-                bgcolor: 'rgba(16, 185, 129, 0.12)',
-                borderLeft: '3px solid #14B8A6',
+                bgcolor: `rgba(20, 184, 166, 0.12)`,
+                borderLeft: `3px solid ${teal.main}`,
               },
               '&:hover': {
-                bgcolor: 'rgba(16, 185, 129, 0.08)',
+                bgcolor: `rgba(20, 184, 166, 0.08)`,
               },
             }}
           >
@@ -137,8 +137,8 @@ export default function Navigation() {
         position="sticky"
         elevation={0}
         sx={{
-          background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-          borderBottom: '2px solid #F59E0B',
+          background: `linear-gradient(135deg, ${teal.bg} 0%, ${teal.bgAlt} 100%)`,
+          borderBottom: `2px solid ${teal.main}`,
           borderRadius: 0,
         }}
       >
@@ -175,12 +175,12 @@ export default function Navigation() {
                 width: 42,
                 height: 42,
                 borderRadius: '10px',
-                background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
+                background: `linear-gradient(135deg, ${teal.main} 0%, ${teal.darker} 100%)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transform: 'rotate(-3deg)',
-                boxShadow: '0 2px 10px rgba(16, 185, 129, 0.25)',
+                boxShadow: `0 2px 10px rgba(20, 184, 166, 0.25)`,
                 transition: 'transform 0.2s ease',
                 '&:hover': {
                   transform: 'rotate(-3deg) scale(1.05)',
@@ -226,8 +226,8 @@ export default function Navigation() {
                       minWidth: 'auto',
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: isActive ? teal.dark : 'rgba(16, 185, 129, 0.08)',
-                        border: isActive ? '1px solid #0D9488' : '1px solid rgba(16, 185, 129, 0.2)',
+                        bgcolor: isActive ? teal.dark : `rgba(20, 184, 166, 0.08)`,
+                        border: isActive ? `1px solid ${teal.darker}` : `1px solid rgba(20, 184, 166, 0.2)`,
                       },
                     }}
                   >
@@ -249,7 +249,7 @@ export default function Navigation() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 600,
-                  color: '#92400E',
+                  color: brown.dark,
                 }}
               >
                 {currentUser.displayName}
@@ -271,7 +271,7 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    border: '2px solid #14B8A6',
+                    border: `2px solid ${teal.main}`,
                   }}
                 />
               ) : (
@@ -279,8 +279,8 @@ export default function Navigation() {
                   sx={{
                     width: 36,
                     height: 36,
-                    bgcolor: '#EC4899',
-                    border: '2px solid #BE185D',
+                    bgcolor: pink.main,
+                    border: `2px solid ${pink.dark}`,
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
                   }}
@@ -301,8 +301,8 @@ export default function Navigation() {
               sx: {
                 mt: 1,
                 borderRadius: '10px',
-                border: '2px solid #14B8A6',
-                boxShadow: '2px 2px 0px rgba(21, 128, 61, 0.3)',
+                border: `2px solid ${teal.main}`,
+                boxShadow: `2px 2px 0px rgba(20, 184, 166, 0.3)`,
               },
             }}
           >
@@ -321,9 +321,9 @@ export default function Navigation() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#DC2626',
+                color: red.dark,
                 '&:hover': {
-                  bgcolor: 'rgba(220, 38, 38, 0.1)',
+                  bgcolor: `rgba(220, 38, 38, 0.1)`,
                 },
               }}
             >

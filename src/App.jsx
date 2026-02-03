@@ -5,6 +5,7 @@ import { lazy, Suspense } from 'react';
 import theme from './theme';
 import { AuthProvider } from './context/AuthContext';
 import { ReceiptProvider } from './context/ReceiptContext';
+import { teal } from './theme/colors';
 
 // Auth components
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -35,7 +36,7 @@ const PageLoader = () => (
       minHeight: '60vh',
     }}
   >
-    <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
+    <CircularProgress size={60} sx={{ color: teal.main }} />
   </Box>
 );
 

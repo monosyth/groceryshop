@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, white } from './theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, white, ui } from './theme/colors';
 
 const theme = createTheme({
   palette: {
@@ -142,7 +142,7 @@ const theme = createTheme({
         root: {
           borderRadius: 16,
           boxShadow: '2px 2px 0px rgba(0, 0, 0, 0.1)',
-          border: '2px solid #E5E7EB',
+          border: `2px solid ${ui.border}`,
         },
       },
     },
@@ -199,7 +199,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          borderBottom: '2px solid #E5E7EB',
+          borderBottom: `2px solid ${ui.border}`,
         },
       },
     },

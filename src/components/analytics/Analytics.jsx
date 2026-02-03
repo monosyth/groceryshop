@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, getCategoryInfo } from '../../theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, ui, white, cream, getCategoryInfo } from '../../theme/colors';
 import {
   Container,
   Typography,
@@ -37,10 +37,10 @@ import { formatCurrency } from '../../utils/formatters';
 
 // Softer, more sophisticated card colors
 const cardColors = [
-  { bg: '#FFEDD5', border: '#F97316', shadow: '#FCD34D' }, // Orange
-  { bg: '#FCE7F3', border: '#EC4899', shadow: '#F9A8D4' }, // Pink
+  { bg: orange.bg, border: orange.main, shadow: orange.light }, // Orange
+  { bg: pink.bg, border: pink.main, shadow: pink.light }, // Pink
   { bg: teal.bg, border: teal.main, shadow: teal.light }, // Green
-  { bg: '#FEF3C7', border: '#F59E0B', shadow: '#FCD34D' }, // Yellow
+  { bg: amber.bg, border: amber.main, shadow: amber.light }, // Yellow
 ];
 
 export default function AnalyticsPage() {
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
             <CircularProgress size={60} sx={{ color: teal.main }} />
@@ -95,7 +95,7 @@ export default function AnalyticsPage() {
 
   if (receipts.length === 0) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ pt: 4, pb: 3 }}>
             <Typography
@@ -122,10 +122,10 @@ export default function AnalyticsPage() {
           </Box>
           <Card
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '16px',
-              border: '2px solid #F59E0B',
-              boxShadow: '3px 3px 0px #FCD34D',
+              border: `2px solid ${amber.main}`,
+              boxShadow: `3px 3px 0px ${amber.light}`,
               p: 5,
               textAlign: 'center',
             }}
@@ -148,7 +148,7 @@ export default function AnalyticsPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#92400E',
+                color: brown.dark,
               }}
             >
               Upload receipts to see your spending analytics!
@@ -160,7 +160,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -241,10 +241,10 @@ export default function AnalyticsPage() {
             <Grid item xs={12}>
               <Card
                 sx={{
-                  bgcolor: '#FFEDD5',
+                  bgcolor: orange.bg,
                   borderRadius: '12px',
-                  border: '2px solid #F97316',
-                  boxShadow: '3px 3px 0px #FCD34D',
+                  border: `2px solid ${orange.main}`,
+                  boxShadow: `3px 3px 0px ${amber.light}`,
                   p: 3,
                 }}
               >
@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#EA580C',
+                      color: orange.dark,
                       fontSize: '18px',
                     }}
                   >
@@ -264,21 +264,21 @@ export default function AnalyticsPage() {
                 </Box>
                 <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={spendingByDate}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#FDBA74" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={orange.light} />
                     <XAxis
                       dataKey="date"
-                      stroke="#EA580C"
+                      stroke={orange.dark}
                       style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
-                      stroke="#EA580C"
+                      stroke={orange.dark}
                       style={{ fontSize: '11px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
                         borderRadius: 8,
-                        border: '2px solid #F97316',
+                        border: `2px solid ${orange.main}`,
                         fontSize: '12px',
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 500,
@@ -295,9 +295,9 @@ export default function AnalyticsPage() {
                     <Line
                       type="monotone"
                       dataKey="amount"
-                      stroke="#F97316"
+                      stroke={orange.main}
                       strokeWidth={3}
-                      dot={{ fill: '#F97316', r: 4, strokeWidth: 2, stroke: '#fff' }}
+                      dot={{ fill: orange.main, r: 4, strokeWidth: 2, stroke: white }}
                       activeDot={{ r: 6 }}
                       name="Daily Spending"
                     />
@@ -312,10 +312,10 @@ export default function AnalyticsPage() {
             <Grid item xs={12} md={6}>
               <Card
                 sx={{
-                  bgcolor: '#FCE7F3',
+                  bgcolor: pink.bg,
                   borderRadius: '12px',
-                  border: '2px solid #EC4899',
-                  boxShadow: '3px 3px 0px #F9A8D4',
+                  border: `2px solid ${pink.main}`,
+                  boxShadow: `3px 3px 0px ${pink.light}`,
                   p: 3,
                   height: '100%',
                 }}
@@ -327,7 +327,7 @@ export default function AnalyticsPage() {
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
-                      color: '#BE185D',
+                      color: pink.dark,
                       fontSize: '18px',
                     }}
                   >
@@ -336,30 +336,30 @@ export default function AnalyticsPage() {
                 </Box>
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={spendingByCategory} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke="#FBCFE8" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={pink.light} />
                     <XAxis
                       type="number"
-                      stroke="#BE185D"
+                      stroke={pink.dark}
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={90}
-                      stroke="#BE185D"
+                      stroke={pink.dark}
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
                         borderRadius: 8,
-                        border: '2px solid #EC4899',
+                        border: `2px solid ${pink.main}`,
                         fontSize: '11px',
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 500,
                       }}
                     />
-                    <Bar dataKey="value" fill="#EC4899" radius={[0, 6, 6, 0]} name="Spending" />
+                    <Bar dataKey="value" fill={pink.main} radius={[0, 6, 6, 0]} name="Spending" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>
@@ -373,8 +373,8 @@ export default function AnalyticsPage() {
                 sx={{
                   bgcolor: teal.bg,
                   borderRadius: '12px',
-                  border: '2px solid #14B8A6',
-                  boxShadow: '3px 3px 0px #5EEAD4',
+                  border: `2px solid ${teal.main}`,
+                  boxShadow: `3px 3px 0px ${teal.light}`,
                   p: 3,
                   height: '100%',
                 }}
@@ -395,30 +395,30 @@ export default function AnalyticsPage() {
                 </Box>
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={spendingByStore} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke="#A7F3D0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke={teal.light} />
                     <XAxis
                       type="number"
-                      stroke="#0D9488"
+                      stroke={teal.darker}
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
                       width={100}
-                      stroke="#0D9488"
+                      stroke={teal.darker}
                       style={{ fontSize: '10px', fontFamily: 'Outfit, sans-serif', fontWeight: 500 }}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       contentStyle={{
                         borderRadius: 8,
-                        border: '2px solid #14B8A6',
+                        border: `2px solid ${teal.main}`,
                         fontSize: '11px',
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 500,
                       }}
                     />
-                    <Bar dataKey="value" fill="#14B8A6" radius={[0, 6, 6, 0]} name="Spending" />
+                    <Bar dataKey="value" fill={teal.main} radius={[0, 6, 6, 0]} name="Spending" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>

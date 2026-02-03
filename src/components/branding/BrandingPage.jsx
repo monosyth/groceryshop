@@ -2,7 +2,7 @@ import { Container, Typography, Box, Grid, Card, CardContent, Chip, Paper, Butto
 import { CameraAlt, Upload, Add, Delete, Edit, Download } from '@mui/icons-material';
 import {
   teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown,
-  white, cream, categories, cardThemes
+  white, cream, ui, categories, cardThemes
 } from '../../theme/colors';
 
 export default function BrandingPage() {
@@ -29,7 +29,7 @@ export default function BrandingPage() {
           height: 80,
           bgcolor: color,
           borderRadius: '12px',
-          border: '2px solid #E5E7EB',
+          border: `2px solid ${ui.border}`,
           mb: 1,
           boxShadow: '2px 2px 0px rgba(0,0,0,0.1)',
         }}
@@ -48,7 +48,7 @@ export default function BrandingPage() {
       <Typography
         variant="caption"
         sx={{
-          color: '#6B7280',
+          color: gray.main,
           fontSize: '11px',
           fontFamily: 'monospace',
         }}
@@ -60,7 +60,7 @@ export default function BrandingPage() {
           variant="caption"
           sx={{
             fontFamily: 'Outfit, sans-serif',
-            color: '#9CA3AF',
+            color: darkGray.light,
             fontSize: '10px',
             display: 'block',
             mt: 0.5,
@@ -73,7 +73,7 @@ export default function BrandingPage() {
   );
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 6 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 6 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 6, pb: 4, textAlign: 'center' }}>
@@ -129,7 +129,7 @@ export default function BrandingPage() {
                 label="dark"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  bgcolor: 'white',
+                  bgcolor: white,
                   fontWeight: 600,
                   width: '100%',
                 }}
@@ -139,7 +139,7 @@ export default function BrandingPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '11px',
-                  color: '#6B7280',
+                  color: gray.main,
                   display: 'block',
                   mt: 0.5,
                 }}
@@ -152,7 +152,7 @@ export default function BrandingPage() {
                 label="main"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  bgcolor: 'white',
+                  bgcolor: white,
                   fontWeight: 600,
                   width: '100%',
                 }}
@@ -162,7 +162,7 @@ export default function BrandingPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '11px',
-                  color: '#6B7280',
+                  color: gray.main,
                   display: 'block',
                   mt: 0.5,
                 }}
@@ -175,7 +175,7 @@ export default function BrandingPage() {
                 label="light"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  bgcolor: 'white',
+                  bgcolor: white,
                   fontWeight: 600,
                   width: '100%',
                 }}
@@ -185,7 +185,7 @@ export default function BrandingPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '11px',
-                  color: '#6B7280',
+                  color: gray.main,
                   display: 'block',
                   mt: 0.5,
                 }}
@@ -198,7 +198,7 @@ export default function BrandingPage() {
                 label="bg"
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
-                  bgcolor: 'white',
+                  bgcolor: white,
                   fontWeight: 600,
                   width: '100%',
                 }}
@@ -208,7 +208,7 @@ export default function BrandingPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: '11px',
-                  color: '#6B7280',
+                  color: gray.main,
                   display: 'block',
                   mt: 0.5,
                 }}
@@ -225,7 +225,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -237,10 +237,10 @@ export default function BrandingPage() {
             <Grid item xs={12} md={6} lg={4} key={family.name}>
               <Card
                 sx={{
-                  bgcolor: 'white',
+                  bgcolor: white,
                   borderRadius: '16px',
-                  border: '2px solid #E5E7EB',
-                  boxShadow: '3px 3px 0px #E5E7EB',
+                  border: `2px solid ${ui.border}`,
+                  boxShadow: `3px 3px 0px ${ui.border}`,
                   height: '100%',
                 }}
               >
@@ -260,7 +260,7 @@ export default function BrandingPage() {
                     variant="body2"
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      color: '#6B7280',
+                      color: gray.main,
                       fontSize: '13px',
                       mb: 3,
                     }}
@@ -294,7 +294,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -331,7 +331,7 @@ export default function BrandingPage() {
                     sx={{
                       fontFamily: 'monospace',
                       fontSize: '11px',
-                      color: '#6B7280',
+                      color: gray.main,
                     }}
                   >
                     {category.color}
@@ -348,7 +348,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -427,7 +427,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -438,10 +438,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={6}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '16px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '3px 3px 0px #E5E7EB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `3px 3px 0px ${ui.border}`,
               }}
             >
               <CardContent sx={{ p: 3 }}>
@@ -449,7 +449,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 2,
                     fontSize: '11px',
                     textTransform: 'uppercase',
@@ -472,7 +472,7 @@ export default function BrandingPage() {
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     fontSize: '13px',
                   }}
                 >
@@ -499,10 +499,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={6}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '16px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '3px 3px 0px #E5E7EB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `3px 3px 0px ${ui.border}`,
               }}
             >
               <CardContent sx={{ p: 3 }}>
@@ -510,7 +510,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 2,
                     fontSize: '11px',
                     textTransform: 'uppercase',
@@ -551,7 +551,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -562,17 +562,17 @@ export default function BrandingPage() {
           <Grid item xs={12} sm={6} md={3}>
             <Box
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 p: 3,
                 borderRadius: '8px',
-                border: '2px solid #E5E7EB',
+                border: `2px solid ${ui.border}`,
                 textAlign: 'center',
               }}
             >
               <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontWeight: 600, mb: 1 }}>
                 Border Radius
               </Typography>
-              <Typography sx={{ fontFamily: 'monospace', fontSize: '12px', color: '#6B7280', mb: 2 }}>
+              <Typography sx={{ fontFamily: 'monospace', fontSize: '12px', color: gray.main, mb: 2 }}>
                 8px, 12px, 16px, 24px
               </Typography>
               <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
@@ -587,18 +587,18 @@ export default function BrandingPage() {
           <Grid item xs={12} sm={6} md={3}>
             <Box
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 p: 3,
                 borderRadius: '12px',
-                border: '2px solid #14B8A6',
-                boxShadow: '2px 2px 0px #5EEAD4',
+                border: `2px solid ${teal.main}`,
+                boxShadow: `2px 2px 0px ${teal.light}`,
                 textAlign: 'center',
               }}
             >
               <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontWeight: 600, mb: 1 }}>
                 Flat Shadow
               </Typography>
-              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: '#6B7280' }}>
+              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: gray.main }}>
                 2px 2px 0px
               </Typography>
             </Box>
@@ -607,18 +607,18 @@ export default function BrandingPage() {
           <Grid item xs={12} sm={6} md={3}>
             <Box
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 p: 3,
                 borderRadius: '12px',
-                border: '3px solid #F59E0B',
-                boxShadow: '3px 3px 0px #FCD34D',
+                border: `3px solid ${amber.main}`,
+                boxShadow: `3px 3px 0px ${amber.light}`,
                 textAlign: 'center',
               }}
             >
               <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontWeight: 600, mb: 1 }}>
                 Medium Shadow
               </Typography>
-              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: '#6B7280' }}>
+              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: gray.main }}>
                 3px 3px 0px
               </Typography>
             </Box>
@@ -627,18 +627,18 @@ export default function BrandingPage() {
           <Grid item xs={12} sm={6} md={3}>
             <Box
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 p: 3,
                 borderRadius: '12px',
-                border: '4px solid #EC4899',
-                boxShadow: '6px 6px 0px #F9A8D4',
+                border: `4px solid ${pink.main}`,
+                boxShadow: `6px 6px 0px ${pink.light}`,
                 textAlign: 'center',
               }}
             >
               <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontWeight: 600, mb: 1 }}>
                 Large Shadow
               </Typography>
-              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: '#6B7280' }}>
+              <Typography sx={{ fontFamily: 'monospace', fontSize: '11px', color: gray.main }}>
                 6px 6px 0px
               </Typography>
             </Box>
@@ -651,7 +651,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -662,10 +662,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={6}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '16px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '3px 3px 0px #E5E7EB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `3px 3px 0px ${ui.border}`,
               }}
             >
               <CardContent sx={{ p: 3 }}>
@@ -673,7 +673,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 2,
                     fontSize: '11px',
                     textTransform: 'uppercase',
@@ -730,10 +730,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={6}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '16px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '3px 3px 0px #E5E7EB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `3px 3px 0px ${ui.border}`,
               }}
             >
               <CardContent sx={{ p: 3 }}>
@@ -741,7 +741,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 2,
                     fontSize: '11px',
                     textTransform: 'uppercase',
@@ -786,7 +786,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mt: 3,
                     mb: 1,
                     fontSize: '11px',
@@ -797,11 +797,11 @@ export default function BrandingPage() {
                   Dividers
                 </Typography>
                 <Box>
-                  <Box sx={{ borderBottom: '1px solid #E5E7EB', mb: 1 }} />
+                  <Box sx={{ borderBottom: `1px solid ${ui.border}`, mb: 1 }} />
                   <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '11px', mb: 1 }}>
                     Solid divider
                   </Typography>
-                  <Box sx={{ borderBottom: '1px dashed #E5E7EB', mb: 1 }} />
+                  <Box sx={{ borderBottom: `1px dashed ${ui.border}`, mb: 1 }} />
                   <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '11px' }}>
                     Dashed divider (receipt style)
                   </Typography>
@@ -817,7 +817,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -828,10 +828,10 @@ export default function BrandingPage() {
           <Grid item xs={12}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '16px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '3px 3px 0px #E5E7EB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `3px 3px 0px ${ui.border}`,
               }}
             >
               <CardContent sx={{ p: 3 }}>
@@ -839,7 +839,7 @@ export default function BrandingPage() {
                   variant="subtitle2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 3,
                     fontSize: '11px',
                     textTransform: 'uppercase',
@@ -992,7 +992,7 @@ export default function BrandingPage() {
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     fontSize: '13px',
                     mt: 2,
                   }}
@@ -1010,7 +1010,7 @@ export default function BrandingPage() {
           sx={{
             fontFamily: 'Outfit, sans-serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: darkGray.darker,
             mb: 3,
           }}
         >
@@ -1021,10 +1021,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={4}>
             <Card
               sx={{
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '12px',
-                border: '2px solid #E5E7EB',
-                boxShadow: '2px 2px 0px #D1D5DB',
+                border: `2px solid ${ui.border}`,
+                boxShadow: `2px 2px 0px ${gray.light}`,
                 height: 150,
                 display: 'flex',
                 alignItems: 'center',
@@ -1039,7 +1039,7 @@ export default function BrandingPage() {
               sx={{
                 fontFamily: 'monospace',
                 fontSize: '11px',
-                color: '#6B7280',
+                color: gray.main,
                 mt: 1,
                 textAlign: 'center',
               }}
@@ -1051,10 +1051,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={4}>
             <Card
               sx={{
-                bgcolor: '#F0FDFA',
+                bgcolor: teal.bg,
                 borderRadius: '12px',
-                border: '2px solid #14B8A6',
-                boxShadow: '3px 3px 0px #5EEAD4',
+                border: `2px solid ${teal.main}`,
+                boxShadow: `3px 3px 0px ${teal.light}`,
                 height: 150,
                 display: 'flex',
                 alignItems: 'center',
@@ -1069,7 +1069,7 @@ export default function BrandingPage() {
               sx={{
                 fontFamily: 'monospace',
                 fontSize: '11px',
-                color: '#6B7280',
+                color: gray.main,
                 mt: 1,
                 textAlign: 'center',
               }}
@@ -1081,10 +1081,10 @@ export default function BrandingPage() {
           <Grid item xs={12} md={4}>
             <Card
               sx={{
-                bgcolor: '#FEF3C7',
+                bgcolor: amber.bg,
                 borderRadius: '16px',
-                border: '4px solid #DBEAFE',
-                boxShadow: '6px 6px 0px #DBEAFE',
+                border: `4px solid ${blue.bg}`,
+                boxShadow: `6px 6px 0px ${blue.bg}`,
                 height: 150,
                 display: 'flex',
                 alignItems: 'center',
@@ -1099,7 +1099,7 @@ export default function BrandingPage() {
               sx={{
                 fontFamily: 'monospace',
                 fontSize: '11px',
-                color: '#6B7280',
+                color: gray.main,
                 mt: 1,
                 textAlign: 'center',
               }}

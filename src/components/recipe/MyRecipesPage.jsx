@@ -31,6 +31,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { collection, query, where, onSnapshot, deleteDoc, doc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { teal, pink, orange, amber, brown, purple, blue, gray, darkGray, ui, white, cream } from '../../theme/colors';
 
 export default function MyRecipesPage() {
   const { currentUser } = useAuth();
@@ -153,10 +154,10 @@ export default function MyRecipesPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress size={60} sx={{ color: '#14B8A6' }} />
+            <CircularProgress size={60} sx={{ color: teal.main }} />
           </Box>
         </Container>
       </Box>
@@ -164,7 +165,7 @@ export default function MyRecipesPage() {
   }
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -173,7 +174,7 @@ export default function MyRecipesPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 700,
-              color: '#14B8A6',
+              color: teal.main,
               fontSize: { xs: '28px', md: '34px' },
               mb: 1,
             }}
@@ -185,7 +186,7 @@ export default function MyRecipesPage() {
             sx={{
               fontFamily: 'Outfit, sans-serif',
               fontWeight: 400,
-              color: '#78350F',
+              color: brown.main,
             }}
           >
             {recipes.length > 0
@@ -197,10 +198,10 @@ export default function MyRecipesPage() {
         {recipes.length === 0 ? (
           <Card
             sx={{
-              bgcolor: '#FEF3C7',
+              bgcolor: amber.bg,
               borderRadius: '16px',
-              border: '2px solid #F59E0B',
-              boxShadow: '3px 3px 0px #FCD34D',
+              border: `2px solid ${amber.main}`,
+              boxShadow: `3px 3px 0px ${amber.light}`,
               p: 5,
               textAlign: 'center',
             }}
@@ -211,7 +212,7 @@ export default function MyRecipesPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
-                color: '#78350F',
+                color: brown.main,
                 mb: 1,
                 fontSize: '20px',
               }}
@@ -223,7 +224,7 @@ export default function MyRecipesPage() {
               sx={{
                 fontFamily: 'Outfit, sans-serif',
                 fontWeight: 400,
-                color: '#92400E',
+                color: brown.dark,
               }}
             >
               Import recipes from URLs on the Recipes page to save them here!
@@ -235,10 +236,10 @@ export default function MyRecipesPage() {
               <Grid item xs={12} sm={6} md={4} key={recipe.id}>
                 <Card
                   sx={{
-                    bgcolor: 'white',
+                    bgcolor: white,
                     borderRadius: '12px',
-                    border: '2px solid #E5E7EB',
-                    boxShadow: '3px 3px 0px #E5E7EB',
+                    border: `2px solid ${ui.border}`,
+                    boxShadow: `3px 3px 0px ${ui.border}`,
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
@@ -252,7 +253,7 @@ export default function MyRecipesPage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 700,
-                        color: '#14B8A6',
+                        color: teal.main,
                         fontSize: '16px',
                         mb: 1,
                         display: '-webkit-box',
@@ -268,7 +269,7 @@ export default function MyRecipesPage() {
                       variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        color: '#6B7280',
+                        color: gray.main,
                         fontSize: '13px',
                         mb: 2,
                         display: '-webkit-box',
@@ -288,8 +289,8 @@ export default function MyRecipesPage() {
                           label={`${recipe.prepTime}-${recipe.cookTime} min`}
                           size="small"
                           sx={{
-                            bgcolor: '#F0FDFA',
-                            color: '#0D9488',
+                            bgcolor: teal.bg,
+                            color: teal.dark,
                             fontFamily: 'Outfit, sans-serif',
                             fontSize: '11px',
                           }}
@@ -300,8 +301,8 @@ export default function MyRecipesPage() {
                           label={`${recipe.ingredients.length} ingredients`}
                           size="small"
                           sx={{
-                            bgcolor: '#FEF3C7',
-                            color: '#92400E',
+                            bgcolor: amber.bg,
+                            color: brown.dark,
                             fontFamily: 'Outfit, sans-serif',
                             fontSize: '11px',
                           }}
@@ -313,11 +314,11 @@ export default function MyRecipesPage() {
                     {recipe.ingredients && recipe.ingredients.length > 0 && (
                       <Box
                         sx={{
-                          bgcolor: '#F9FAFB',
+                          bgcolor: gray.bg,
                           borderRadius: '8px',
                           p: 1.5,
                           mb: 2,
-                          border: '1px solid #E5E7EB',
+                          border: `1px solid ${ui.border}`,
                         }}
                       >
                         <Typography
@@ -325,7 +326,7 @@ export default function MyRecipesPage() {
                           sx={{
                             fontFamily: 'Outfit, sans-serif',
                             fontWeight: 600,
-                            color: '#374151',
+                            color: darkGray.main,
                             fontSize: '12px',
                             display: 'block',
                             mb: 1,
@@ -344,8 +345,8 @@ export default function MyRecipesPage() {
                                   onChange={() => handleToggleIngredient(recipe.id, ingredient)}
                                   onClick={(e) => e.stopPropagation()}
                                   sx={{
-                                    color: '#14B8A6',
-                                    '&.Mui-checked': { color: '#14B8A6' },
+                                    color: teal.main,
+                                    '&.Mui-checked': { color: teal.main },
                                     py: 0.25,
                                   }}
                                 />
@@ -355,7 +356,7 @@ export default function MyRecipesPage() {
                                   variant="caption"
                                   sx={{
                                     fontFamily: 'Outfit, sans-serif',
-                                    color: '#374151',
+                                    color: darkGray.main,
                                     fontSize: '12px',
                                   }}
                                 >
@@ -379,7 +380,7 @@ export default function MyRecipesPage() {
                           disabled={(selectedIngredients[recipe.id] || []).length === 0}
                           sx={{
                             mt: 1.5,
-                            bgcolor: '#14B8A6',
+                            bgcolor: teal.main,
                             color: 'white',
                             fontFamily: 'Outfit, sans-serif',
                             fontWeight: 600,
@@ -387,10 +388,10 @@ export default function MyRecipesPage() {
                             textTransform: 'none',
                             py: 0.75,
                             '&:hover': {
-                              bgcolor: '#0D9488',
+                              bgcolor: teal.dark,
                             },
                             '&:disabled': {
-                              bgcolor: '#5EEAD4',
+                              bgcolor: teal.light,
                               color: 'white',
                             },
                           }}
@@ -400,12 +401,12 @@ export default function MyRecipesPage() {
                       </Box>
                     )}
 
-                    <Box sx={{ pt: 2, borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ pt: 2, borderTop: `1px solid ${ui.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Typography
                         variant="caption"
                         sx={{
                           fontFamily: 'Outfit, sans-serif',
-                          color: '#9CA3AF',
+                          color: darkGray.light,
                           fontSize: '11px',
                         }}
                       >
@@ -417,7 +418,7 @@ export default function MyRecipesPage() {
                           e.stopPropagation();
                           handleDeleteRecipe(recipe.id);
                         }}
-                        sx={{ color: '#EF4444' }}
+                        sx={{ color: pink.dark }}
                       >
                         <Delete sx={{ fontSize: 18 }} />
                       </IconButton>
@@ -442,7 +443,7 @@ export default function MyRecipesPage() {
                 sx={{
                   fontFamily: 'Outfit, sans-serif',
                   fontWeight: 700,
-                  color: '#14B8A6',
+                  color: teal.main,
                   pr: 6,
                 }}
               >
@@ -459,7 +460,7 @@ export default function MyRecipesPage() {
                   variant="body2"
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
-                    color: '#6B7280',
+                    color: gray.main,
                     mb: 2,
                   }}
                 >
@@ -472,8 +473,8 @@ export default function MyRecipesPage() {
                       label={`Prep: ${selectedRecipe.prepTime} min`}
                       size="small"
                       sx={{
-                        bgcolor: '#F0FDFA',
-                        color: '#0D9488',
+                        bgcolor: teal.bg,
+                        color: teal.dark,
                         fontFamily: 'Outfit, sans-serif',
                       }}
                     />
@@ -483,8 +484,8 @@ export default function MyRecipesPage() {
                       label={`Cook: ${selectedRecipe.cookTime} min`}
                       size="small"
                       sx={{
-                        bgcolor: '#FEF3C7',
-                        color: '#92400E',
+                        bgcolor: amber.bg,
+                        color: brown.dark,
                         fontFamily: 'Outfit, sans-serif',
                       }}
                     />
@@ -494,8 +495,8 @@ export default function MyRecipesPage() {
                       label={`Servings: ${selectedRecipe.servings}`}
                       size="small"
                       sx={{
-                        bgcolor: '#EDE9FE',
-                        color: '#5B21B6',
+                        bgcolor: purple.bg,
+                        color: purple.dark,
                         fontFamily: 'Outfit, sans-serif',
                       }}
                     />
@@ -509,7 +510,7 @@ export default function MyRecipesPage() {
                   sx={{
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
-                    color: '#14B8A6',
+                    color: teal.main,
                     fontSize: '16px',
                     mb: 1.5,
                   }}
@@ -524,7 +525,7 @@ export default function MyRecipesPage() {
                       variant="body2"
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
-                        color: '#374151',
+                        color: darkGray.main,
                         fontSize: '14px',
                         mb: 0.5,
                       }}
@@ -542,7 +543,7 @@ export default function MyRecipesPage() {
                       sx={{
                         fontFamily: 'Outfit, sans-serif',
                         fontWeight: 600,
-                        color: '#14B8A6',
+                        color: teal.main,
                         fontSize: '16px',
                         mb: 1.5,
                       }}
@@ -557,7 +558,7 @@ export default function MyRecipesPage() {
                           variant="body2"
                           sx={{
                             fontFamily: 'Outfit, sans-serif',
-                            color: '#374151',
+                            color: darkGray.main,
                             fontSize: '14px',
                             mb: 1,
                           }}
@@ -579,7 +580,7 @@ export default function MyRecipesPage() {
                       fontFamily: 'Outfit, sans-serif',
                       fontWeight: 600,
                       textTransform: 'none',
-                      color: '#14B8A6',
+                      color: teal.main,
                     }}
                   >
                     View Original
@@ -591,7 +592,7 @@ export default function MyRecipesPage() {
                     fontFamily: 'Outfit, sans-serif',
                     fontWeight: 600,
                     textTransform: 'none',
-                    color: '#6B7280',
+                    color: gray.main,
                   }}
                 >
                   Close

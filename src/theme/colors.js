@@ -3,14 +3,19 @@
  *
  * Centralized color palette with consistent shading structure.
  * Each color family has 4 shades: dark, main, light, bg (background)
+ *
+ * IMPORTANT: All colors in the app should reference this file.
+ * Do not use hardcoded hex values in components.
  */
 
 // Primary Brand Colors - Teal
 export const teal = {
-  dark: '#008073',    // Hover states, dark accents
-  main: '#00A896',    // Primary brand color
-  light: '#4DD4C0',   // Highlights, shadows
-  bg: '#E6F9F5',      // Light backgrounds
+  darker: '#0D9488',  // Hover states, dark accents
+  dark: '#0D9488',    // Hover states, dark accents (alias)
+  main: '#14B8A6',    // Primary brand color
+  light: '#5EEAD4',   // Highlights, shadows
+  bg: '#F0FDFA',      // Light backgrounds (app pages)
+  bgAlt: '#E6F9F5',   // Alternative light background
 };
 
 // Category Colors
@@ -29,10 +34,18 @@ export const purple = {
 };
 
 export const pink = {
+  darker: '#9F1239',  // Very dark pink/rose for text
   dark: '#BE185D',
   main: '#EC4899',    // Beverages category
   light: '#F9A8D4',
   bg: '#FCE7F3',
+};
+
+export const rose = {
+  dark: '#DB2777',    // Rose-700
+  main: '#F43F5E',    // Rose-500
+  light: '#FDA4AF',   // Rose-300
+  bg: '#FFE4E6',      // Rose-100
 };
 
 export const orange = {
@@ -87,7 +100,19 @@ export const brown = {
 
 // UI Colors
 export const white = '#FFFFFF';
-export const cream = '#FFFBEB';  // Warm background
+export const cream = '#FFFBEB';  // Warm background (landing page)
+
+// UI utility colors - borders, dividers, backgrounds
+export const ui = {
+  border: '#E5E7EB',        // Default border color
+  borderLight: '#F3F4F6',   // Light border
+  divider: '#E5E7EB',       // Divider lines
+  background: '#FFFFFF',    // Default background
+  backgroundAlt: '#F9FAFB', // Alternative background
+  backgroundPage: '#F0FDFA', // Page background (light teal)
+  shadow: '#D1D5DB',        // Box shadow color
+  overlay: 'rgba(0,0,0,0.5)', // Modal overlay
+};
 
 // Category Mapping
 export const categories = {
@@ -200,6 +225,7 @@ export const colors = {
   brown,
   white,
   cream,
+  ui,
 };
 
 export default colors;

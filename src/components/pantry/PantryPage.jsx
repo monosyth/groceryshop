@@ -43,7 +43,7 @@ import {
 import { db } from '../../firebase';
 import { analyzePantryPhoto, categorizeShoppingItem } from '../../services/geminiService';
 import { addPhotoItemsToPantry } from '../../services/pantryService';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream } from '../../theme/colors';
+import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, ui, white, cream } from '../../theme/colors';
 
 export default function PantryPage() {
   const { currentUser } = useAuth();
@@ -477,7 +477,7 @@ export default function PantryPage() {
               height: 28,
               borderRadius: '6px',
               bgcolor: blue.bg,
-              border: '1.5px solid #3B82F6',
+              border: `1.5px solid ${blue.main}`,
             }}
           >
             <ReceiptIcon sx={{ fontSize: 16, color: blue.dark }} />
@@ -494,10 +494,10 @@ export default function PantryPage() {
               height: 28,
               borderRadius: '6px',
               bgcolor: red.bg,
-              border: '1.5px solid #EF4444',
+              border: `1.5px solid ${red.main}`,
             }}
           >
-            <CameraAlt sx={{ fontSize: 16, color: '#991B1B' }} />
+            <CameraAlt sx={{ fontSize: 16, color: red.darker }} />
           </Box>
         );
       case 'manual':
@@ -510,11 +510,11 @@ export default function PantryPage() {
               width: 28,
               height: 28,
               borderRadius: '6px',
-              bgcolor: '#CCFBF1',
-              border: '1.5px solid #14B8A6',
+              bgcolor: teal.bg,
+              border: `1.5px solid ${teal.main}`,
             }}
           >
-            <EditIcon sx={{ fontSize: 16, color: '#0F766E' }} />
+            <EditIcon sx={{ fontSize: 16, color: teal.darker }} />
           </Box>
         );
       default:
@@ -527,11 +527,11 @@ export default function PantryPage() {
               width: 28,
               height: 28,
               borderRadius: '6px',
-              bgcolor: '#F3F4F6',
-              border: '1.5px solid #9CA3AF',
+              bgcolor: ui.borderLight,
+              border: `1.5px solid ${gray.main}`,
             }}
           >
-            <Kitchen sx={{ fontSize: 16, color: '#4B5563' }} />
+            <Kitchen sx={{ fontSize: 16, color: darkGray.dark }} />
           </Box>
         );
     }
@@ -539,7 +539,7 @@ export default function PantryPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
             <CircularProgress size={60} sx={{ color: teal.main }} />
@@ -550,7 +550,7 @@ export default function PantryPage() {
   }
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -577,13 +577,13 @@ export default function PantryPage() {
                     fontSize: '12px',
                     textTransform: 'none',
                     color: amber.main,
-                    border: '1px solid #F59E0B',
+                    border: `1px solid ${amber.main}`,
                     borderRadius: '8px',
                     px: 2,
                     py: 0.75,
                     '&:hover': {
-                      bgcolor: '#F0FDFA',
-                      border: '1px solid #D97706',
+                      bgcolor: teal.bg,
+                      border: `1px solid ${amber.dark}`,
                     },
                   }}
                 >
@@ -601,17 +601,17 @@ export default function PantryPage() {
                     fontSize: '12px',
                     textTransform: 'none',
                     color: teal.main,
-                    border: '1px solid #14B8A6',
+                    border: `1px solid ${teal.main}`,
                     borderRadius: '8px',
                     px: 2,
                     py: 0.75,
                     '&:hover': {
                       bgcolor: teal.bg,
-                      border: '1px solid #0D9488',
+                      border: `1px solid ${teal.dark}`,
                     },
                     '&:disabled': {
-                      color: '#9CA3AF',
-                      border: '1px solid #D1D5DB',
+                      color: darkGray.light,
+                      border: `1px solid ${gray.light}`,
                     },
                   }}
                 >
@@ -636,8 +636,8 @@ export default function PantryPage() {
           sx={{
             bgcolor: teal.bg,
             borderRadius: '12px',
-            border: '2px solid #14B8A6',
-            boxShadow: '3px 3px 0px #5EEAD4',
+            border: `2px solid ${teal.main}`,
+            boxShadow: `3px 3px 0px ${teal.light}`,
             mb: 3,
           }}
         >
@@ -652,7 +652,7 @@ export default function PantryPage() {
                 sx={{
                   flex: '1 1 250px',
                   '& .MuiOutlinedInput-root': {
-                    bgcolor: '#fff',
+                    bgcolor: white,
                     fontFamily: 'Outfit, sans-serif',
                   },
                 }}
@@ -754,8 +754,8 @@ export default function PantryPage() {
             sx={{
               bgcolor: amber.bg,
               borderRadius: '16px',
-              border: '2px solid #F59E0B',
-              boxShadow: '3px 3px 0px #FCD34D',
+              border: `2px solid ${amber.main}`,
+              boxShadow: `3px 3px 0px ${amber.light}`,
               p: 5,
               textAlign: 'center',
             }}
@@ -794,10 +794,10 @@ export default function PantryPage() {
                 <Grid item xs={12} sm={6} md={6} lg={4} key={categoryValue}>
                   <Card
                     sx={{
-                      bgcolor: '#fff',
+                      bgcolor: white,
                       borderRadius: '12px',
-                      border: '2px solid #E5E7EB',
-                      boxShadow: '2px 2px 0px #D1D5DB',
+                      border: `2px solid ${ui.border}`,
+                      boxShadow: `2px 2px 0px ${ui.borderLight}`,
                       height: '100%',
                     }}
                   >
@@ -837,9 +837,9 @@ export default function PantryPage() {
                               justifyContent: 'space-between',
                               p: 1,
                               borderRadius: '8px',
-                              bgcolor: '#F9FAFB',
+                              bgcolor: gray.bg,
                               '&:hover': {
-                                bgcolor: '#F3F4F6',
+                                bgcolor: gray.light,
                               },
                             }}
                           >
@@ -850,7 +850,7 @@ export default function PantryPage() {
                                 sx={{
                                   fontFamily: 'Outfit, sans-serif',
                                   fontSize: '13px',
-                                  color: '#374151',
+                                  color: darkGray.dark,
                                   textTransform: 'capitalize',
                                 }}
                               >

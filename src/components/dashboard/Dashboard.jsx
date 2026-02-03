@@ -46,7 +46,7 @@ import SearchBar from '../search/SearchBar';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { format } from 'date-fns';
-import { getCategoryInfo, teal, blue, darkGray, brown, cream } from '../../theme/colors';
+import { getCategoryInfo, teal, blue, darkGray, brown, gray, amber, pink, ui, white, cream } from '../../theme/colors';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -489,7 +489,7 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ background: 'linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%)', minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
@@ -519,7 +519,7 @@ export default function Dashboard() {
                     borderColor: teal.main,
                     px: 2,
                     '&:hover': {
-                      borderColor: teal.dark,
+                      borderColor: teal.darker,
                       bgcolor: teal.bg,
                     },
                   }}
@@ -538,7 +538,7 @@ export default function Dashboard() {
                     borderColor: teal.main,
                     px: 2,
                     '&:hover': {
-                      borderColor: teal.dark,
+                      borderColor: teal.darker,
                       bgcolor: teal.bg,
                     },
                   }}
@@ -605,15 +605,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 0 ? 'white' : teal.main,
-                bgcolor: activeTab === 0 ? teal.main : 'white',
+                color: activeTab === 0 ? white : teal.main,
+                bgcolor: activeTab === 0 ? teal.main : white,
                 border: '1px solid',
-                borderColor: activeTab === 0 ? teal.main : '#E5E7EB',
+                borderColor: activeTab === 0 ? teal.main : ui.border,
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 0 ? teal.dark : '#F9FAFB',
-                  borderColor: activeTab === 0 ? teal.dark : '#D1D5DB',
+                  bgcolor: activeTab === 0 ? teal.darker : gray.bg,
+                  borderColor: activeTab === 0 ? teal.darker : gray.light,
                 },
               }}
             >
@@ -629,15 +629,15 @@ export default function Dashboard() {
                 py: 0.75,
                 borderRadius: '8px',
                 textTransform: 'none',
-                color: activeTab === 1 ? 'white' : teal.main,
-                bgcolor: activeTab === 1 ? teal.main : 'white',
+                color: activeTab === 1 ? white : teal.main,
+                bgcolor: activeTab === 1 ? teal.main : white,
                 border: '1px solid',
-                borderColor: activeTab === 1 ? teal.main : '#E5E7EB',
+                borderColor: activeTab === 1 ? teal.main : ui.border,
                 minWidth: 'auto',
                 transition: 'all 0.15s ease',
                 '&:hover': {
-                  bgcolor: activeTab === 1 ? teal.dark : '#F9FAFB',
-                  borderColor: activeTab === 1 ? teal.dark : '#D1D5DB',
+                  bgcolor: activeTab === 1 ? teal.darker : gray.bg,
+                  borderColor: activeTab === 1 ? teal.darker : gray.light,
                 },
               }}
             >
@@ -678,10 +678,10 @@ export default function Dashboard() {
               flexDirection: 'column',
               alignItems: 'center',
               gap: 2,
-              bgcolor: 'white',
+              bgcolor: white,
               borderRadius: '24px',
-              border: '4px solid #DBEAFE',
-              boxShadow: '6px 6px 0px #DBEAFE',
+              border: `4px solid ${blue.bg}`,
+              boxShadow: `6px 6px 0px ${blue.bg}`,
             }}
           >
             <Box sx={{ fontSize: '80px', mb: 1 }}>🧾</Box>
@@ -722,10 +722,10 @@ export default function Dashboard() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: 2,
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '24px',
-                border: '4px solid #FED7E2',
-                boxShadow: '6px 6px 0px #FED7E2',
+                border: `4px solid ${pink.bg}`,
+                boxShadow: `6px 6px 0px ${pink.bg}`,
               }}
             >
               <Box sx={{ fontSize: '80px', mb: 1 }}>🔍</Box>
@@ -782,10 +782,10 @@ export default function Dashboard() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: 2,
-                bgcolor: 'white',
+                bgcolor: white,
                 borderRadius: '24px',
-                border: '4px solid #99F6E4',
-                boxShadow: '6px 6px 0px #99F6E4',
+                border: `4px solid ${teal.light}`,
+                boxShadow: `6px 6px 0px ${teal.light}`,
               }}
             >
               <Box sx={{ fontSize: '64px', mb: 1 }}>🔍</Box>
@@ -817,8 +817,8 @@ export default function Dashboard() {
               elevation={0}
               sx={{
                 borderRadius: '16px',
-                border: '3px solid #F59E0B',
-                boxShadow: '3px 3px 0px #FCD34D',
+                border: `3px solid ${amber.main}`,
+                boxShadow: `3px 3px 0px ${amber.light}`,
                 p: 2.5,
               }}
             >
@@ -870,7 +870,7 @@ export default function Dashboard() {
                           sx={{
                             my: 2,
                             borderStyle: 'dashed',
-                            borderColor: '#E5E7EB',
+                            borderColor: ui.border,
                           }}
                         />
                       )}
@@ -925,7 +925,7 @@ export default function Dashboard() {
                             px: 1,
                             borderRadius: '8px',
                             '&:hover': {
-                              bgcolor: '#F9FAFB',
+                              bgcolor: gray.bg,
                             },
                           }}
                         >
@@ -938,14 +938,14 @@ export default function Dashboard() {
                                   fontFamily: 'Outfit, sans-serif',
                                   fontWeight: 600,
                                   fontSize: '13px',
-                                  color: '#1F2937',
+                                  color: darkGray.darker,
                                 }}
                               >
                                 {item.quantity > 1 && (
                                   <Box
                                     component="span"
                                     sx={{
-                                      color: '#6B7280',
+                                      color: gray.main,
                                       fontSize: '12px',
                                       mr: 0.5,
                                     }}
@@ -985,7 +985,7 @@ export default function Dashboard() {
                                   sx={{
                                     fontFamily: 'Outfit, sans-serif',
                                     fontSize: '11px',
-                                    color: '#9CA3AF',
+                                    color: darkGray.light,
                                   }}
                                 >
                                   {format(item.receiptDate.toDate(), 'MMM d, yyyy')}
@@ -1001,7 +1001,7 @@ export default function Dashboard() {
                               fontFamily: 'Outfit, sans-serif',
                               fontWeight: 700,
                               fontSize: '13px',
-                              color: '#1F2937',
+                              color: darkGray.darker,
                               minWidth: '70px',
                               textAlign: 'right',
                             }}
