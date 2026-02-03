@@ -603,10 +603,10 @@ export default function PantryPage() {
         {/* Add Item Section */}
         <Card
           sx={{
-            bgcolor: '#fff',
+            bgcolor: teal.bg,
             borderRadius: '12px',
-            border: `2px solid ${ui.border}`,
-            boxShadow: `3px 3px 0px ${ui.border}`,
+            border: `2px solid ${teal.main}`,
+            boxShadow: `3px 3px 0px ${teal.light}`,
             mb: 3,
           }}
         >

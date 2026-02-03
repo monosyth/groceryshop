@@ -650,10 +650,10 @@ export default function ShoppingListPage() {
         {/* Add Item */}
         <Card
           sx={{
-            bgcolor: '#fff',
+            bgcolor: teal.bg,
             borderRadius: '12px',
-            border: `2px solid ${ui.border}`,
-            boxShadow: `3px 3px 0px ${ui.border}`,
+            border: `2px solid ${teal.main}`,
+            boxShadow: `3px 3px 0px ${teal.light}`,
             mb: 3,
           }}
         >
@@ -738,8 +738,8 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: white,
-                        '& fieldset': { borderColor: ui.border },
-                        '&:hover fieldset': { borderColor: gray.light },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
@@ -803,8 +803,8 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: white,
-                        '& fieldset': { borderColor: ui.border },
-                        '&:hover fieldset': { borderColor: gray.light },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
@@ -823,8 +823,8 @@ export default function ShoppingListPage() {
                       '& .MuiOutlinedInput-root': {
                         fontFamily: 'Outfit, sans-serif',
                         bgcolor: white,
-                        '& fieldset': { borderColor: ui.border },
-                        '&:hover fieldset': { borderColor: gray.light },
+                        '& fieldset': { borderColor: teal.light },
+                        '&:hover fieldset': { borderColor: teal.main },
                         '&.Mui-focused fieldset': { borderColor: teal.main },
                       },
                     }}
@@ -847,8 +847,8 @@ export default function ShoppingListPage() {
                     '& .MuiOutlinedInput-root': {
                       fontFamily: 'Outfit, sans-serif',
                       bgcolor: white,
-                      '& fieldset': { borderColor: ui.border },
-                      '&:hover fieldset': { borderColor: gray.light },
+                      '& fieldset': { borderColor: teal.light },
+                      '&:hover fieldset': { borderColor: teal.main },
                       '&.Mui-focused fieldset': { borderColor: teal.main },
                     },
                   }}
