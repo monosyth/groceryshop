@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -12,16 +13,17 @@ import { useAuth } from '../../hooks/useAuth';
 import { teal, pink, rose, orange, amber, brown, white } from '../../theme/colors';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const { signInWithGoogle, currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Redirect to dashboard if already logged in (hard redirect)
+  // Redirect to dashboard if already logged in
   useEffect(() => {
     if (currentUser) {
-      window.location.href = '/dashboard';
+      navigate('/dashboard', { replace: true });
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   // Show nothing while redirecting
   if (currentUser) {

@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }) => {
         });
       } catch (error) {
         console.error('Error creating user profile:', error);
-        throw error;
       }
     }
   };
@@ -65,12 +64,10 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       const result = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Update profile with display name
       if (displayName) {
         await updateProfile(result.user, { displayName });
       }
 
-      // Create user profile in Firestore
       await createUserProfile(result.user, { displayName });
 
       return result.user;
@@ -92,14 +89,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Sign in with Google (using redirect to avoid COOP warnings)
+  // Sign in with Google (using redirect)
   const signInWithGoogle = async () => {
     try {
       setError(null);
       const provider = new GoogleAuthProvider();
-      // Use redirect instead of popup to avoid Cross-Origin-Opener-Policy warnings
       await signInWithRedirect(auth, provider);
-      // Note: The actual sign-in result is handled in useEffect via getRedirectResult
     } catch (error) {
       setError(error.message);
       throw error;
@@ -117,66 +112,48 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Combined auth initialization - handles both redirect result and auth state
+  // Handle redirect result (runs once on mount)
   useEffect(() => {
-    let isMounted = true;
-
-    const initializeAuth = async () => {
-      try {
-        // First, check for redirect result (from Google sign-in return)
-        const result = await getRedirectResult(auth);
+    getRedirectResult(auth)
+      .then(async (result) => {
         if (result?.user) {
-          // Create user profile in Firestore if doesn't exist
           await createUserProfile(result.user);
         }
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Redirect sign-in error:', error);
-        if (isMounted) {
-          setError(error.message);
-        }
-      }
+        setError(error.message);
+      });
+  }, []);
 
-      // Set up auth state listener (this handles the actual user state)
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (!isMounted) return;
+  // Listen for auth state changes (primary auth state management)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const userSnap = await getDoc(userRef);
 
-        if (user) {
-          // Fetch user profile from Firestore
-          try {
-            const userRef = doc(db, 'users', user.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (userSnap.exists()) {
-              setCurrentUser({
-                ...user,
-                preferences: userSnap.data().preferences || {},
-              });
-            } else {
-              // Profile doesn't exist yet - create it
-              await createUserProfile(user);
-              setCurrentUser(user);
-            }
-          } catch (err) {
-            console.error('Error fetching user profile:', err);
+          if (userSnap.exists()) {
+            setCurrentUser({
+              ...user,
+              preferences: userSnap.data().preferences || {},
+            });
+          } else {
+            await createUserProfile(user);
             setCurrentUser(user);
           }
-        } else {
-          setCurrentUser(null);
+        } catch (err) {
+          console.error('Error fetching user profile:', err);
+          setCurrentUser(user);
         }
-        setLoading(false);
-      });
+      } else {
+        setCurrentUser(null);
+      }
+      setLoading(false);
+    });
 
-      return unsubscribe;
-    };
-
-    const unsubscribePromise = initializeAuth();
-
-    return () => {
-      isMounted = false;
-      unsubscribePromise.then((unsubscribe) => {
-        if (unsubscribe) unsubscribe();
-      });
-    };
+    return () => unsubscribe();
   }, []);
 
   const value = {
