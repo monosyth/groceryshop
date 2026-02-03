@@ -9,7 +9,6 @@ When I say **"remember"**, add it to this file.
 
 ## Styling Rules
 - All **page backgrounds** should be **white**
-- All **card backgrounds** should be **white** - no colored backgrounds
 - Use the **/branding** page as the style reference
 - Cards use **medium shadow** style: `3px 3px 0px`
 - Category cards: white bg + colored border
