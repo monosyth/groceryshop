@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -17,9 +16,16 @@ export default function LandingPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Redirect to dashboard if already logged in
+  // Redirect to dashboard if already logged in (hard redirect)
+  useEffect(() => {
+    if (currentUser) {
+      window.location.href = '/dashboard';
+    }
+  }, [currentUser]);
+
+  // Show nothing while redirecting
   if (currentUser) {
-    return <Navigate to="/dashboard" replace />;
+    return null;
   }
 
   const handleGoogleSignIn = async () => {
