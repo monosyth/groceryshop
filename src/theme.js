@@ -36,7 +36,7 @@ const theme = createTheme({
       dark: blue.dark,
     },
     background: {
-      default: cream,
+      default: teal.bg,
       paper: white,
     },
     text: {
