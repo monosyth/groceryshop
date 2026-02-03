@@ -216,22 +216,18 @@ export default function Navigation() {
                     to={item.path}
                     sx={{
                       fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 600,
-                      fontSize: '13px',
-                      px: 1.5,
-                      py: 0.5,
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      px: 2,
+                      py: 0.75,
                       borderRadius: '8px',
                       textTransform: 'none',
-                      color: 'white',
-                      bgcolor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                      border: isActive ? '2px solid rgba(255, 255, 255, 0.3)' : '2px solid transparent',
+                      color: isActive ? teal.darker : 'white',
+                      bgcolor: isActive ? 'white' : 'rgba(255, 255, 255, 0.1)',
                       minWidth: 'auto',
-                      opacity: isActive ? 1 : 0.8,
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.15)',
-                        border: '2px solid rgba(255, 255, 255, 0.2)',
-                        opacity: 1,
+                        bgcolor: isActive ? 'white' : 'rgba(255, 255, 255, 0.2)',
                       },
                     }}
                   >
