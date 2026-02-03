@@ -498,7 +498,7 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ bgcolor: '#fff', minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="lg">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>

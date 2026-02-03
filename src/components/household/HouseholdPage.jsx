@@ -168,7 +168,7 @@ export default function HouseholdPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ bgcolor: '#fff', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="md">
           <Box sx={{ pt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
             <CircularProgress sx={{ color: teal.main }} />
@@ -179,7 +179,7 @@ export default function HouseholdPage() {
   }
 
   return (
-    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ bgcolor: '#fff', minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         <Box sx={{ pt: 4, pb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>

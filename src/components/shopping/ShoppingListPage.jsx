@@ -488,7 +488,7 @@ export default function ShoppingListPage() {
 
   if (loading) {
     return (
-      <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
+      <Box sx={{ bgcolor: '#fff', minHeight: '100vh', pb: 4 }}>
         <Container maxWidth="md">
           <Box sx={{ pt: 4, pb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -535,7 +535,7 @@ export default function ShoppingListPage() {
   }
 
   return (
-    <Box sx={{ background: `linear-gradient(180deg, ${teal.bg} 0%, ${white} 100%)`, minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ bgcolor: '#fff', minHeight: '100vh', pb: 4 }}>
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ pt: 4, pb: 3 }}>
