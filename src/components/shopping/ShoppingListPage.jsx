@@ -1410,10 +1410,10 @@ export default function ShoppingListPage() {
                       <Card
                         key={category}
                         sx={{
-                          bgcolor: 'white',
+                          bgcolor: `${categoryInfo.color}08`,
                           borderRadius: '12px',
-                          border: `2px solid ${ui.border}`,
-                          boxShadow: `3px 3px 0px ${ui.border}`,
+                          border: `2px solid ${categoryInfo.color}`,
+                          boxShadow: `3px 3px 0px ${categoryInfo.color}30`,
                           mb: 2,
                         }}
                       >

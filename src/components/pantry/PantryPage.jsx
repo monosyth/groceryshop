@@ -810,10 +810,10 @@ export default function PantryPage() {
                 <Grid item xs={12} sm={6} md={6} lg={4} key={categoryValue}>
                   <Card
                     sx={{
-                      bgcolor: white,
+                      bgcolor: `${categoryInfo.color}08`,
                       borderRadius: '12px',
-                      border: `2px solid ${ui.border}`,
-                      boxShadow: `2px 2px 0px ${ui.borderLight}`,
+                      border: `2px solid ${categoryInfo.color}`,
+                      boxShadow: `3px 3px 0px ${categoryInfo.color}30`,
                       height: '100%',
                     }}
                   >
@@ -853,9 +853,10 @@ export default function PantryPage() {
                               justifyContent: 'space-between',
                               p: 1,
                               borderRadius: '8px',
-                              bgcolor: gray.bg,
+                              bgcolor: white,
+                              border: `1px solid ${categoryInfo.color}25`,
                               '&:hover': {
-                                bgcolor: gray.light,
+                                bgcolor: `${categoryInfo.color}10`,
                               },
                             }}
                           >
