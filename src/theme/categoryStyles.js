@@ -163,7 +163,7 @@ export const getCategory = (categoryName) => {
 export const getCategoryCardStyle = (categoryName) => {
   const cat = getCategory(categoryName);
   return {
-    bgcolor: cat.bg,
+    bgcolor: '#fff',
     borderRadius: '12px',
     border: `2px solid ${cat.color}`,
     boxShadow: `3px 3px 0px ${cat.color}40`,
