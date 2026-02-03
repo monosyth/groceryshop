@@ -1428,7 +1428,7 @@ export default function ShoppingListPage() {
                               sx={{
                                 fontFamily: 'Outfit, sans-serif',
                                 fontWeight: 600,
-                                color: darkGray.darker,
+                                color: categoryInfo.color,
                                 fontSize: '15px',
                               }}
                             >
@@ -1441,9 +1441,9 @@ export default function ShoppingListPage() {
                                 height: '20px',
                                 fontSize: '11px',
                                 fontFamily: 'Outfit, sans-serif',
-                                bgcolor: categoryInfo.color,
-                                color: white,
-                                fontWeight: 500,
+                                bgcolor: `${categoryInfo.color}20`,
+                                color: categoryInfo.color,
+                                fontWeight: 600,
                               }}
                             />
                           </Box>
@@ -1456,7 +1456,7 @@ export default function ShoppingListPage() {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 py: 0.75,
-                                borderBottom: `1px solid ${ui.borderLight}`,
+                                borderBottom: `1px solid ${categoryInfo.color}20`,
                                 '&:last-child': { borderBottom: 'none' },
                               }}
                             >
@@ -1465,8 +1465,8 @@ export default function ShoppingListPage() {
                                   checked={item.checked}
                                   onChange={() => handleToggleChecked(item.id, item.checked)}
                                   sx={{
-                                    color: teal.main,
-                                    '&.Mui-checked': { color: teal.main },
+                                    color: categoryInfo.color,
+                                    '&.Mui-checked': { color: categoryInfo.color },
                                     py: 0.5,
                                     mt: -0.5,
                                   }}

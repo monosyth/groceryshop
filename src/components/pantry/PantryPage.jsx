@@ -473,78 +473,31 @@ export default function PantryPage() {
     }
   };
 
-  // Get source icon with distinct colors
-  const getSourceIcon = (source) => {
-    switch (source) {
-      case 'receipt':
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 28,
-              height: 28,
-              borderRadius: '6px',
-              bgcolor: blue.bg,
-              border: `1.5px solid ${blue.main}`,
-            }}
-          >
-            <ReceiptIcon sx={{ fontSize: 16, color: blue.dark }} />
-          </Box>
-        );
-      case 'photo':
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 28,
-              height: 28,
-              borderRadius: '6px',
-              bgcolor: red.bg,
-              border: `1.5px solid ${red.main}`,
-            }}
-          >
-            <CameraAlt sx={{ fontSize: 16, color: red.darker }} />
-          </Box>
-        );
-      case 'manual':
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 28,
-              height: 28,
-              borderRadius: '6px',
-              bgcolor: teal.bg,
-              border: `1.5px solid ${teal.main}`,
-            }}
-          >
-            <EditIcon sx={{ fontSize: 16, color: teal.darker }} />
-          </Box>
-        );
-      default:
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 28,
-              height: 28,
-              borderRadius: '6px',
-              bgcolor: ui.borderLight,
-              border: `1.5px solid ${gray.main}`,
-            }}
-          >
-            <Kitchen sx={{ fontSize: 16, color: darkGray.dark }} />
-          </Box>
-        );
-    }
+  // Get source icon matching category color
+  const getSourceIcon = (source, color) => {
+    const iconMap = {
+      receipt: ReceiptIcon,
+      photo: CameraAlt,
+      manual: EditIcon,
+    };
+    const IconComponent = iconMap[source] || Kitchen;
+
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 28,
+          height: 28,
+          borderRadius: '6px',
+          bgcolor: `${color}15`,
+          border: `1.5px solid ${color}`,
+        }}
+      >
+        <IconComponent sx={{ fontSize: 16, color: color }} />
+      </Box>
+    );
   };
 
   if (loading) {
@@ -861,7 +814,7 @@ export default function PantryPage() {
                             }}
                           >
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
-                              {getSourceIcon(item.source)}
+                              {getSourceIcon(item.source, categoryInfo.color)}
                               <Typography
                                 variant="body2"
                                 sx={{
@@ -878,10 +831,10 @@ export default function PantryPage() {
                               size="small"
                               onClick={() => handleEditClick(item)}
                               sx={{
-                                color: teal.main,
+                                color: categoryInfo.color,
                                 p: 0.5,
                                 '&:hover': {
-                                  bgcolor: teal.bg,
+                                  bgcolor: `${categoryInfo.color}15`,
                                 },
                               }}
                             >

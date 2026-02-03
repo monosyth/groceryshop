@@ -891,7 +891,8 @@ export default function Dashboard() {
                           alignItems: 'center',
                           gap: 1,
                           mb: 1.5,
-                          bgcolor: categoryInfo.bg,
+                          bgcolor: `${categoryInfo.color}10`,
+                          border: `1.5px solid ${categoryInfo.color}`,
                           px: 1.5,
                           py: 0.75,
                           borderRadius: '8px',
@@ -904,21 +905,20 @@ export default function Dashboard() {
                             fontWeight: 700,
                             fontSize: '13px',
                             color: categoryInfo.color,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px',
+                            textTransform: 'capitalize',
                           }}
                         >
-                          {categoryInfo.emoji} {category}
+                          {categoryInfo.name}
                         </Typography>
                         <Chip
-                          label={`${categoryItems.length} item${categoryItems.length !== 1 ? 's' : ''}`}
+                          label={`${categoryItems.length}`}
                           size="small"
                           sx={{
                             height: '20px',
                             fontSize: '11px',
                             fontFamily: 'Outfit, sans-serif',
-                            bgcolor: categoryInfo.color,
-                            color: '#fff',
+                            bgcolor: `${categoryInfo.color}20`,
+                            color: categoryInfo.color,
                             fontWeight: 600,
                           }}
                         />
@@ -936,7 +936,7 @@ export default function Dashboard() {
                             px: 1,
                             borderRadius: '8px',
                             '&:hover': {
-                              bgcolor: gray.bg,
+                              bgcolor: `${categoryInfo.color}10`,
                             },
                           }}
                         >

@@ -503,8 +503,9 @@ export default function ReceiptDetail({ receipt, open, onClose }) {
                             alignItems: 'center',
                             py: 0.75,
                             px: 0.5,
+                            borderRadius: '4px',
                             '&:hover': {
-                              bgcolor: gray.bg,
+                              bgcolor: `${categoryInfo.color}10`,
                             },
                           }}
                         >
