@@ -11,47 +11,74 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    // Receipts collection
+    // Helper function to get user's household ID
+    function getUserHouseholdId() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.householdId;
+    }
+
+    // Helper function to check if user is in the same household as the document
+    function isHouseholdMember(docHouseholdId) {
+      return isAuthenticated() &&
+             docHouseholdId != null &&
+             getUserHouseholdId() == docHouseholdId;
+    }
+
+    // Helper function to check if user owns OR is in same household
+    function canAccess(userId, householdId) {
+      return isOwner(userId) || isHouseholdMember(householdId);
+    }
+
+    // Households collection
+    match /households/{householdId} {
+      // Allow read if user is a member of the household
+      allow read: if isAuthenticated() && request.auth.uid in resource.data.members;
+      // Allow create if authenticated
+      allow create: if isAuthenticated() && request.auth.uid in request.resource.data.members;
+      // Allow update/delete if user is a member
+      allow update, delete: if isAuthenticated() && request.auth.uid in resource.data.members;
+    }
+
+    // Receipts collection - accessible by owner OR household members
     match /receipts/{receiptId} {
-      allow get: if isOwner(resource.data.userId);
+      allow get: if canAccess(resource.data.userId, resource.data.householdId);
       allow list: if isAuthenticated();
       allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isOwner(resource.data.userId);
+      allow update, delete: if canAccess(resource.data.userId, resource.data.householdId);
     }
 
-    // Shopping list collection
+    // Shopping list collection - accessible by owner OR household members
     match /shoppingList/{itemId} {
-      allow get: if isOwner(resource.data.userId);
+      allow get: if canAccess(resource.data.userId, resource.data.householdId);
       allow list: if isAuthenticated();
       allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isOwner(resource.data.userId);
+      allow update, delete: if canAccess(resource.data.userId, resource.data.householdId);
     }
 
-    // Saved recipes collection
+    // Saved recipes collection - accessible by owner OR household members
     match /savedRecipes/{recipeId} {
-      allow get: if isOwner(resource.data.userId);
+      allow get: if canAccess(resource.data.userId, resource.data.householdId);
       allow list: if isAuthenticated();
       allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isOwner(resource.data.userId);
+      allow update, delete: if canAccess(resource.data.userId, resource.data.householdId);
     }
 
-    // Analytics collection (if exists)
+    // Analytics collection - accessible by owner OR household members
     match /analytics/{analyticsId} {
-      allow get: if isOwner(resource.data.userId);
+      allow get: if canAccess(resource.data.userId, resource.data.householdId);
       allow list: if isAuthenticated();
       allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isOwner(resource.data.userId);
+      allow update, delete: if canAccess(resource.data.userId, resource.data.householdId);
     }
 
-    // Pantry collection - current inventory items
+    // Pantry collection - accessible by owner OR household members
     match /pantry/{itemId} {
-      allow get: if isOwner(resource.data.userId);
+      allow get: if canAccess(resource.data.userId, resource.data.householdId);
       allow list: if isAuthenticated();
       allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isOwner(resource.data.userId);
+      allow update, delete: if canAccess(resource.data.userId, resource.data.householdId);
     }
 
-    // Users collection - user profiles
+    // Users collection - user profiles (only own profile)
     match /users/{userId} {
       allow read, write: if isAuthenticated() && request.auth.uid == userId;
     }

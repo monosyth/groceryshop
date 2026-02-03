@@ -24,9 +24,10 @@ const RECEIPTS_COLLECTION = 'receipts';
  * @param {File} imageFile - Receipt image file
  * @param {string} userId - User ID
  * @param {Function} onProgress - Progress callback (percentage)
+ * @param {string} householdId - Optional household ID for sharing
  * @returns {Promise<string>} Receipt ID
  */
-export const createReceipt = async (imageFile, userId, onProgress) => {
+export const createReceipt = async (imageFile, userId, onProgress, householdId = null) => {
   try {
     // Upload image first (0-100% progress)
     const { url, path } = await uploadReceiptImage(imageFile, userId, onProgress);
@@ -40,9 +41,10 @@ export const createReceipt = async (imageFile, userId, onProgress) => {
       throw new Error(`Validation error: ${validation.errors.join(', ')}`);
     }
 
-    // Add to Firestore
+    // Add to Firestore with optional householdId
     const docRef = await addDoc(collection(db, RECEIPTS_COLLECTION), {
       ...receiptData,
+      householdId: householdId || null, // Store for household sharing
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -79,9 +81,9 @@ export const getReceipt = async (receiptId) => {
 };
 
 /**
- * Get receipts for a user
+ * Get receipts for a user or household
  * @param {string} userId - User ID
- * @param {Object} options - Query options { limitCount, orderByField, orderDirection, lastDoc }
+ * @param {Object} options - Query options { limitCount, orderByField, orderDirection, lastDoc, householdId }
  * @returns {Promise<Array>} Array of receipts
  */
 export const getUserReceipts = async (userId, options = {}) => {
@@ -91,14 +93,28 @@ export const getUserReceipts = async (userId, options = {}) => {
       orderByField = 'createdAt',
       orderDirection = 'desc',
       lastDoc = null,
+      householdId = null,
     } = options;
 
-    let q = query(
-      collection(db, RECEIPTS_COLLECTION),
-      where('userId', '==', userId),
-      orderBy(orderByField, orderDirection),
-      limit(limitCount)
-    );
+    let q;
+
+    // If householdId provided, get all household receipts
+    if (householdId) {
+      q = query(
+        collection(db, RECEIPTS_COLLECTION),
+        where('householdId', '==', householdId),
+        orderBy(orderByField, orderDirection),
+        limit(limitCount)
+      );
+    } else {
+      // Otherwise get only user's receipts
+      q = query(
+        collection(db, RECEIPTS_COLLECTION),
+        where('userId', '==', userId),
+        orderBy(orderByField, orderDirection),
+        limit(limitCount)
+      );
+    }
 
     // Pagination support
     if (lastDoc) {

@@ -29,6 +29,7 @@ import {
   List as ListIcon,
   MenuBook,
   Kitchen,
+  People,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 import { teal, cream, pink, brown, red } from '../../theme/colors';
@@ -315,6 +316,22 @@ export default function Navigation() {
             >
               <AccountCircle sx={{ mr: 1 }} />
               {currentUser?.email}
+            </MenuItem>
+            <MenuItem
+              component={RouterLink}
+              to="/household"
+              onClick={handleClose}
+              sx={{
+                fontFamily: 'Outfit, sans-serif',
+                fontWeight: 600,
+                color: teal.darker,
+                '&:hover': {
+                  bgcolor: `rgba(20, 184, 166, 0.1)`,
+                },
+              }}
+            >
+              <People sx={{ mr: 1 }} />
+              Household
             </MenuItem>
             <MenuItem
               onClick={handleLogout}

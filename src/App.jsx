@@ -5,6 +5,7 @@ import { lazy, Suspense } from 'react';
 import theme from './theme';
 import { AuthProvider } from './context/AuthContext';
 import { ReceiptProvider } from './context/ReceiptContext';
+import { HouseholdProvider } from './context/HouseholdContext';
 import { teal } from './theme/colors';
 
 // Auth components
@@ -25,6 +26,7 @@ const MyRecipesPage = lazy(() => import('./components/recipe/MyRecipesPage'));
 const ShoppingListPage = lazy(() => import('./components/shopping/ShoppingListPage'));
 const PantryPage = lazy(() => import('./components/pantry/PantryPage'));
 const BrandingPage = lazy(() => import('./components/branding/BrandingPage'));
+const HouseholdPage = lazy(() => import('./components/household/HouseholdPage'));
 
 // Loading component
 const PageLoader = () => (
@@ -45,8 +47,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <ReceiptProvider>
-          <Router>
+        <HouseholdProvider>
+          <ReceiptProvider>
+            <Router>
             <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
@@ -148,12 +151,25 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/household"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <Suspense fallback={<PageLoader />}>
+                      <HouseholdPage />
+                    </Suspense>
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
             {/* Catch all - redirect to landing page */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Router>
-        </ReceiptProvider>
+            </Router>
+          </ReceiptProvider>
+        </HouseholdProvider>
       </AuthProvider>
     </ThemeProvider>
   );

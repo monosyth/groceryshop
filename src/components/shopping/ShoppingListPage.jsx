@@ -30,12 +30,14 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useReceipts } from '../../context/ReceiptContext';
+import { useHousehold } from '../../context/HouseholdContext';
 import { SkeletonList, ShoppingListItemSkeleton } from '../common/Skeletons';
 import { categorizeShoppingItem } from '../../services/geminiService';
 import {
   collection,
   query,
   where,
+  or,
   onSnapshot,
   addDoc,
   updateDoc,
@@ -49,6 +51,7 @@ import { teal, blue, purple, pink, orange, amber, red, cyan, gray, brown, darkGr
 export default function ShoppingListPage() {
   const { currentUser } = useAuth();
   const { receipts: allReceipts } = useReceipts();
+  const { householdId, hasHousehold } = useHousehold();
   const [shoppingList, setShoppingList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newItemName, setNewItemName] = useState('');
@@ -124,14 +127,26 @@ export default function ShoppingListPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [allReceipts, shoppingList]);
 
-  // Fetch shopping list items
+  // Fetch shopping list items (household or personal)
   useEffect(() => {
     if (!currentUser) return;
 
-    const q = query(
-      collection(db, 'shoppingList'),
-      where('userId', '==', currentUser.uid)
-    );
+    let q;
+    // If user is in a household, show all household items
+    if (hasHousehold && householdId) {
+      q = query(
+        collection(db, 'shoppingList'),
+        or(
+          where('householdId', '==', householdId),
+          where('userId', '==', currentUser.uid)
+        )
+      );
+    } else {
+      q = query(
+        collection(db, 'shoppingList'),
+        where('userId', '==', currentUser.uid)
+      );
+    }
 
     const unsubscribe = onSnapshot(
       q,
@@ -159,7 +174,7 @@ export default function ShoppingListPage() {
     );
 
     return () => unsubscribe();
-  }, [currentUser]);
+  }, [currentUser, householdId, hasHousehold]);
 
   // Estimate item price from receipt history
   const estimateItemPrice = (itemName) => {
@@ -203,6 +218,7 @@ export default function ShoppingListPage() {
 
       await addDoc(collection(db, 'shoppingList'), {
         userId: currentUser.uid,
+        householdId: householdId || null,
         name: newItemName.trim(),
         quantity: newItemQuantity.trim() || null,
         category: finalCategory,

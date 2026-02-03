@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, or } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
+import { useHousehold } from './HouseholdContext';
 
 const ReceiptContext = createContext();
 
@@ -15,6 +16,7 @@ export function useReceipts() {
 
 export function ReceiptProvider({ children }) {
   const { currentUser } = useAuth();
+  const { householdId, hasHousehold } = useHousehold();
   const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,10 +31,26 @@ export function ReceiptProvider({ children }) {
     setLoading(true);
     setError(null);
 
-    const q = query(
-      collection(db, 'receipts'),
-      where('userId', '==', currentUser.uid)
-    );
+    let q;
+
+    // If user is in a household, show all household receipts
+    // Otherwise, show only user's own receipts
+    if (hasHousehold && householdId) {
+      // Get receipts that belong to the household OR are the user's own (for backward compat)
+      q = query(
+        collection(db, 'receipts'),
+        or(
+          where('householdId', '==', householdId),
+          where('userId', '==', currentUser.uid)
+        )
+      );
+    } else {
+      // No household - just get user's receipts
+      q = query(
+        collection(db, 'receipts'),
+        where('userId', '==', currentUser.uid)
+      );
+    }
 
     const unsubscribe = onSnapshot(
       q,
@@ -63,7 +81,7 @@ export function ReceiptProvider({ children }) {
     );
 
     return () => unsubscribe();
-  }, [currentUser]);
+  }, [currentUser, householdId, hasHousehold]);
 
   // Helper: Get only analyzed receipts with items
   const getAnalyzedReceipts = () => {
@@ -86,6 +104,7 @@ export function ReceiptProvider({ children }) {
     error,
     getAnalyzedReceipts,
     getReceiptsWithStores,
+    householdId, // Expose for upload service
   };
 
   return <ReceiptContext.Provider value={value}>{children}</ReceiptContext.Provider>;

@@ -6,6 +6,7 @@ import UploadForm from './UploadForm';
 import ReceiptCamera from './ReceiptCamera';
 import { createReceipt } from '../../services/receiptService';
 import { useAuth } from '../../hooks/useAuth';
+import { useHousehold } from '../../context/HouseholdContext';
 import { teal, brown, orange, white } from '../../theme/colors';
 
 export default function UploadPage() {
@@ -17,6 +18,7 @@ export default function UploadPage() {
   const [receiptId, setReceiptId] = useState(null);
 
   const { currentUser } = useAuth();
+  const { householdId } = useHousehold();
   const navigate = useNavigate();
 
   const handleFileSelect = async (file) => {
@@ -31,10 +33,10 @@ export default function UploadPage() {
       setUploadSuccess(false);
       setProgress(0);
 
-      // Upload receipt
+      // Upload receipt (include householdId if user is in a household)
       const newReceiptId = await createReceipt(file, currentUser.uid, (progressPercent) => {
         setProgress(progressPercent);
-      });
+      }, householdId);
 
       setReceiptId(newReceiptId);
       setUploadSuccess(true);
