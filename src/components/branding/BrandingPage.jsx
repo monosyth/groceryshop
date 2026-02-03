@@ -6,48 +6,6 @@ import {
 } from '../../theme/colors';
 
 export default function BrandingPage() {
-  // NEW TEST COLORS - Vibrant palette inspired by modern UI
-  const testColors = {
-    cyan: {
-      dark: '#00A3A3',
-      main: '#00C4CC',
-      light: '#5DE7ED',
-      bg: '#E0FAFA',
-    },
-    coral: {
-      dark: '#E57A5C',
-      main: '#FF9F7F',
-      light: '#FFCDB8',
-      bg: '#FFF0EA',
-    },
-    mint: {
-      dark: '#00B85C',
-      main: '#00E676',
-      light: '#69F0AE',
-      bg: '#E8FFF0',
-    },
-    magenta: {
-      dark: '#BA35D6',
-      main: '#E040FB',
-      light: '#EA80FC',
-      bg: '#FCE4FF',
-    },
-    lime: {
-      dark: '#A3CC00',
-      main: '#C6FF00',
-      light: '#E4FF5A',
-      bg: '#F7FFE0',
-    },
-  };
-
-  const testColorFamilies = [
-    { name: 'Cyan', colors: testColors.cyan, description: 'Bright turquoise - could replace Teal' },
-    { name: 'Coral', colors: testColors.coral, description: 'Warm peach - friendly accent' },
-    { name: 'Mint', colors: testColors.mint, description: 'Vibrant green - fresh & energetic' },
-    { name: 'Magenta', colors: testColors.magenta, description: 'Bold pink - eye-catching' },
-    { name: 'Lime', colors: testColors.lime, description: 'Chartreuse - modern & bold' },
-  ];
-
   // Define all color families
   const colorFamilies = [
     { name: 'Teal (Primary)', colors: teal, description: 'Main brand color - Produce category' },
@@ -90,7 +48,6 @@ export default function BrandingPage() {
       <Typography
         variant="caption"
         sx={{
-          fontFamily: 'Outfit, sans-serif',
           color: '#6B7280',
           fontSize: '11px',
           fontFamily: 'monospace',
@@ -262,205 +219,6 @@ export default function BrandingPage() {
           </Grid>
         </Paper>
 
-        {/* 🧪 NEW TEST COLORS */}
-        <Paper
-          elevation={0}
-          sx={{
-            bgcolor: testColors.magenta.bg,
-            borderRadius: '16px',
-            border: `3px solid ${testColors.magenta.main}`,
-            boxShadow: `4px 4px 0px ${testColors.magenta.light}`,
-            p: 3,
-            mb: 4,
-          }}
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 800,
-              color: testColors.magenta.dark,
-              mb: 1,
-            }}
-          >
-            🧪 New Color Palette Test
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              color: '#6B7280',
-              mb: 3,
-            }}
-          >
-            Preview of vibrant new colors - only visible on this page
-          </Typography>
-
-          <Grid container spacing={3}>
-            {testColorFamilies.map((family) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={family.name}>
-                <Card
-                  sx={{
-                    bgcolor: 'white',
-                    borderRadius: '12px',
-                    border: `2px solid ${family.colors.main}`,
-                    boxShadow: `3px 3px 0px ${family.colors.light}`,
-                    height: '100%',
-                  }}
-                >
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontWeight: 700,
-                        fontSize: '16px',
-                        color: family.colors.dark,
-                        mb: 0.5,
-                      }}
-                    >
-                      {family.name}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        fontFamily: 'Outfit, sans-serif',
-                        color: '#6B7280',
-                        fontSize: '11px',
-                        display: 'block',
-                        mb: 2,
-                      }}
-                    >
-                      {family.description}
-                    </Typography>
-
-                    {Object.entries(family.colors).map(([shade, color]) => (
-                      <Box key={shade} sx={{ mb: 1.5 }}>
-                        <Box
-                          sx={{
-                            width: '100%',
-                            height: 40,
-                            bgcolor: color,
-                            borderRadius: '8px',
-                            border: '1px solid rgba(0,0,0,0.1)',
-                            mb: 0.5,
-                          }}
-                        />
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontSize: '11px', fontWeight: 600 }}>
-                            {shade}
-                          </Typography>
-                          <Typography sx={{ fontFamily: 'monospace', fontSize: '10px', color: '#6B7280' }}>
-                            {color}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    ))}
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-
-          {/* Test Card Themes with new colors */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: '#1F2937',
-              mt: 4,
-              mb: 2,
-            }}
-          >
-            Test Card Themes
-          </Typography>
-          <Grid container spacing={2}>
-            {[
-              { bg: testColors.cyan.bg, border: testColors.cyan.main, shadow: testColors.cyan.light, name: 'Cyan' },
-              { bg: testColors.coral.bg, border: testColors.coral.main, shadow: testColors.coral.light, name: 'Coral' },
-              { bg: testColors.mint.bg, border: testColors.mint.main, shadow: testColors.mint.light, name: 'Mint' },
-              { bg: testColors.magenta.bg, border: testColors.magenta.main, shadow: testColors.magenta.light, name: 'Magenta' },
-              { bg: testColors.lime.bg, border: testColors.lime.main, shadow: testColors.lime.light, name: 'Lime' },
-            ].map((theme, index) => (
-              <Grid item xs={6} sm={4} md={2.4} key={index}>
-                <Card
-                  sx={{
-                    bgcolor: theme.bg,
-                    borderRadius: '12px',
-                    border: `2px solid ${theme.border}`,
-                    boxShadow: `3px 3px 0px ${theme.shadow}`,
-                    height: 120,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 700,
-                      color: theme.border,
-                      fontSize: '14px',
-                    }}
-                  >
-                    {theme.name}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 600,
-                      color: theme.border,
-                      fontSize: '20px',
-                    }}
-                  >
-                    $24.99
-                  </Typography>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-
-          {/* Test Buttons */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              color: '#1F2937',
-              mt: 4,
-              mb: 2,
-            }}
-          >
-            Test Buttons
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-            {testColorFamilies.map((family) => (
-              <Button
-                key={family.name}
-                variant="contained"
-                sx={{
-                  bgcolor: family.colors.main,
-                  color: family.name === 'Lime' ? '#1F2937' : 'white',
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 600,
-                  textTransform: 'none',
-                  borderRadius: '12px',
-                  px: 3,
-                  py: 1,
-                  boxShadow: `2px 2px 0px ${family.colors.dark}`,
-                  '&:hover': {
-                    bgcolor: family.colors.dark,
-                  },
-                }}
-              >
-                {family.name} Button
-              </Button>
-            ))}
-          </Box>
-        </Paper>
-
         {/* Color Families */}
         <Typography
           variant="h5"
@@ -571,7 +329,6 @@ export default function BrandingPage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      fontFamily: 'Outfit, sans-serif',
                       fontFamily: 'monospace',
                       fontSize: '11px',
                       color: '#6B7280',
@@ -629,7 +386,6 @@ export default function BrandingPage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      fontFamily: 'Outfit, sans-serif',
                       fontFamily: 'monospace',
                       fontSize: '10px',
                       display: 'block',
@@ -641,7 +397,6 @@ export default function BrandingPage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      fontFamily: 'Outfit, sans-serif',
                       fontFamily: 'monospace',
                       fontSize: '10px',
                       display: 'block',
@@ -653,7 +408,6 @@ export default function BrandingPage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      fontFamily: 'Outfit, sans-serif',
                       fontFamily: 'monospace',
                       fontSize: '10px',
                       display: 'block',
