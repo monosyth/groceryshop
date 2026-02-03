@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -13,24 +13,22 @@ import { useAuth } from '../../hooks/useAuth';
 import { teal, pink, rose, orange, amber, brown, white } from '../../theme/colors';
 
 export default function LandingPage() {
-  const navigate = useNavigate();
   const { signInWithGoogle, currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Redirect to dashboard if already logged in
-  useEffect(() => {
-    if (currentUser) {
-      navigate('/dashboard');
-    }
-  }, [currentUser, navigate]);
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleGoogleSignIn = async () => {
     try {
       setError('');
       setLoading(true);
       await signInWithGoogle();
-      navigate('/dashboard');
+      // With redirect auth, page will redirect to Google
+      // When it returns, currentUser will be set and we'll redirect to dashboard
     } catch (error) {
       console.error('Google sign-in error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
@@ -38,9 +36,9 @@ export default function LandingPage() {
       } else {
         setError('Failed to sign in. Please try again.');
       }
-    } finally {
       setLoading(false);
     }
+    // Don't setLoading(false) on success - page redirects to Google
   };
 
   return (
