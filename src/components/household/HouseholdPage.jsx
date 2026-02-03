@@ -31,6 +31,8 @@ import {
   ExitToApp,
   Home,
   Check,
+  Edit,
+  Close,
 } from '@mui/icons-material';
 import { useHousehold } from '../../context/HouseholdContext';
 import { teal, orange, pink, amber, brown, white, ui, gray, darkGray } from '../../theme/colors';
@@ -47,6 +49,7 @@ export default function HouseholdPage() {
     joinHousehold,
     leaveHousehold,
     regenerateInviteCode,
+    updateHouseholdName,
   } = useHousehold();
 
   const [mode, setMode] = useState('select'); // 'select', 'create', 'join'
@@ -57,6 +60,8 @@ export default function HouseholdPage() {
   const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '' });
   const [codeCopied, setCodeCopied] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState('');
 
   const handleCreateHousehold = async () => {
     if (!householdName.trim()) {
@@ -129,6 +134,33 @@ export default function HouseholdPage() {
     } finally {
       setActionLoading(false);
     }
+  };
+
+  const handleStartEditName = () => {
+    setEditedName(household?.name || '');
+    setIsEditingName(true);
+  };
+
+  const handleSaveName = async () => {
+    if (!editedName.trim()) {
+      setActionError('Household name cannot be empty');
+      return;
+    }
+    try {
+      setActionLoading(true);
+      await updateHouseholdName(editedName.trim());
+      setIsEditingName(false);
+      setSnackbar({ open: true, message: 'Household name updated!' });
+    } catch (err) {
+      setActionError(err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleCancelEditName = () => {
+    setIsEditingName(false);
+    setEditedName('');
   };
 
   if (loading) {
@@ -423,17 +455,63 @@ export default function HouseholdPage() {
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                 <Box sx={{ fontSize: '48px' }}>🏠</Box>
-                <Box>
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: 700,
-                      color: teal.darker,
-                    }}
-                  >
-                    {household.name}
-                  </Typography>
+                <Box sx={{ flex: 1 }}>
+                  {isEditingName ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <TextField
+                        value={editedName}
+                        onChange={(e) => setEditedName(e.target.value)}
+                        size="small"
+                        autoFocus
+                        disabled={actionLoading}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSaveName()}
+                        sx={{
+                          '& .MuiInputBase-input': {
+                            fontFamily: 'Outfit, sans-serif',
+                            fontWeight: 700,
+                            fontSize: '1.5rem',
+                            color: teal.darker,
+                          },
+                        }}
+                      />
+                      <IconButton
+                        onClick={handleSaveName}
+                        disabled={actionLoading}
+                        sx={{ color: teal.main }}
+                      >
+                        <Check />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelEditName}
+                        disabled={actionLoading}
+                        sx={{ color: darkGray.main }}
+                      >
+                        <Close />
+                      </IconButton>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontWeight: 700,
+                          color: teal.darker,
+                        }}
+                      >
+                        {household.name}
+                      </Typography>
+                      <Tooltip title="Edit name">
+                        <IconButton
+                          onClick={handleStartEditName}
+                          size="small"
+                          sx={{ color: darkGray.main, '&:hover': { color: teal.main } }}
+                        >
+                          <Edit fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  )}
                   <Typography
                     variant="body2"
                     sx={{
