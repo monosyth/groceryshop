@@ -57,7 +57,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { teal, gray, brown, darkGray, ui, white, amber } from '../../theme/colors';
+import { teal, gray, brown, darkGray, ui, white, amber, blue, red } from '../../theme/colors';
 import {
   categoryList,
   getCategory,

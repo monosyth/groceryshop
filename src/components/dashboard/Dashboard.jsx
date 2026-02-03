@@ -48,7 +48,7 @@ import SearchBar from '../search/SearchBar';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { format } from 'date-fns';
-import { teal, darkGray, brown, gray, ui, white, cream } from '../../theme/colors';
+import { teal, darkGray, brown, gray, ui, white, cream, blue, pink, amber } from '../../theme/colors';
 import {
   getCategory,
   getCategoryHeaderStyle,
