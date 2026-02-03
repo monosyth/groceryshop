@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   Container,
@@ -32,8 +32,15 @@ export default function SignUpPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { signup, signInWithGoogle } = useAuth();
+  const { signup, signInWithGoogle, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to dashboard if already logged in (handles redirect sign-in return)
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -87,17 +94,14 @@ export default function SignUpPage() {
       setError('');
       setLoading(true);
       await signInWithGoogle();
-      navigate('/dashboard');
+      // Note: With redirect auth, the page will redirect to Google
+      // When returning, useEffect above handles navigation to dashboard
     } catch (error) {
       console.error('Google sign-in error:', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        setError('Sign-in cancelled');
-      } else {
-        setError('Failed to sign in with Google. Please try again.');
-      }
-    } finally {
+      setError('Failed to sign in with Google. Please try again.');
       setLoading(false);
     }
+    // Don't setLoading(false) here - page redirects to Google
   };
 
   return (

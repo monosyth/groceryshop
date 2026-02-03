@@ -5,7 +5,8 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -91,17 +92,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Sign in with Google
+  // Sign in with Google (using redirect to avoid COOP warnings)
   const signInWithGoogle = async () => {
     try {
       setError(null);
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-
-      // Create user profile in Firestore if doesn't exist
-      await createUserProfile(result.user);
-
-      return result.user;
+      // Use redirect instead of popup to avoid Cross-Origin-Opener-Policy warnings
+      await signInWithRedirect(auth, provider);
+      // Note: The actual sign-in result is handled in useEffect via getRedirectResult
     } catch (error) {
       setError(error.message);
       throw error;
@@ -118,6 +116,24 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Handle redirect result from Google sign-in
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          // Create user profile in Firestore if doesn't exist
+          await createUserProfile(result.user);
+        }
+      } catch (error) {
+        console.error('Redirect sign-in error:', error);
+        setError(error.message);
+      }
+    };
+
+    handleRedirectResult();
+  }, []);
 
   // Listen for auth state changes
   useEffect(() => {
