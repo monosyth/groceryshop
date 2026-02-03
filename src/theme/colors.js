@@ -221,7 +221,7 @@ export const getCategoryInfo = (categoryName) => {
 export const getCategoryCardStyle = (category) => {
   const info = getCategoryInfo(category);
   return {
-    bgcolor: info.bg,
+    bgcolor: '#fff',
     borderRadius: '12px',
     border: `2px solid ${info.color}`,
     boxShadow: `3px 3px 0px ${info.color}40`,
@@ -235,7 +235,7 @@ export const getCategoryHeaderStyle = (category) => {
     display: 'flex',
     alignItems: 'center',
     gap: 1,
-    bgcolor: info.bg,
+    bgcolor: '#fff',
     border: `2px solid ${info.color}`,
     px: 1.5,
     py: 0.75,
