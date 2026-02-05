@@ -6,10 +6,32 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+
+// Detect if user is in an embedded browser/webview
+const isEmbeddedBrowser = () => {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+  // Check for common in-app browsers
+  const isInApp = (
+    ua.includes('FBAN') ||      // Facebook
+    ua.includes('FBAV') ||      // Facebook
+    ua.includes('Instagram') || // Instagram
+    ua.includes('Twitter') ||   // Twitter
+    ua.includes('Line/') ||     // Line
+    ua.includes('KAKAOTALK') || // KakaoTalk
+    ua.includes('Snapchat') ||  // Snapchat
+    ua.includes('TikTok') ||    // TikTok
+    (ua.includes('wv') && ua.includes('Android')) // Android WebView
+  );
+
+  return isInApp;
+};
 
 const AuthContext = createContext({});
 
@@ -88,22 +110,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Sign in with Google (using popup - simpler and more reliable)
+  // Sign in with Google
   const signInWithGoogle = async () => {
     try {
       setError(null);
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
 
-      // Create user profile if needed
-      await createUserProfile(result.user);
-
-      return result.user;
-    } catch (error) {
-      // Don't set error for user-cancelled popups
-      if (error.code !== 'auth/popup-closed-by-user') {
-        setError(error.message);
+      // Check if user is in an embedded browser
+      if (isEmbeddedBrowser()) {
+        const errorMsg = 'Please open this app in your regular browser (Chrome, Safari, Firefox) to sign in with Google. In-app browsers don\'t support Google sign-in.';
+        setError(errorMsg);
+        throw new Error(errorMsg);
       }
+
+      // Try popup first (better UX)
+      try {
+        const result = await signInWithPopup(auth, provider);
+        await createUserProfile(result.user);
+        return result.user;
+      } catch (popupError) {
+        // If popup blocked or fails, try redirect as fallback
+        if (
+          popupError.code === 'auth/popup-blocked' ||
+          popupError.code === 'auth/operation-not-supported-in-this-environment' ||
+          popupError.code === 'auth/unauthorized-domain'
+        ) {
+          console.log('Popup blocked, falling back to redirect...');
+          await signInWithRedirect(auth, provider);
+          return null; // Redirect will reload the page
+        }
+
+        // Don't set error for user-cancelled popups
+        if (popupError.code !== 'auth/popup-closed-by-user') {
+          setError(popupError.message);
+        }
+        throw popupError;
+      }
+    } catch (error) {
       throw error;
     }
   };
@@ -118,6 +161,25 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Handle redirect result (for cases where popup failed and redirect was used)
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          await createUserProfile(result.user);
+        }
+      } catch (error) {
+        console.error('Redirect sign-in error:', error);
+        if (error.code !== 'auth/popup-closed-by-user') {
+          setError(error.message);
+        }
+      }
+    };
+
+    handleRedirectResult();
+  }, []);
 
   // Listen for auth state changes
   useEffect(() => {
