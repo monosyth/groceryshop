@@ -53,7 +53,7 @@ import {
 import { db } from '../../firebase';
 import { analyzePantryPhoto, categorizeShoppingItem } from '../../services/geminiService';
 import { addPhotoItemsToPantry } from '../../services/pantryService';
-import { teal, gray, darkGray, ui, white, red, amber } from '../../theme/colors';
+import { teal, gray, darkGray, ui, white, red, amber, brown } from '../../theme/colors';
 import {
   categoryList,
   getCategory,
