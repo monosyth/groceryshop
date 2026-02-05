@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { teal, gray, darkGray, cream, ui, red } from '../../theme/colors';
+import { teal, gray, darkGray, cream, ui, red, amber } from '../../theme/colors';
 import {
   getCategory,
   getCategoryHeaderStyle,
