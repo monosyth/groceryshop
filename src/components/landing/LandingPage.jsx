@@ -7,6 +7,10 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import {
   Google as GoogleIcon,
@@ -17,6 +21,8 @@ import {
   AttachMoney,
   AutoAwesome,
   Favorite,
+  OpenInBrowser,
+  ContentCopy,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 import { teal, pink, rose, orange, amber, brown, white } from '../../theme/colors';
@@ -39,6 +45,8 @@ export default function LandingPage() {
     return null;
   }
 
+  const [showBrowserDialog, setShowBrowserDialog] = useState(false);
+
   const handleGoogleSignIn = async () => {
     try {
       setError('');
@@ -50,11 +58,22 @@ export default function LandingPage() {
       console.error('Google sign-in error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
         setError('Sign-in cancelled');
+      } else if (error.message && error.message.includes('regular browser')) {
+        // Show the embedded browser dialog
+        setShowBrowserDialog(true);
+      } else if (error.code === 'auth/popup-blocked') {
+        setError('Pop-up was blocked. Please allow pop-ups for this site.');
       } else {
         setError('Failed to sign in. Please try again.');
       }
       setLoading(false);
     }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setError('Link copied! Paste it in your browser.');
+    setShowBrowserDialog(false);
   };
 
   return (
@@ -528,14 +547,87 @@ export default function LandingPage() {
         </Typography>
       </Box>
 
-      {/* Error Snackbar */}
+      {/* Embedded Browser Dialog - Prominent and helpful */}
+      <Dialog
+        open={showBrowserDialog}
+        onClose={() => setShowBrowserDialog(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: '24px',
+            p: 1,
+            maxWidth: '400px',
+            border: `4px solid ${teal.main}`,
+          },
+        }}
+      >
+        <DialogTitle sx={{ textAlign: 'center', pt: 3 }}>
+          <Box
+            sx={{
+              width: 80,
+              height: 80,
+              borderRadius: '50%',
+              bgcolor: amber.bg,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mx: 'auto',
+              mb: 2,
+            }}
+          >
+            <OpenInBrowser sx={{ fontSize: 48, color: amber.dark }} />
+          </Box>
+          <Typography variant="h5" fontWeight={800} color={teal.dark}>
+            Open in Your Browser
+          </Typography>
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: 'center', px: 3 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            Google sign-in doesn't work in app browsers (like Snapchat, Instagram, etc.)
+          </Typography>
+          <Typography variant="body1" fontWeight={600} color={teal.dark}>
+            Tap the menu <strong>⋯</strong> and select:
+          </Typography>
+          <Box sx={{ mt: 2, p: 2, bgcolor: teal.bg, borderRadius: 2 }}>
+            <Typography variant="h6" fontWeight={700} color={teal.dark}>
+              "Open in Browser"
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', pb: 3, px: 3, flexDirection: 'column', gap: 1 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            startIcon={<ContentCopy />}
+            onClick={handleCopyLink}
+            sx={{
+              bgcolor: teal.main,
+              fontWeight: 700,
+              py: 1.5,
+              borderRadius: '50px',
+              '&:hover': { bgcolor: teal.dark },
+            }}
+          >
+            Copy Link to Paste in Browser
+          </Button>
+          <Button
+            fullWidth
+            variant="text"
+            onClick={() => setShowBrowserDialog(false)}
+            sx={{ color: 'text.secondary' }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Error Snackbar - for other errors */}
       <Snackbar
-        open={!!error}
+        open={!!error && !showBrowserDialog}
         autoHideDuration={6000}
         onClose={() => setError('')}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={() => setError('')} severity="error" sx={{ width: '100%' }}>
+        <Alert onClose={() => setError('')} severity={error.includes('copied') ? 'success' : 'error'} sx={{ width: '100%' }}>
           {error}
         </Alert>
       </Snackbar>

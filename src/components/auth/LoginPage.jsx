@@ -18,6 +18,7 @@ import {
   VisibilityOff,
   ShoppingCart,
   Google as GoogleIcon,
+  OpenInBrowser,
 } from '@mui/icons-material';
 import { useAuth } from '../../hooks/useAuth';
 import { teal, amber } from '../../theme/colors';
@@ -77,7 +78,14 @@ export default function LoginPage() {
       // When returning, useEffect above handles navigation to dashboard
     } catch (error) {
       console.error('Google sign-in error:', error);
-      setError('Failed to sign in with Google. Please try again.');
+      // Pass through the specific error message (especially for embedded browsers)
+      if (error.message && error.message.includes('regular browser')) {
+        setError(error.message);
+      } else if (error.code === 'auth/popup-blocked') {
+        setError('Pop-up was blocked. Please allow pop-ups for this site or try again.');
+      } else {
+        setError('Failed to sign in with Google. Please try again.');
+      }
       setLoading(false);
     }
     // Don't setLoading(false) here - page redirects to Google
@@ -127,10 +135,37 @@ export default function LoginPage() {
             Sign in to track your grocery spending
           </Typography>
 
-          {/* Error Alert */}
+          {/* Error Alert - Enhanced for embedded browser errors */}
           {error && (
-            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
-              {error}
+            <Alert
+              severity={error.includes('regular browser') ? 'warning' : 'error'}
+              icon={error.includes('regular browser') ? <OpenInBrowser fontSize="large" /> : undefined}
+              sx={{
+                width: '100%',
+                mb: 2,
+                ...(error.includes('regular browser') && {
+                  py: 2,
+                  '& .MuiAlert-message': {
+                    fontSize: '1rem',
+                  },
+                  '& .MuiAlert-icon': {
+                    fontSize: '2rem',
+                  },
+                }),
+              }}
+            >
+              {error.includes('regular browser') ? (
+                <Box>
+                  <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                    Open in Your Browser
+                  </Typography>
+                  <Typography variant="body2">
+                    Tap the <strong>⋯</strong> menu and select <strong>"Open in Browser"</strong> to sign in with Google.
+                  </Typography>
+                </Box>
+              ) : (
+                error
+              )}
             </Alert>
           )}
 
