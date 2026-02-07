@@ -97,7 +97,7 @@ export default function BrandingPage() {
               fontSize: '16px',
             }}
           >
-            GroceryShop Color System • Centralized & Consistent
+            GrozeryShop Color System • Centralized & Consistent
           </Typography>
         </Box>
 

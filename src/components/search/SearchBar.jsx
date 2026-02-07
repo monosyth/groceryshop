@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { teal, blue, purple, pink, orange, amber, red, cyan, gray, darkGray, brown, cream, ui, getCategoryInfo } from '../../theme/colors';
+import { teal, gray, darkGray, ui } from '../../theme/colors';
 import {
   Box,
   TextField,

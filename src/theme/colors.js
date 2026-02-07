@@ -1,5 +1,5 @@
 /**
- * GroceryShop Color System
+ * GrozeryShop Color System
  *
  * Centralized color palette with consistent shading structure.
  * Each color family has 4 shades: dark, main, light, bg (background)

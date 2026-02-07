@@ -147,13 +147,3 @@ export const deleteReceiptImage = async (imagePath) => {
   }
 };
 
-/**
- * Get storage usage for a user
- * @param {string} userId - User ID
- * @returns {Promise<number>} Total bytes used
- */
-export const getUserStorageUsage = async (userId) => {
-  // Note: This would require listing all files which is not straightforward
-  // with Firebase Storage. Consider implementing server-side tracking instead.
-  throw new Error('Not implemented - use server-side tracking');
-};
